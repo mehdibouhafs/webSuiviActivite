@@ -1,0 +1,125 @@
+
+		
+	
+        <!-- page content -->
+        
+        <div class="right_col" role="main" ng-controller="clientController">
+          <div class="">
+            
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Nouveau Client <small>Munisys</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    
+                    <div class="form-group" ng-if="error==true" ng-cloak>
+				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-danger">
+	  						<strong>Erreur au formulaire !</strong> <br/>Veuillez remplir les champs obligatoire !
+	  						* Sinon l'utilisateur est déja créer
+						 </div>
+					 </div>
+				     
+				     
+				     <div class="form-group" ng-if="success==true" ng-cloak>
+				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-success" ng-cloak>
+	  						<strong>Success!</strong><br/> {{message.success}} 
+						 </div>
+					 </div>
+                    <form id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
+                    
+                      <label for="fullname">Client * :</label>
+                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="client" required placeholder="Tapez le nom du client" />
+
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+						  <button class="btn btn-primary" type="reset" ng-click="reset()">Reset</button>
+                          <button type="submit" class="btn btn-success" >Créer un client</button>
+                        </div>
+                      </div>
+                      
+
+                    </form>
+                    
+                    
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Nos Clients <small>Nos clients</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                     
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table table-bordered" ng-cloak>
+                      <thead>
+                        <tr>
+                          
+                          <th>Client</th>
+                          <th>Actions</th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="even pointer" ng-repeat="o in clients.clients track by $index">
+	                        	
+	                        	<td width="80%" >{{o.client}}</td>
+	                        	<td width="20%"><button type="button" class="btn btn-default" ng-click="modifier(o.id)"><i class="glyphicon glyphicon-pencil">
+								 </i></button></td>
+				  		   </tr>
+                      </tbody>
+                    </table>
+                    <div paging
+				                page="currentPage" 
+				                page-size="pageSize" 
+				                total="totale"
+				                paging-action="goToPage(page)"
+				                text-first="first"
+							    text-last="last"
+							    text-next="next"
+							    text-prev="prev"
+							    text-title-page="Page {page} Hover Over"
+							    text-title-first="First hover"
+							    text-title-last="Last hover"
+							    text-title-next="Next hover"
+							    text-title-prev="Prev hover"
+							    show-prev-next="true"
+							    show-first-last="true">
+	           				 </div>  
+
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+            </div>
+         </div>
+       </div>
+       
+      

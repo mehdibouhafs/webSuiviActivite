@@ -1,0 +1,150 @@
+
+	
+        <!-- page content -->
+        
+        <div class="right_col" role="main" ng-controller="utilisateurController">
+          <div class="">
+            
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Nouveau Utilisateur <small>Munisys</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <div class="form-group" ng-if="error==true" ng-cloak>
+				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-danger">
+	  						<strong>Erreur au formulaire !</strong> <br/>Veuillez remplir les champs obligatoire !
+	  						* Sinon l'utilisateur est déja créer
+						 </div>
+					 </div>
+				     
+				     
+				     <div class="form-group" ng-if="success==true" ng-cloak>
+				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-success" ng-cloak>
+	  						<strong>Success!</strong><br/> {{message.success}} 
+						 </div>
+					 </div>
+                    <form id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
+                    
+                    
+                    
+                    <div class="form-group">
+                      <label for="fullname">Nom et prenom * :</label>
+                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="nom" required placeholder="Nom et prenom de l'employer" />
+					</div>
+					
+					<div class="form-group">
+                      <label for="email">Email * :</label>
+                      <input type="text" id="email" class="form-control" name="email"  ng-model="email1"  required placeholder="Tapez une addresse email valide" />
+					</div>
+					
+					<div class="form-group">
+					  <label for="password">Mot de passe * :</label>
+                      <input type="password" id="password" name="password" class="form-control" ng-model="password" required placeholder="Tapez votre mot de passe">
+                     </div>
+                     <div class="form-group">
+                      <label for="password1">Confirm password * :</label>
+                      <input type="password" id="password1" class="form-control" name='password1'
+                       ng-model="password1"  pw-check="password" required placeholder="Confirmer votre mot de passe">
+                      </div>
+                      <div class='msg-block' ng-show='myForm.$error'>
+						  <span class='msg-error' ng-show='myForm.password1.$error.pwmatch'>
+						    Passwords don't match.
+						  </span>
+						</div>
+                     
+                  
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+						  <button class="btn btn-primary" type="reset" ng-click="reset()">Reset</button>
+                          <button type="submit" class="btn btn-success" >Créer un utilisateur</button>
+                        </div>
+                      </div>
+                      
+                      
+                    </form>
+                    
+                    
+                  </div>
+                </div>
+              </div>
+              
+              
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Utilisateurs <small>Employers de Munisys</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                     
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <table class="table table-bordered" ng-cloak>
+                      <thead>
+                        <tr>
+                          <th>Utilisateur</th>
+                          <th>Email</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tbody>
+	                        <tr class="even pointer" ng-repeat="o in users.users">
+	                        	
+	                        	<td class=" ">{{o.nom}}</td>
+				  				<td class=" ">{{o.username}}</td>
+				  				<td width="20%"><button type="button" class="btn btn-default" ng-click="modifier(o.id)"><i class="glyphicon glyphicon-pencil">
+								 </i></button></td>
+				  		   </tr>
+                      </tbody>
+                    </table>
+                    
+                    <div paging
+				                page="currentPage" 
+				                page-size="pageSize" 
+				                total="totale"
+				                paging-action="goToPage(page)"
+				                text-first="first"
+							    text-last="last"
+							    text-next="next"
+							    text-prev="prev"
+							    text-title-page="Page {page} Hover Over"
+							    text-title-first="First hover"
+							    text-title-last="Last hover"
+							    text-title-next="Next hover"
+							    text-title-prev="Prev hover"
+							    show-prev-next="true"
+							    show-first-last="true">
+	           				 </div>  
+
+                  </div>
+                </div>
+              </div>
+              
+              
+              
+            </div>
+         </div>
+       </div>
+       
+        
