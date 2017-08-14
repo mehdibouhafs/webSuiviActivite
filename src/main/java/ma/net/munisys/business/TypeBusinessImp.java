@@ -40,7 +40,7 @@ public class TypeBusinessImp implements TypeBusiness {
 	public PageTypes listTypes(int page, int size) {
 		PageTypes pageTypes= new PageTypes();
 		Page<Type> pageNature = typeRepository.findTypes(new PageRequest(page-1, size));
-		pageTypes.setNatures(pageNature.getContent());
+		pageTypes.setTypes(pageNature.getContent());
 		pageTypes.setNombreTypes(pageNature.getNumberOfElements());
 		pageTypes.setPage(pageNature.getNumber());
 		pageTypes.setTotalPages(pageNature.getTotalPages());

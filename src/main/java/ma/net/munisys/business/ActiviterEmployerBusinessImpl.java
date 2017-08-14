@@ -77,15 +77,34 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	}
 
 	@Override
-	public void deleteActiviterEmployer(ActiviterEmployer activiterEmployer) {
+	public void deleteActiviterEmployer(Long idActiviterEmployer) {
 		// TODO Auto-generated method stub
-		 activiterEmployerRepository.delete(activiterEmployer);
+		 activiterEmployerRepository.deleteActiviterEmployer(idActiviterEmployer);
+		
 	}
 
 	@Override
 	public ActiviterEmployer updateActiviteEmployer(Long idActiviterEmployer,ActiviterEmployer activiterEmployer) {
+		
 		activiterEmployer.setId(idActiviterEmployer);
-		return activiterEmployerRepository.save(activiterEmployer);
+		List<ActiviterEmployer> activitesBetween = findByDatesBetween(activiterEmployer.getUser().getUsername(),activiterEmployer.getDateDebut(), activiterEmployer.getDateFin());
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		df.setTimeZone(TimeZone.getTimeZone("GMT"));
+		System.out.println("Date pour teste " + df.format(activiterEmployer.getDateDebut()) + " Date Fin "+ df.format(activiterEmployer.getDateFin()));
+		if(activitesBetween.size()>=1 && (activitesBetween.get(0).getId() != idActiviterEmployer)){
+			System.out.println("TRouve !=null ");
+			for(ActiviterEmployer acEmployer : activitesBetween){
+				System.out.println(acEmployer.toString());
+			}
+			
+		}else{
+			
+			return activiterEmployerRepository.save(activiterEmployer);
+		}
+		
+		
+		return null;
+		
 	}
 
 	@Override
@@ -132,6 +151,72 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	public List<ActiviterEmployer> findByDatesBetween(String email,Date nouvelleDateDebut, Date nouvelleDateFin) {
 		// TODO Auto-generated method stub
 		return activiterEmployerRepository.findByDatesBetween(email,nouvelleDateDebut, nouvelleDateFin);
+	}
+
+
+
+	@Override
+	public ActiviterEmployer getActiviterEmployer(Long id) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findActiviterEmployer(id);
+	}
+
+
+
+	@Override
+	public int countActiviterEmployerByEmail(String email) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countActiviterEmployerByEmail(email);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> findByDatesAfterBefore(String username, Date DateDebut, Date DateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findByDatesAfterBefore(username, DateDebut, DateFin);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> findActiviterByUserAndClientAfterBefore(String email, String client, Date DateDebut,
+			Date DateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findActiviterByUserAndClientAfterBefore(email, client, DateDebut, DateFin);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> findActiviterByUserAndNatureAfterBefore(String email, String nature, Date DateDebut,
+			Date DateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findActiviterByUserAndNatureAfterBefore(email, nature, DateDebut, DateFin);
+	}
+
+
+
+	@Override
+	public int countNatureActiviteEmp(String email) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countNatureActiviteEmp(email);
+	}
+
+
+
+	@Override
+	public int countClientActiviteEmp(String email) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countClientActiviteEmp(email);
+	}
+
+
+
+	@Override
+	public int countTypeActiviteEmp(String email, String type) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countTypeActiviteEmp(email,type);
 	}
 	
 }

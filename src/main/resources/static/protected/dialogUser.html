@@ -1,0 +1,74 @@
+<md-dialog aria-label="Nouvelle intervention">
+  <form ng-cloak id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
+    <md-toolbar style="background-color: #2a3f54;">
+      <div class="md-toolbar-tools">
+        <h2>Modifier un collaborateur</h2>
+        
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="/production/images/close.png" aria-label="fermer"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+      
+     	<div class="form-group" ng-if="error==true" ng-cloak>
+	     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+		     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-danger">
+				<strong>Erreur au formulaire !</strong> <br/>{{message.error}}
+						
+			 </div>
+		 </div>
+	     
+	     <div class="form-group" ng-if="success==true" ng-cloak>
+	     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+		     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-success" ng-cloak>
+						<strong>Success!</strong><br/> {{message.success}} 
+			 </div>
+		 </div>
+                   
+                   
+                   
+        			<div class="form-group">
+                      <label for="fullname">Nom et prenom * :</label>
+                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="nomm" required placeholder="Nom et prenom de l'employer" />
+					</div>
+					
+					<div class="form-group">
+                      <label for="email">Email * :</label>
+                      <input type="text" id="email" class="form-control" name="email"  ng-model="emaill"  placeholder="Tapez une addresse email valide" readonly />
+					</div>
+					
+					<div class="form-group">
+					  <label for="passwordd">Mot de passe * :</label>
+                      <input type="password" id="passwordd" name="passwordd" class="form-control" ng-model="passwordd" required placeholder="Tapez un nouveau mot de passe">
+                     </div>
+                     <div class="form-group">
+                      <label for="passworddd">Confirm password * :</label>
+                      <input type="password" id="passworddd" class="form-control" name='passworddd'
+                       ng-model="passworddd"  pw-check="passwordd" required placeholder="Confirmer le nouveau mot de passe">
+                      </div>
+                      <div class='msg-block' ng-show='myForm.$error'>
+						  <span class='msg-error' ng-show='myForm.passworddd.$error.pwmatch'>
+						    Passwords don't match.
+						  </span>
+						</div>
+                                
+            
+         </div>
+                                
+            
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+    
+      <md-button ng-click="answer('not useful')">
+       Cancel
+      </md-button>
+       <md-button type="submit" style="background-color: blue;color: white;">
+        Modifier
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

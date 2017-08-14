@@ -11,7 +11,7 @@ public interface LieuBusiness {
 	
 	public Lieu saveLieu(Lieu lieu);
 	public List<Lieu> listLieux();
-	public Lieu updateLieu(Long id, Lieu lieu);
+	public Lieu updateLieu(Long id,String lieu1);
 	public PageLieux listLieux(int page, int size);
 
 }

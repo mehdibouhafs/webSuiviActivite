@@ -45,7 +45,7 @@ public class TypesRestService {
 	}
 
 	@RequestMapping(value="/types/typeId",method = RequestMethod.PUT)
-	public Type updateNature(@PathVariable(name="natureId") Long typeId,@RequestBody Type type) {
+	public Type updateNature(@PathVariable(name="typeId") Long typeId,@RequestBody Type type) {
 		return typeBusiness.updateType(typeId, type);
 	}
 

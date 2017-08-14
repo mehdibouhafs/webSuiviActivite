@@ -49,7 +49,7 @@ app.factory('User', function(){
 
 
 
-app.controller("utilisateurController",function($scope,$http){
+app.controller("utilisateurController",function($scope,$http,$mdDialog,$mdMedia){
 	
 	$scope.pageCourante = 1;
 	$scope.pageSize= 3;
@@ -141,11 +141,130 @@ app.controller("utilisateurController",function($scope,$http){
 			$scope.currentPage = p;
 			$scope.chargerAllUsers();
 		 };
+		 
+		 
+		 $scope.showAdvanced = function(ev,user) {
+			    $mdDialog.show({
+			      controller: DialogController,
+			      templateUrl: '/protected/dialogUser.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: user
+			       },
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
+			  
+		  
+		  $scope.modifier = function(user,$event){
+			  console.log("user "+user.username);
+				 $scope.userr = user
+				 $scope.showAdvanced($event,$scope.userr);
+			 };
+			 
+			 
+			 function DialogController($scope,$http,$mdDialog,$mdMedia,items,$route){	
+					
+					
+					
+					$scope.nomm = items.nom;
+					$scope.emaill = items.username;
+					$scope.email = items.username;
+					$scope.nom = items.nom;
+					
+					$scope.user = items;
+					$scope.submitForm = function(isValid) {
+
+					    // check to make sure the form is completely valid
+					    if (isValid) {
+					    	console.log("ISVALID");
+					    	$scope.error = false;
+					     $scope.updateStatutIntervention();
+					    }else{
+					    	console.log("Not Valide");
+					    	$scope.error = true;
+					    	
+					    }
+
+					  };
+					  
+					  
+					  
+					  $scope.updateStatutIntervention = function(){
+						  console.log("user " + $scope.user);
+						  var url = "/users/"+$scope.email;
+						  console.log("url " +url);
+						  
+						  console.log("userr " +$scope.userr);
+						  
+						  var user = {
+								  "username":$scope.emaill,
+								  "nom":$scope.nomm,
+								  "password":$scope.passwordd,
+								  "active":1
+						  }
+						  
+						 
+						  
+						  $http({
+							    method: 'PUT',
+							    url: url,
+							    data: user,
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								
+									console.log(response)
+									$scope.message = response;
+									$scope.success=true;
+								    $scope.message.success="l'utilisateur "+$scope.nom+" a été modifié par "+$scope.nomm+"  avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								
+								
+						    }, 
+						    function(response) { // optional
+						    	$scope.error=true;
+								$scope.message.error="l'utilisateur n'a pas été modifié !";
+								console.log(response);
+						    });
+					  }
+					  
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
+
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+				};
+		 
+		 
+		 
 	
 });
 
 
-app.controller("natureController",function($scope,$http){
+app.controller("natureController",function($scope,$http,$mdDialog,$mdMedia){
 	$scope.pageCourante = 1;
 	$scope.pageSize= 3;
 	$scope.pages = [];
@@ -232,11 +351,320 @@ app.controller("natureController",function($scope,$http){
 			$scope.currentPage = p;
 			$scope.chargerAllNatures();
 		 };
+		 
+		 
+		 
+		 $scope.showAdvanced = function(ev,nature) {
+			    $mdDialog.show({
+			      controller: DialogController,
+			      templateUrl: '/protected/dialogNature.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: nature
+			       },
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
+			  
+		  
+		  $scope.modifier = function(nature,$event){
+			  console.log("nature "+nature.nature);
+				 $scope.naturee = nature
+				 $scope.showAdvanced($event,$scope.naturee);
+			 };
+			 
+			 
+			 function DialogController($scope,$http,$mdDialog,$mdMedia,items,$route){	
+					
+					$scope.naturee = items.nature;
+					
+					$scope.nature = items;
+					$scope.submitForm = function(isValid) {
+
+					    // check to make sure the form is completely valid
+					    if (isValid) {
+					    	$scope.error = false;
+					     $scope.updateStatutIntervention();
+					    }else{
+					    	$scope.error = true;
+					    	
+					    }
+
+					  };
+					  
+					  
+					  
+					  $scope.updateStatutIntervention = function(){
+						  console.log("nature " + $scope.nature);
+						  var url = "/natures/"+$scope.nature.id;
+						  console.log("url " +url);
+						  
+						  console.log("typee " +$scope.naturee);
+						  
+						  var type = {
+								  "nature":$scope.naturee
+						  }
+						  
+						 
+						  
+						  $http({
+							    method: 'PUT',
+							    url: url,
+							    data: type,
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								
+									console.log(response)
+									$scope.message = response;
+									$scope.success=true;
+								    $scope.message.success="la nature "+$scope.nature.nature+" a été modifié par "+$scope.naturee+"  avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								
+								
+						    }, 
+						    function(response) { // optional
+						    	$scope.error=true;
+								$scope.message.error="le statut n'a pas été ajouté !";
+								console.log(response);
+						    });
+					  }
+					  
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
+
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+				};
+		 
 	
 	
 });
 
-app.controller("clientController",function($scope,$http){
+app.controller("typeController",function($scope,$http,$mdDialog,$mdMedia){
+	$scope.pageCourante = 1;
+	$scope.pageSize= 3;
+	$scope.pages = [];
+	$scope.types =[];
+	
+	$scope.submitForm = function(isValid) {
+
+	    // check to make sure the form is completely valid
+	    if (isValid) {
+	    	$scope.error = false;
+	    	console.log("valide type "+$scope.type);
+	    	$scope.creerType();
+	     
+	    }else{
+	    	console.log("error type "+$scope.type);
+	    	$scope.error = true;
+	    	
+	    }
+
+	  };
+	
+	
+	
+	$scope.creerType = function(){
+		var dataObj = {
+				"type": $scope.type
+		};	
+	  $scope.message = {
+			  "success":"success",
+			  "error" :"error"
+	  }
+	  
+	  $http({
+		    method: 'POST',
+		    url: '/types',
+		    data: dataObj,
+		    headers: {'Content-Type': 'application/json'}
+		}).then(function(response) {
+			console.log("lol "+response)
+			$scope.message = response;
+			$scope.success=true;
+			$scope.message.success="Le statut de l'intérvention : " +$scope.type+" a été ajouté avec succès";
+			$scope.reset();
+			$scope.chargerAllTypes();
+	    },function(response) { // optional
+	    	$scope.error=true;
+			$scope.message.error="Le statut n'a pas été ajouté !";
+			console.log("error");
+	    });
+	}
+	
+	$scope.reset = function(){
+		$scope.type = null;
+		$scope.success=false;
+  		$scope.error=false;
+		
+	}
+	
+	
+	$scope.chargerAllTypes = function(){
+		
+		  var url1 = "/types?page="+$scope.pageCourante+"&size="+$scope.pageSize;
+		  $http({
+		      method: 'GET',
+		      url: url1
+		   }).then(function (success){
+			   console.log("succAll ",JSON.stringify(success));
+			   $scope.types = success.data;
+				  $scope.currentPage = $scope.pageCourante;
+				  console.log("Page courante "+$scope.currentPage);
+				  //$scope.pageSize = 1;
+				  $scope.totale = success.data.totalNatures;
+				  
+		   },function (error){
+			   $scope.errorMessage = success.data.message;	
+		   });
+		  
+		 
+	  };
+	  
+	  $scope.chargerAllTypes();
+	  
+	  
+	  $scope.goToPage = function(p){
+			 
+			$scope.pageCourante = p;
+			$scope.currentPage = p;
+			$scope.chargerAllTypes();
+		 };
+		 
+		 $scope.showAdvanced = function(ev,type) {
+			    $mdDialog.show({
+			      controller: DialogController,
+			      templateUrl: '/protected/dialogType.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: type
+			       },
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
+			  
+		  
+		  $scope.modifier = function(type,$event){
+			  console.log("type "+type.type);
+				 $scope.typee = type
+				 $scope.showAdvanced($event,$scope.typee);
+			 };
+			 
+			 
+			 function DialogController($scope,$http,$mdDialog,$mdMedia,items,$route){	
+					
+					$scope.typee = items.type;
+					
+					$scope.type = items;
+					$scope.submitForm = function(isValid) {
+
+					    // check to make sure the form is completely valid
+					    if (isValid) {
+					    	$scope.error = false;
+					     $scope.updateStatutIntervention();
+					    }else{
+					    	$scope.error = true;
+					    	
+					    }
+
+					  };
+					  
+					  
+					  
+					  $scope.updateStatutIntervention = function(){
+						  console.log("type " + $scope.type);
+						  var url = "/types/"+$scope.type.id;
+						  console.log("url " +url);
+						  
+						  console.log("typee " +$scope.typee);
+						  
+						  var type = {
+								  "type":$scope.typee
+						  }
+						  
+						 
+						  
+						  $http({
+							    method: 'PUT',
+							    url: url,
+							    data: type,
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								
+									console.log(response)
+									$scope.message = response;
+									$scope.success=true;
+								    $scope.message.success="le statut "+$scope.type.type+" a été modifié par "+$scope.typee+"  avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								
+								
+						    }, 
+						    function(response) { // optional
+						    	$scope.error=true;
+								$scope.message.error="le statut n'a pas été ajouté !";
+								console.log(response);
+						    });
+					  }
+					  
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
+
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+				};
+		 
+});
+
+
+
+
+app.controller("clientController",function($scope,$http,$mdDialog,$mdMedia){
 	$scope.pageCourante = 1;
 	$scope.pageSize= 3;
 	$scope.pages = [];
@@ -323,11 +751,119 @@ app.controller("clientController",function($scope,$http){
 			$scope.currentPage = p;
 			$scope.chargerAllClients();
 		 };
+		 
+		 $scope.showAdvanced = function(ev,client) {
+			    $mdDialog.show({
+			      controller: DialogController,
+			      templateUrl: '/protected/dialogClient.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: client
+			       },
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
+			  
+		  
+		  $scope.modifier = function(client,$event){
+			  console.log("client "+client.client);
+				 $scope.clientt = client
+				 $scope.showAdvanced($event,$scope.clientt);
+			 };
+			 
+			 
+			 function DialogController($scope,$http,$mdDialog,$mdMedia,items,$route){	
+					
+					$scope.clientt = items.client;
+					
+					$scope.client = items;
+					$scope.submitForm = function(isValid) {
+
+					    // check to make sure the form is completely valid
+					    if (isValid) {
+					    	$scope.error = false;
+					     $scope.updateStatutIntervention();
+					    }else{
+					    	$scope.error = true;
+					    	
+					    }
+
+					  };
+					  
+					  
+					  
+					  $scope.updateStatutIntervention = function(){
+						  console.log("client " + $scope.client);
+						  var url = "/clients/"+$scope.client.id;
+						  console.log("url " +url);
+						  
+						  console.log("clientt " +$scope.clientt);
+						  
+						  var client = {
+								  "client":$scope.clientt
+						  }
+						  
+						 
+						  
+						  $http({
+							    method: 'PUT',
+							    url: url,
+							    data: client,
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								
+									console.log(response)
+									$scope.message = response;
+									$scope.success=true;
+								    $scope.message.success="le client "+$scope.client.client+" a été modifié par "+$scope.clientt+"  avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								
+								
+						    }, 
+						    function(response) { // optional
+						    	$scope.error=true;
+								$scope.message.error="le statut n'a pas été ajouté !";
+								console.log(response);
+						    });
+					  }
+					  
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
+
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+				};
+		 
+		 
+		 
 	
 	
 });
 
-app.controller("lieuController",function($scope,$http){
+app.controller("lieuController",function($scope,$http,$mdDialog,$mdMedia){
 	$scope.pageCourante = 1;
 	$scope.pageSize= 3;
 	$scope.pages = [];
@@ -349,6 +885,7 @@ app.controller("lieuController",function($scope,$http){
 
 	  };
 	
+	  
 	
 	
 	$scope.creerLieu = function(){
@@ -357,6 +894,10 @@ app.controller("lieuController",function($scope,$http){
 				
 		};	
 	  
+		$scope.message = {
+				  "success":"success",
+				  "error" :"error"
+		  }
 	  
 	  $http({
 		    method: 'POST',
@@ -414,6 +955,115 @@ app.controller("lieuController",function($scope,$http){
 			$scope.currentPage = p;
 			$scope.chargerAllLieux();
 		 };
+		 
+		 $scope.showAdvanced = function(ev,lieu) {
+			    $mdDialog.show({
+			      controller: DialogController,
+			      templateUrl: '/protected/dialogLieu.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: lieu
+			       },
+			      targetEvent: ev,
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
+			  
+		  
+		  $scope.modifier = function(lieu,$event){
+			  console.log("type "+lieu.lieu);
+				 $scope.lieuu = lieu
+				 $scope.showAdvanced($event,$scope.lieuu);
+			 };
+			 
+			 
+			 function DialogController($scope,$http,$mdDialog,$mdMedia,items,$route){	
+					
+					$scope.lieuu = items.lieu;
+					
+					$scope.lieu = items;
+					$scope.submitForm = function(isValid) {
+
+					    // check to make sure the form is completely valid
+					    if (isValid) {
+					    	console.log("IS Valid");
+					    	$scope.error = false;
+					     $scope.updateStatutIntervention();
+					    }else{
+					    	$scope.error = true;
+					    	
+					    }
+
+					  };
+					  
+					  
+					  
+					  $scope.updateStatutIntervention = function(){
+						  console.log("lieu " + $scope.lieu);
+						  var url = "/lieuse?id="+$scope.lieu.id+"&lieu="+$scope.lieuu;
+						  console.log("url " +url);
+						  console.log("lieux " +$scope.lieuu);
+						  
+						  var lieu = {
+								  "lieu":$scope.lieuu
+						  }
+						  
+						  $scope.message = {
+								  "success":"success",
+								  "error" :"error"
+						  }
+						  
+						  
+						  $http({
+							    method: 'GET',
+							    url: url,
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								
+									console.log("response 1 "+response)
+									$scope.message = response;
+									$scope.success=true;
+								    $scope.message.success="le lieu "+$scope.lieu.lieu+" a été modifié par "+$scope.lieuu+"  avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								
+								
+						    }, 
+						    function(response) { // optional
+						    	console.log("response "+response);
+						    	$scope.error=true;
+								$scope.message.error="le lieu n'a pas été modfié !";
+								
+						    });
+					  };
+					  
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
+
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+				};
 	
 	
 });

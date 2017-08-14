@@ -1,24 +1,62 @@
 	        <!-- page content -->
         
-<div class="right_col" role="main" ng-controller='calendar'>
-       <div class="">
+<!-- page content -->
+        <div class="right_col" role="main" ng-controller="histogrammeController" style="background-color: white;">
+          <!-- top tiles -->
+          <div class="row tile_count" ng-controller="countController">
+          <label class="col-md-1 col-sm-1 col-xs-12"></label>
+            <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Nb° interventions Réaliser</span>
+              <div class="count"  style="color: blue;">{{nbActiviterRealiser}}</div>
+              
+             
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-user"></i> Nb° interventions Plannifier</span>
+              <div class="count"  style="color: blue;">{{nbActiviterPlannifier}}</div>
+              
+             
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Nb° clients intervenu </span>
+              <div class="count"  style="color: green;">{{nbClient}}</div>
+         
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Nb° natures intervenu</span>
+              <div class="count"  style="color: red;">{{nbNature}}</div>
+         
+            </div>
+            <label class="col-md-1 col-sm-1 col-xs-12"></label>
+            
+          </div>
+          <!-- /top tiles -->
           
-
-            
-
-            <div class="row">
-            
-
-              <div class="col-md-12">
-                <div class="x_panel" style="height: 500px;">
-                  	<h1>Home in building</h1>
-
-				    </div>
-				 </div>
-				 
-			</div>
-		</div>
-</div>
+          
+          <div class="row">
+          	<div class="col-md-6 col-sm-6 col-xs-12">
+          		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
+          	</div>
+          	
+          	<div class="col-md-6 col-sm-6 col-xs-12" ng-controller="HideSeriesController">
+          		<div google-chart chart="myChartObject" agc-on-select="hideSeries(selectedItem)" style="height:300px; width:100%;"></div>
+          	</div>
+          	
+         
+          	
+          
+          </div>
+          
+          <div class="row">
+          	 <div class="col-md-6 col-sm-6 col-xs-12 " ng-controller="GenericChartCtrl">
+          		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
+          	</div>
+          	<div class="col-md-6 col-sm-6 col-xs-12" ng-controller="GenericChartCtroler">
+          		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
+          	</div>
+          </div>
+          
+      </div>
             
             
             

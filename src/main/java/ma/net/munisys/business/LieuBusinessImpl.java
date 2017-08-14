@@ -34,8 +34,12 @@ public class LieuBusinessImpl implements LieuBusiness {
 	}
 
 	@Override
-	public Lieu updateLieu(Long id, Lieu lieu) {
+	public Lieu updateLieu(Long id,String lieu1) {
+		System.out.println("lieu id "+ id);
+		Lieu lieu = new Lieu();
 		lieu.setId(id);
+		lieu.setLieu(lieu1);
+		//lieu.setId(id);
 		return lieuRepository.save(lieu);
 	}
 

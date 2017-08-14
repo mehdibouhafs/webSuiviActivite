@@ -1,4 +1,4 @@
-var app = angular.module('MyApp', ['ngMaterial','ngSanitize','ui.select','ngRoute','mwl.calendar', 'ngAnimate', 'ui.bootstrap', 'colorpicker.module','oc.lazyLoad','ngMaterialDatePicker','bw.paging']);
+var app = angular.module('MyApp', ['googlechart','ngMaterial','ngSanitize','ui.select','ngRoute','mwl.calendar', 'ngAnimate', 'ui.bootstrap', 'colorpicker.module','oc.lazyLoad','ngMaterialDatePicker','bw.paging']);
 //angular.module('mwl.calendar.docs') //you will need to declare your module with the dependencies ['mwl.calendar', 'ui.bootstrap', 'ngAnimate']
 
 app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider){
@@ -15,6 +15,7 @@ app.config(['$routeProvider','$locationProvider',function($routeProvider,$locati
 	$routeProvider.when('/mesinterventions',{templateUrl:'/protected/mesinterventions.html'});
 	$routeProvider.when('/index',{templateUrl:'/protected/home.html'});
 	$routeProvider.when('/nouveauLieu',{templateUrl:'/protected/nouveauLieu.html'});
+	$routeProvider.when('/nouveauStatut',{templateUrl:'/protected/nouveauStatut.html'});
 	$routeProvider.when('/nouveauClient',{templateUrl:'/protected/nouveauClient.html'});
 	
 	$routeProvider.otherwise('/index');
@@ -56,6 +57,29 @@ app.filter('propsFilter', function() {
 	    return out;
 	  };
 	});
+
+app.filter('split', function() {
+    return function(input, splitChar, splitIndex) {
+        // do some bounds checking here to ensure it has that index
+        return input.split(splitChar)[splitIndex];
+    }
+});
+
+
+app.directive('ngConfirmClick', [
+    function(){
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.ngConfirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
+}])
 
 app.factory('User', function(){
 	
@@ -262,18 +286,166 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 	        
 	      });
 	    };
+	    
+	   
+	    
+	    
+	    $scope.showAdvancedd = function(activiteEmploye) {
+	    	console.log("activi "+JSON.stringify(activiteEmploye));
+		    $mdDialog.show({
+		      controller: DialogControllerShowed,
+		      templateUrl: '/protected/dialogShowEvent.html',
+		      parent: angular.element(document.body),
+		      locals: {
+		    	  items: activiteEmploye
+		       },
+		      
+		      clickOutsideToClose:true,
+		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		    })
+		    .then(function(answer) {
+		        $scope.status = 'You said the information was "' + answer + '".';
+		      }, function() {
+		        $scope.status = 'You cancelled the dialog.';
+		      });
+		      $scope.$watch(function() {
+		        return $mdMedia('xs') || $mdMedia('sm');
+		      }, function(wantsFullScreen) {
+		        $scope.customFullscreen = (wantsFullScreen === true);
+		      });
+		    
+		  };
+		  
+		  
+		  function DialogControllerShowed($scope, $mdDialog,$route,items) {
+			   
+				 
+			  console.log("items " + items);
+			  
+			  var dateDebut = moment(items.dateDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
+			  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+			  $scope.dateDebut = dateDebut;
+			  $scope.selected=true;
+			  $scope.duree = items.duree;
+			  $scope.id = items.id;
+			  console.log("Dated.getDatedDateDebut() "+items.dateDebut);
+			  console.log("Dated.getDatedDateFin() "+items.dateFin);
+			  $scope.heureDebut =dateDebut;
+			  
+			  
+			  var dateFin =moment(items.dateFin,"DD/MM/YYYY HH:mm:ss").toDate();
+			  
+			  $scope.heureFin =dateFin;
+			  
+			  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
+			  
+			  $scope.selectedItem = items.client;
+			
+			  $scope.nature = items.nature.id;
+			  console.log("nature1 " + JSON.stringify(items.nature));
+			  $scope.ville = items.ville.id;
+			  $scope.descProjet = items.descProjet;
+			  $scope.lieu = items.lieu.id;
+			  $scope.type = items.type.id;
+			  
+			  $scope.dateFinale = $scope.dateFin;
+			  
+			 	   
+			  
+			  $http({
+			      method: 'GET',
+			      url: "/clients1"
+			   }).then(function (success){
+				   //console.log(JSON.stringify(response));
+				   $scope.clients = success.data;
+			   },function (error){
+				  $scope.errorMessage = error.message;	
+			   });
+		  		
+		  		
+		  		$http({
+		  	      method: 'GET',
+		  	      url: "/natures1"
+		  	   }).then(function (success){
+		  		   $scope.natures = success.data;
+		  		   console.log("natures " + $scope.natures);
+		  	   },function (error){
+		  		   $scope.errorMessage = error.message;	
+		  	   });
+		  	
+			  
+			  
+		  		$http({
+		  	      method: 'GET',
+		  	      url: "/lieux1"
+		  	   }).then(function (success){
+		  		   $scope.lieux = success.data;
+		  	   },function (error){
+		  		   $scope.errorMessage = error.message;	
+		  	   });
+			  
+		  		$http({
+		  	      method: 'GET',
+		  	      url: "/villes"
+		  	   }).then(function (success){
+		  		   
+		  		   $scope.villes = success.data;
+		  	   },function (error){
+		  		   $scope.errorMessage = error.message;	
+		  	   });
+		  		
+		  		
+		  		$http({
+		    	      method: 'GET',
+		    	      url: "/types1"
+		    	   }).then(function (success){
+		    		   
+		    		   $scope.types = success.data;
+		    	   },function (error){
+		    		   $scope.errorMessage = error.message;	
+		    	   });
+			  
+			   
+			  
+			  
+			    $scope.hide = function() {
+			      $mdDialog.hide();
+			    };
 
-	    vm.eventClicked = function(event) {
-	      alert.show('Clicked', event);
-	    };
+			    $scope.cancel = function() {
+			      $mdDialog.cancel();
+			    };
 
-	    vm.eventEdited = function(event) {
-	      alert.show('Edited', event);
-	    };
+			    $scope.answer = function(answer) {
+			      $mdDialog.hide(answer);
+			    };
+			  
+		  };
+		  
+		  
+		  vm.eventClicked = function(event) {
+		    	$http({
+				    method: 'GET',
+				    url: "ActivitesEmploye?id="+$scope.mySplit(event.title,1),
+				    headers: {'Content-Type': 'application/json'}
+				}).then(function(response) {
+						
+						$scope.activiterEmployer = response.data;
+						console.log("respGetActiEmpl2 "+JSON.stringify($scope.activiterEmployer));
+						$scope.success=true;
+						
+						 $scope.showAdvancedd($scope.activiterEmployer);
+	                    //alert.show('Edited ', $scope.activiterEmployer);
+					
+			    }, 
+			    function(response) { // optional
+					console.log(response);
+			    });
+		      
+		    };
+	   
 
-	    vm.eventDeleted = function(event) {
-	      alert.show('Deleted', event);
-	    };
+	    
 
 	    vm.eventTimesChanged = function(event) {
 	      alert.show('Dropped or resized', event);
@@ -324,7 +496,567 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 	    	  return color;
 	    	}
 
+	    $scope.mySplit = function(string, nb,sep) {
+	        var array = string.split(',');
+	        return array[nb];
+	    }
+	    
+	    $scope.getActiviterEmployer = function(id){
+	    	$http({
+			    method: 'GET',
+			    url: "ActivitesEmploye?id="+id,
+			    headers: {'Content-Type': 'application/json'}
+			}).then(function(response) {
+					
+					$scope.activiterEmployer = response.data;
+					$scope.success=true;		
+				
+		    }, 
+		    function(response) { // optional
+				console.log(response);
+		    });
+	    };
+	    
+	    
+	   
+	    
+	    $scope.showAdvanced2 = function(activiteEmploye) {
+		    $mdDialog.show({
+		      controller: DialogControllerUpdate,
+		      templateUrl: '/protected/dialogUpdateEvent.html',
+		      parent: angular.element(document.body),
+		      locals: {
+		    	  items: activiteEmploye
+		       },
+		      
+		      clickOutsideToClose:true,
+		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		    })
+		    .then(function(answer) {
+		        $scope.status = 'You said the information was "' + answer + '".';
+		      }, function() {
+		        $scope.status = 'You cancelled the dialog.';
+		      });
+		      $scope.$watch(function() {
+		        return $mdMedia('xs') || $mdMedia('sm');
+		      }, function(wantsFullScreen) {
+		        $scope.customFullscreen = (wantsFullScreen === true);
+		      });
+		    
+		  };
+		  
+		  $scope.showAdvanced3 = function(activiteEmploye) {
+			    $mdDialog.show({
+			      controller: DialogControllerDelete,
+			      templateUrl: '/protected/dialogDeleteEvent.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: activiteEmploye
+			       },
+			      
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
+	    
+	    $scope.modifier = function(activiteEmploye){
+			  console.log("activiteEmploye "+activiteEmploye.dateDebut);
+				 $scope.activiteEmploye = activiteEmploye
+				 $scope.showAdvanced2($scope.activiteEmploye);
+			 };
+			 
+			 
+	   $scope.supprimer = function(activiteEmploye){
+			  console.log("activiteEmploye "+activiteEmploye.dateDebut);
+				 $scope.activiteEmploye = activiteEmploye
+				 $scope.showAdvanced3($scope.activiteEmploye);
+			 };
+			 
+			 
+			 
+			 function DialogControllerDelete($scope, $mdDialog,$route,items) {
+				 
+				  
+				  var dateDebut = moment( items.dateDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
+				  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+				  $scope.dateDebut = dateDebut;
+				  
+				  
+				  $scope.id = items.id;
+				  console.log("Dated.getDatedDateDebut() "+items.dateDebut);
+				  console.log("Dated.getDatedDateFin() "+items.dateFin);
+				  $scope.heureDebut =dateDebut;
+				  
+				  
+				  var dateFin =moment( items.dateFin,"DD/MM/YYYY HH:mm:ss").toDate();
+				  
+				  $scope.heureFin =dateFin;
+				  
+				  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
+				  
+				  $scope.selectedItem = items.client;
+				
+				  $scope.nature = items.nature.id;
+				  console.log("nature1 " + JSON.stringify(items.nature));
+				  $scope.ville = items.ville.id;
+				  $scope.descProjet = items.descProjet;
+				  $scope.lieu = items.lieu.id;
+				  $scope.type = items.type.id;
+				  
+				  $scope.dateFinale = $scope.dateFin;
+				  
+				  
+				 
+				  
+				
+					
+					
+				  
+				  $scope.deleteIntervention = function(){
+					  
+						  
+						 
+						  $scope.message={
+								  "error" : "erreur",
+								  "success":"success"
+							  };
+						  
+						  
+						  $http({
+							    method: 'DELETE',
+							    url: '/ActivitesEmployer/'+$scope.id+'/',
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								console.log("Response DELETE "+JSON.stringify(response));
+									$scope.message = response;
+									$scope.success=true;
+								    $scope.message.success="Votre intervention a été supprimé avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								
+						    }, 
+						    function(response) { // optional
+						    	$scope.error=true;
+								$scope.message.error="Votre intervention n'a pas été supprimé !";
+								console.log(response);
+						    });
+						  
+						 
+				  };
+				  
+				  
+				  
+				  $http({
+				      method: 'GET',
+				      url: "/clients1"
+				   }).then(function (success){
+					   //console.log(JSON.stringify(response));
+					   $scope.clients = success.data;
+				   },function (error){
+					  $scope.errorMessage = error.message;	
+				   });
+			  		
+			  		
+			  		$http({
+			  	      method: 'GET',
+			  	      url: "/natures1"
+			  	   }).then(function (success){
+			  		   $scope.natures = success.data;
+			  		   console.log("natures " + $scope.natures);
+			  	   },function (error){
+			  		   $scope.errorMessage = error.message;	
+			  	   });
+			  	
+				  
+				  
+			  		$http({
+			  	      method: 'GET',
+			  	      url: "/lieux1"
+			  	   }).then(function (success){
+			  		   $scope.lieux = success.data;
+			  	   },function (error){
+			  		   $scope.errorMessage = error.message;	
+			  	   });
+				  
+			  		$http({
+			  	      method: 'GET',
+			  	      url: "/villes"
+			  	   }).then(function (success){
+			  		   
+			  		   $scope.villes = success.data;
+			  	   },function (error){
+			  		   $scope.errorMessage = error.message;	
+			  	   });
+			  		
+			  		
+			  		$http({
+			    	      method: 'GET',
+			    	      url: "/types1"
+			    	   }).then(function (success){
+			    		   
+			    		   $scope.types = success.data;
+			    	   },function (error){
+			    		   $scope.errorMessage = error.message;	
+			    	   });
+				  
+				   
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
 
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+			  };
+			 
+			 
+			  
+			 
+			 
+			 
+			 
+			 
+			 function DialogControllerUpdate($scope, $mdDialog,$route,items) {
+				 
+				  
+				  var dateDebut = moment( items.dateDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
+				  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+				  $scope.dateDebut = dateDebut;
+				  
+				  
+				  $scope.id = items.id;
+				  console.log("Dated.getDatedDateDebut() "+items.dateDebut);
+				  console.log("Dated.getDatedDateFin() "+items.dateFin);
+				  $scope.heureDebut =dateDebut;
+				  
+				  
+				  var dateFin =moment( items.dateFin,"DD/MM/YYYY HH:mm:ss").toDate();
+				  
+				  $scope.heureFin =dateFin;
+				  
+				  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
+				  
+				  $scope.selectedItem = items.client;
+				
+				  $scope.nature = items.nature.id;
+				  console.log("nature1 " + JSON.stringify(items.nature));
+				  $scope.ville = items.ville.id;
+				  $scope.descProjet = items.descProjet;
+				  $scope.lieu = items.lieu.id;
+				  $scope.type = items.type.id;
+				  
+				  $scope.dateFinale = $scope.dateFin;
+				  $scope.calculerDuree = function(){
+						 var dateDebut = moment($scope.dateDebut).format("DD/MM/YYYY HH:mm:ss");
+						 var dateDebut3 = moment(dateDebut).format("DD/MM/YYYY");
+						 
+						 var heureDebut3 = moment($scope.heureDebut,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+						 
+						  var heureDebut = moment($scope.heureDebut).format("DD/MM/YYYY HH:mm:ss");
+						   var heureFin  = moment($scope.heureFin).format("DD/MM/YYYY HH:mm:ss");
+						   
+						   var dateDebut1 = moment(dateDebut,"DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY");
+						   var heureDebut1 = moment(heureDebut,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+						   var heureFin1 = moment(heureFin,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+						   
+						   
+						   var dateDebut2 = dateDebut1.concat(" "+heureDebut1); 
+						   var dateMinuit = moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+"00:00:01");
+						 
+						   var duree="";
+						   var dateFin = $scope.dateFin;
+						   
+						   if((moment(heureDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(heureFin,"DD/MM/YYYY HH:mm:ss"))) && (moment(dateDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(dateFin,"DD/MM/YYYY HH:mm:ss")))){
+								  var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss");
+								  duree=s;
+								  console.log("durree avant 1 jour = "+s);
+								  dateFin = $scope.dateFin;
+								  console.log("date Fin same = "+dateFin);
+								}else{
+									var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss");
+									duree=s;  
+									console.log("duree fin apres 1day  "+s);
+									dateFin=moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+heureFin1);
+									console.log("date fin apres 1day  "+dateFin);
+								}
+						   $scope.duree =duree;
+						   $scope.dateFinale = dateFin;
+					 }  
+				  
+				 
+				  
+					 
+				  $scope.checkBoth = function(){
+						console.log("heuredeb "+ $scope.heureDebut);
+						console.log("heureFin "+ $scope.heureFin);
+						if(( typeof $scope.heureDebut  ===  'undefined') || ( typeof $scope.heureFin === 'undefined')){
+							console.log("unditest");
+							$scope.selected = false;
+						}else{
+							console.log("afficherTest");
+							$scope.calculerDuree();
+							$scope.selected = true;
+						}
+					};
+					
+					//checkBoth
+					$scope.checkBoth();
+				  
+				
+					
+					$scope.query = function(searchText) {
+						 console.log("Seach query");
+						 var url1 = "/clients2?client="+searchText;
+						 
+						 
+						 return $http({
+						      method: 'GET',
+						      url: url1
+						   }).then(function (success){
+							   return success.data;
+						   },function(error){
+							   console.log("eroor",error);
+						   });
+						  };
+					
+					
+					$scope.submitForm = function(isValid) {
+
+					    // check to make sure the form is completely valid
+					    if (isValid && ($scope.selectedItem !=null)) {
+					    	$scope.error = false;
+					     $scope.saveIntervention();
+					    }else{
+					    	$scope.error = true;
+					    	
+					    }
+
+					  };
+					
+				  
+				  $scope.saveIntervention = function(){
+					  var dateDebut = moment($scope.dateDebut).format("DD/MM/YYYY HH:mm:ss");
+					  var heureDebut = moment($scope.heureDebut).format("DD/MM/YYYY HH:mm:ss");
+					   var heureFin  = moment($scope.heureFin).format("DD/MM/YYYY HH:mm:ss");
+					   
+					   var dateDebut1 = moment(dateDebut,"DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY");
+					   var heureDebut1 = moment(heureDebut,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+					   var heureFin1 = moment(heureFin,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+					   
+					   
+					   var dateDebut2 = dateDebut1.concat(" "+heureDebut1); 
+					   var dateMinuit = moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+"00:00:01");
+					 
+					   var duree="";
+					   var dateFin;
+					   
+					   if((moment(heureDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(heureFin,"DD/MM/YYYY HH:mm:ss"))) && (moment(dateDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(dateMinuit,"DD/MM/YYYY HH:mm:ss")))){
+							  var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
+							  duree=s;
+							  console.log("durree avant 1 jour = "+s);
+							  dateFin = dateDebut1.concat(" "+heureFin1);
+							  console.log("date Fin same = "+dateFin);
+							}else{
+								var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
+								duree=s;  
+								console.log("duree fin apres 1day  "+s);
+								dateFin=moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+heureFin1);
+								console.log("date fin apres 1day  "+dateFin);
+							}
+					   
+					   var params = "dateDebut="+dateDebut2+"&dateFin="+dateFin+"&heureDebut="+heureDebut1+"&heureFin="+heureFin1+"&client="+$scope.client
+					      +"&nature="+$scope.nature+"&descProjet="+$scope.descProjet +"&" +
+					      		"="+$scope.nature+"&ville="+$scope.ville+"&duree="+duree;
+						  
+						  console.log("date1="+params);
+						  
+						  var client ={"id":$scope.selectedItem.id}
+						  var nature = {"id":$scope.nature};
+						  
+						  var lieu = {"id":$scope.lieu};
+						  var ville = {"id":$scope.ville};
+						  
+						  var type = {"id":$scope.type};
+						  
+						  var mail = User.getEmail();
+						  
+						  console.log("mail "+mail);
+						  var user = {
+								  "username":mail
+						  }
+						  
+						  var dataObj = {
+									"dateDebut": dateDebut2,
+									"dateFin": dateFin,
+									"heureDebut": heureDebut1,
+									"heureFin":heureFin1,
+									"client":client,
+									"nature":nature,
+									"descProjet":$scope.descProjet,
+									"lieu":lieu,
+									"type":type,
+									"ville":ville,
+									"duree":duree,
+									"user":user
+							};	
+						  
+						  console.log("dataObj"+ JSON.stringify(dataObj));
+						  $scope.message={
+								  "error" : "erreur",
+								  "success":"success"
+							  };
+						  
+						  
+						  $http({
+							    method: 'PUT',
+							    url: '/ActivitesEmployer/'+$scope.id+'/',
+							    data: dataObj,
+							    headers: {'Content-Type': 'application/json'}
+							}).then(function(response) {
+								console.log("Response PUT "+JSON.stringify(response));
+								if(response.config.data!=""){
+									
+									$scope.message = response;
+									$scope.reset();
+									$scope.success=true;
+								    $scope.message.success="Votre intervention a été modifé avec succès";
+									//$mdDialog.hide();
+									$route.reload();
+								}else{
+									console.log("between");
+									$scope.success=false;
+									$scope.error=true;
+									$scope.message.error="Vous ne pouvez pas faire deux interventions en même temps !";
+									console.log(response);
+								}
+								
+								
+						    }, 
+						    function(response) { // optional
+						    	$scope.error=true;
+								$scope.message.error="Votre intervention n'a pas été ajouté !";
+								console.log(response);
+						    });
+						  
+						 
+				  };
+				  
+				  $scope.reset = function(){
+					  	
+					    $scope.heureFin = null;
+					    $scope.selectedItem = null;
+				  		$scope.client = "";
+				  		$scope.nature ="";
+				  		$scope.descProjet="";
+				  		$scope.lieu="";
+				  		$scope.ville="";
+				  		$scope.duree="";
+				  		$scope.success=false;
+				  		$scope.selected = false;
+				  		$scope.error=false;
+				  		
+				  	}
+				  
+				  $http({
+				      method: 'GET',
+				      url: "/clients1"
+				   }).then(function (success){
+					   //console.log(JSON.stringify(response));
+					   $scope.clients = success.data;
+				   },function (error){
+					  $scope.errorMessage = error.message;	
+				   });
+			  		
+			  		
+			  		$http({
+			  	      method: 'GET',
+			  	      url: "/natures1"
+			  	   }).then(function (success){
+			  		   $scope.natures = success.data;
+			  		   console.log("natures " + $scope.natures);
+			  	   },function (error){
+			  		   $scope.errorMessage = error.message;	
+			  	   });
+			  	
+				  
+				  
+			  		$http({
+			  	      method: 'GET',
+			  	      url: "/lieux1"
+			  	   }).then(function (success){
+			  		   $scope.lieux = success.data;
+			  	   },function (error){
+			  		   $scope.errorMessage = error.message;	
+			  	   });
+				  
+			  		$http({
+			  	      method: 'GET',
+			  	      url: "/villes"
+			  	   }).then(function (success){
+			  		   
+			  		   $scope.villes = success.data;
+			  	   },function (error){
+			  		   $scope.errorMessage = error.message;	
+			  	   });
+			  		
+			  		
+			  		$http({
+			    	      method: 'GET',
+			    	      url: "/types1"
+			    	   }).then(function (success){
+			    		   
+			    		   $scope.types = success.data;
+			    	   },function (error){
+			    		   $scope.errorMessage = error.message;	
+			    	   });
+				  
+				   
+				  
+				  
+				    $scope.hide = function() {
+				      $mdDialog.hide();
+				    };
+
+				    $scope.cancel = function() {
+				      $mdDialog.cancel();
+				    };
+
+				    $scope.answer = function(answer) {
+				      $mdDialog.hide(answer);
+				    };
+				  
+			  };
+			  
+			  $scope.whatClassIsIt= function(someValue){
+				  console.log("somevalue "+someValue);
+				     if(someValue=="Réaliser"){
+				    	 console.log("réaliser")
+				            return "label label-success"
+				     }else if(someValue=="Planifier")
+				         return "label label-info";
+				     
+				    }
+	    
+	    
+	    
 	    $scope.chargerEvent = function(){
 	    	
 	    	console.log("ActiviteEmployer ",$scope.activitesEmployer);
@@ -334,7 +1066,7 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 	    	for(var i=0;i<=$scope.activitesEmployer.length-1;i++){
 	    		var color = getRandomColor();
 	    		
-	    		var title = '<i class="fa fa-building"></i> <span style="margin-left: 5px;">client:  '+$scope.activitesEmployer[i].client.client+
+	    		var title = '<p hidden>,' +$scope.activitesEmployer[i].id+',</p><i class="fa fa-building"></i> <span style="margin-left: 5px;">client:  '+$scope.activitesEmployer[i].client.client+
 	    		'</span><i class="fa fa-suitcase"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">action:  '+
 	    		$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">DescProjet:  '+
 	    		$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">durée :  '+ $scope.activitesEmployer[i].duree;
@@ -345,21 +1077,92 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 		    		color1 = '#C8EEFF';
 		    	}
 	    		
-	    		vm.events.push({
-		            title:  title,
-		            startsAt: moment($scope.activitesEmployer[i].dateDebut ,"DD/MM/YYYY hh:mm:ss"),
-		            endsAt: moment($scope.activitesEmployer[i].dateFin ,"DD/MM/YYYY hh:mm:ss"),
-		            color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
-		                primary: color1, // the primary event color (should be darker than secondary)
-		                secondary: color1 // the secondary event color (should be lighter than primary)
-		              },
-		            draggable: false, //Allow an event to be dragged and dropped
-		    	    resizable: false, //Allow an event to be resizable
-		    	    incrementsBadgeTotal: true, //If set to false then will not count towards the badge total amount on the month and year view
-		    	    recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
-		    	    cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
-		    	    allDay: false // set to true to display the event as an all day event on the day view
-		            });
+	    		var id = i;
+	    		console.log("id "+id);
+	    		if(moment($scope.activitesEmployer[id].dateDebut ,"DD/MM/YYYY hh:mm:ss").isAfter(moment().clone().subtract(7, 'days').startOf('day'))){
+		    		vm.events.push({
+			            title:  title,
+			            startsAt: moment($scope.activitesEmployer[id].dateDebut ,"DD/MM/YYYY hh:mm:ss"),
+			            endsAt: moment($scope.activitesEmployer[id].dateFin ,"DD/MM/YYYY hh:mm:ss"),
+			            color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
+			                primary: color1, // the primary event color (should be darker than secondary)
+			                secondary: color1 // the secondary event color (should be lighter than primary)
+			              },
+			              
+			          actions: [{
+			                  label:'<p hidden> '+$scope.activitesEmployer[i].id+'</p><i class=\'glyphicon glyphicon-pencil\'></i>',
+			                  onClick: function(args) {
+			                	  
+			                	//console.log("idSplit  "+$scope.mySplit(args.calendarEvent.actions[0].label,1));
+			                	//console.log("idSplit  "+$scope.mySplit(args.calendarEvent.actions[0].label,1));
+			                	
+			                	$http({
+			        			    method: 'GET',
+			        			    url: "ActivitesEmploye?id="+$scope.mySplit(args.calendarEvent.title,1),
+			        			    headers: {'Content-Type': 'application/json'}
+			        			}).then(function(response) {
+			        					
+			        					$scope.activiterEmployer = response.data;
+			        					console.log(" respGetActiEmpl1 "+$scope.activiterEmployer);
+			        					$scope.success=true;
+			        					$scope.modifier($scope.activiterEmployer);
+					                    //alert.show('Edited ', $scope.activiterEmployer);
+			        				
+			        		    }, 
+			        		    function(response) { // optional
+			        				console.log(response);
+			        		    });
+			                	
+			                	
+			                  }
+			                },
+			                 {
+			                    label: '<p hidden>' +$scope.activitesEmployer[i].id+'</p><i class=\'glyphicon glyphicon-remove\'></i>',
+			                    onClick: function(args) {
+			                    	
+			                    	$http({
+				        			    method: 'GET',
+				        			    url: "ActivitesEmploye?id="+$scope.mySplit(args.calendarEvent.title,1),
+				        			    headers: {'Content-Type': 'application/json'}
+				        			}).then(function(response) {
+				        					
+				        					$scope.activiterEmployer = response.data;
+				        					console.log(" respGetActiEmpl1 "+$scope.activiterEmployer);
+				        					$scope.success=true;
+				        					$scope.supprimer($scope.activiterEmployer);
+						                    //alert.show('Edited ', $scope.activiterEmployer);
+				        				
+				        		    }, 
+				        		    function(response) { // optional
+				        				console.log(response);
+				        		    });
+			                 }
+			                }
+			          ],   
+			            draggable: false, //Allow an event to be dragged and dropped
+			    	    resizable: false, //Allow an event to be resizable
+			    	    incrementsBadgeTotal: true, //If set to false then will not count towards the badge total amount on the month and year view
+			    	    recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
+			    	    cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
+			    	    allDay: false // set to true to display the event as an all day event on the day view
+			            });
+	    		}else{
+	    			vm.events.push({
+			            title:  title,
+			            startsAt: moment($scope.activitesEmployer[id].dateDebut ,"DD/MM/YYYY hh:mm:ss"),
+			            endsAt: moment($scope.activitesEmployer[id].dateFin ,"DD/MM/YYYY hh:mm:ss"),
+			            color: { // can also be calendarConfig.colorTypes.warning for shortcuts to the deprecated event types
+			                primary: color1, // the primary event color (should be darker than secondary)
+			                secondary: color1 // the secondary event color (should be lighter than primary)
+			              },  
+			            draggable: false, //Allow an event to be dragged and dropped
+			    	    resizable: false, //Allow an event to be resizable
+			    	    incrementsBadgeTotal: true, //If set to false then will not count towards the badge total amount on the month and year view
+			    	    recursOn: 'year', // If set the event will recur on the given period. Valid values are year or month
+			    	    cssClass: 'a-css-class-name', //A CSS class (or more, just separate with spaces) that will be added to the event when it is displayed on each view. Useful for marking an event as selected / active etc
+			    	    allDay: false // set to true to display the event as an all day event on the day view
+			            });
+	    		}
 	    	}
 	    	
 	    	
@@ -776,7 +1579,7 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 // Admin Calendar
 
 
-app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarConfig, moment,alert,$http,User,$mdDialog){
+app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarConfig, moment,alert,$http,User,$mdDialog,$mdMedia){
 	
 	
 	
@@ -937,18 +1740,164 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 	        
 	      });
 	    };
+	    
+	    
+	    
+	    
+		  
+		  function DialogControllerShowedd($scope, $mdDialog,$route,items) {
+			   console.log("items "+items);
+			  var dateDebut = moment( items.dateDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
+			  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+			  $scope.dateDebut = dateDebut;
+			  
+			  
+			  $scope.id = items.id;
+			  console.log("Dated.getDatedDateDebut() "+items.dateDebut);
+			  console.log("Dated.getDatedDateFin() "+items.dateFin);
+			  $scope.heureDebut =dateDebut;
+			  
+			  $scope.duree = items.duree;
+			  $scope.selected = true;
+			  var dateFin =moment(items.dateFin,"DD/MM/YYYY HH:mm:ss").toDate();
+			  
+			  $scope.heureFin =dateFin;
+			  
+			  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
+			  
+			  $scope.selectedItem = items.client;
+			
+			  $scope.nature = items.nature.id;
+			  console.log("nature1 " + JSON.stringify(items.nature));
+			  $scope.ville = items.ville.id;
+			  $scope.descProjet = items.descProjet;
+			  $scope.lieu = items.lieu.id;
+			  $scope.type = items.type.id;
+			  
+			  $scope.dateFinale = $scope.dateFin;
+			  
+			 	   
+			  
+			  $http({
+			      method: 'GET',
+			      url: "/clients1"
+			   }).then(function (success){
+				   //console.log(JSON.stringify(response));
+				   $scope.clients = success.data;
+			   },function (error){
+				  $scope.errorMessage = error.message;	
+			   });
+		  		
+		  		
+		  		$http({
+		  	      method: 'GET',
+		  	      url: "/natures1"
+		  	   }).then(function (success){
+		  		   $scope.natures = success.data;
+		  		   console.log("natures " + $scope.natures);
+		  	   },function (error){
+		  		   $scope.errorMessage = error.message;	
+		  	   });
+		  	
+			  
+			  
+		  		$http({
+		  	      method: 'GET',
+		  	      url: "/lieux1"
+		  	   }).then(function (success){
+		  		   $scope.lieux = success.data;
+		  	   },function (error){
+		  		   $scope.errorMessage = error.message;	
+		  	   });
+			  
+		  		$http({
+		  	      method: 'GET',
+		  	      url: "/villes"
+		  	   }).then(function (success){
+		  		   
+		  		   $scope.villes = success.data;
+		  	   },function (error){
+		  		   $scope.errorMessage = error.message;	
+		  	   });
+		  		
+		  		
+		  		$http({
+		    	      method: 'GET',
+		    	      url: "/types1"
+		    	   }).then(function (success){
+		    		   
+		    		   $scope.types = success.data;
+		    	   },function (error){
+		    		   $scope.errorMessage = error.message;	
+		    	   });
+			  
+			   
+			  
+			  
+			    $scope.hide = function() {
+			      $mdDialog.hide();
+			    };
+
+			    $scope.cancel = function() {
+			      $mdDialog.cancel();
+			    };
+
+			    $scope.answer = function(answer) {
+			      $mdDialog.hide(answer);
+			    };
+			  
+		  };
+	    
+		  
+		  $scope.showAdvancedd = function(activiteEmploye) {
+			  console.log("activi "+activiteEmploye);
+			    $mdDialog.show({
+			      controller: DialogControllerShowedd,
+			      templateUrl: '/protected/dialogShowEvent.html',
+			      parent: angular.element(document.body),
+			      locals: {
+			    	  items: activiteEmploye
+			       },
+			      
+			      clickOutsideToClose:true,
+			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			    })
+			    .then(function(answer) {
+			        $scope.status = 'You said the information was "' + answer + '".';
+			      }, function() {
+			        $scope.status = 'You cancelled the dialog.';
+			      });
+			      $scope.$watch(function() {
+			        return $mdMedia('xs') || $mdMedia('sm');
+			      }, function(wantsFullScreen) {
+			        $scope.customFullscreen = (wantsFullScreen === true);
+			      });
+			    
+			  };
 
 	    vm.eventClicked = function(event) {
-	      alert.show('Clicked', event);
+	    	$http({
+			    method: 'GET',
+			    url: "ActivitesEmploye?id="+$scope.mySplit(event.title,1),
+			    headers: {'Content-Type': 'application/json'}
+			}).then(function(response) {
+					
+					$scope.activiterEmployer = response.data;
+					console.log(" respGetActiEmpl3 "+JSON.stringify($scope.activiterEmployer));
+					$scope.success=true;
+					
+					 $scope.showAdvancedd(response.data);
+                    //alert.show('Edited ', $scope.activiterEmployer);
+				
+		    }, 
+		    function(response) { // optional
+				console.log(response);
+		    });
 	    };
 
-	    vm.eventEdited = function(event) {
-	      alert.show('Edited', event);
-	    };
-
-	    vm.eventDeleted = function(event) {
-	      alert.show('Deleted', event);
-	    };
+	    
+	    
+	    
 
 	    vm.eventTimesChanged = function(event) {
 	      alert.show('Dropped or resized', event);
@@ -1043,8 +1992,488 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				    	    color += letters[Math.floor(Math.random() * 16)];
 				    	  }
 				    	  return color;
-				    	}
+				    	};
+				    	
+				      $scope.modifier = function(activiteEmploye){
+							  console.log("activiteEmploye "+activiteEmploye.dateDebut);
+								 $scope.activiteEmploye = activiteEmploye
+								 $scope.showAdvanced2($scope.activiteEmploye);
+							 };
+							 
+							 
+					   $scope.supprimer = function(activiteEmploye){
+							  console.log("activiteEmploye "+activiteEmploye.dateDebut);
+								 $scope.activiteEmploye = activiteEmploye
+								 $scope.showAdvanced3($scope.activiteEmploye);
+							 };
+							 
+							 
+							 
+							 function DialogControllerDelete($scope, $mdDialog,$route,items) {
+								 
+								  
+								  var dateDebut = moment( items.dateDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
+								  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+								  $scope.dateDebut = dateDebut;
+								  
+								  
+								  $scope.id = items.id;
+								  console.log("Dated.getDatedDateDebut() "+items.dateDebut);
+								  console.log("Dated.getDatedDateFin() "+items.dateFin);
+								  $scope.heureDebut =dateDebut;
+								  
+								  
+								  var dateFin =moment( items.dateFin,"DD/MM/YYYY HH:mm:ss").toDate();
+								  
+								  $scope.heureFin =dateFin;
+								  
+								  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
+								  
+								  $scope.selectedItem = items.client;
+								
+								  $scope.nature = items.nature.id;
+								  console.log("nature1 " + JSON.stringify(items.nature));
+								  $scope.ville = items.ville.id;
+								  $scope.descProjet = items.descProjet;
+								  $scope.lieu = items.lieu.id;
+								  $scope.type = items.type.id;
+								  
+								  $scope.dateFinale = $scope.dateFin;
+								  
+								  
+								 
+								  
+								
+									
+									
+								  
+								  $scope.deleteIntervention = function(){
+									  
+										  
+										 
+										  $scope.message={
+												  "error" : "erreur",
+												  "success":"success"
+											  };
+										  
+										  
+										  $http({
+											    method: 'DELETE',
+											    url: '/ActivitesEmployer/'+$scope.id+'/',
+											    headers: {'Content-Type': 'application/json'}
+											}).then(function(response) {
+												console.log("Response DELETE "+JSON.stringify(response));
+													$scope.message = response;
+													$scope.success=true;
+												    $scope.message.success="Votre intervention a été supprimé avec succès";
+													//$mdDialog.hide();
+													$route.reload();
+												
+										    }, 
+										    function(response) { // optional
+										    	$scope.error=true;
+												$scope.message.error="Votre intervention n'a pas été supprimé !";
+												console.log(response);
+										    });
+										  
+										 
+								  };
+								  
+								  
+								  
+								  $http({
+								      method: 'GET',
+								      url: "/clients1"
+								   }).then(function (success){
+									   //console.log(JSON.stringify(response));
+									   $scope.clients = success.data;
+								   },function (error){
+									  $scope.errorMessage = error.message;	
+								   });
+							  		
+							  		
+							  		$http({
+							  	      method: 'GET',
+							  	      url: "/natures1"
+							  	   }).then(function (success){
+							  		   $scope.natures = success.data;
+							  		   console.log("natures " + $scope.natures);
+							  	   },function (error){
+							  		   $scope.errorMessage = error.message;	
+							  	   });
+							  	
+								  
+								  
+							  		$http({
+							  	      method: 'GET',
+							  	      url: "/lieux1"
+							  	   }).then(function (success){
+							  		   $scope.lieux = success.data;
+							  	   },function (error){
+							  		   $scope.errorMessage = error.message;	
+							  	   });
+								  
+							  		$http({
+							  	      method: 'GET',
+							  	      url: "/villes"
+							  	   }).then(function (success){
+							  		   
+							  		   $scope.villes = success.data;
+							  	   },function (error){
+							  		   $scope.errorMessage = error.message;	
+							  	   });
+							  		
+							  		
+							  		$http({
+							    	      method: 'GET',
+							    	      url: "/types1"
+							    	   }).then(function (success){
+							    		   
+							    		   $scope.types = success.data;
+							    	   },function (error){
+							    		   $scope.errorMessage = error.message;	
+							    	   });
+								  
+								   
+								  
+								  
+								    $scope.hide = function() {
+								      $mdDialog.hide();
+								    };
 
+								    $scope.cancel = function() {
+								      $mdDialog.cancel();
+								    };
+
+								    $scope.answer = function(answer) {
+								      $mdDialog.hide(answer);
+								    };
+								  
+							  };
+							 
+							 
+							  
+							 
+							 
+							 
+							 
+							 
+							 function DialogControllerUpdate($scope, $mdDialog,$route,items) {
+								 
+								  
+								  var dateDebut = moment( items.dateDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
+								  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
+								  $scope.dateDebut = dateDebut;
+								  
+								  
+								  $scope.id = items.id;
+								  console.log("Dated.getDatedDateDebut() "+items.dateDebut);
+								  console.log("Dated.getDatedDateFin() "+items.dateFin);
+								  $scope.heureDebut =dateDebut;
+								  
+								  
+								  var dateFin =moment( items.dateFin,"DD/MM/YYYY HH:mm:ss").toDate();
+								  
+								  $scope.heureFin =dateFin;
+								  
+								  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
+								  
+								  $scope.selectedItem = items.client;
+								
+								  $scope.nature = items.nature.id;
+								  console.log("nature1 " + JSON.stringify(items.nature));
+								  $scope.ville = items.ville.id;
+								  $scope.descProjet = items.descProjet;
+								  $scope.lieu = items.lieu.id;
+								  $scope.type = items.type.id;
+								  
+								  $scope.dateFinale = $scope.dateFin;
+								  $scope.calculerDuree = function(){
+										 var dateDebut = moment($scope.dateDebut).format("DD/MM/YYYY HH:mm:ss");
+										 var dateDebut3 = moment(dateDebut).format("DD/MM/YYYY");
+										 
+										 var heureDebut3 = moment($scope.heureDebut,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+										 
+										  var heureDebut = moment($scope.heureDebut).format("DD/MM/YYYY HH:mm:ss");
+										   var heureFin  = moment($scope.heureFin).format("DD/MM/YYYY HH:mm:ss");
+										   
+										   var dateDebut1 = moment(dateDebut,"DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY");
+										   var heureDebut1 = moment(heureDebut,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+										   var heureFin1 = moment(heureFin,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+										   
+										   
+										   var dateDebut2 = dateDebut1.concat(" "+heureDebut1); 
+										   var dateMinuit = moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+"00:00:01");
+										 
+										   var duree="";
+										   var dateFin = $scope.dateFin;
+										   
+										   if((moment(heureDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(heureFin,"DD/MM/YYYY HH:mm:ss"))) && (moment(dateDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(dateFin,"DD/MM/YYYY HH:mm:ss")))){
+												  var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss");
+												  duree=s;
+												  console.log("durree avant 1 jour = "+s);
+												  dateFin = $scope.dateFin;
+												  console.log("date Fin same = "+dateFin);
+												}else{
+													var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss");
+													duree=s;  
+													console.log("duree fin apres 1day  "+s);
+													dateFin=moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+heureFin1);
+													console.log("date fin apres 1day  "+dateFin);
+												}
+										   $scope.duree =duree;
+										   $scope.dateFinale = dateFin;
+									 }  
+								  
+								 
+								  
+									 
+								  $scope.checkBoth = function(){
+										console.log("heuredeb "+ $scope.heureDebut);
+										console.log("heureFin "+ $scope.heureFin);
+										if(( typeof $scope.heureDebut  ===  'undefined') || ( typeof $scope.heureFin === 'undefined')){
+											console.log("unditest");
+											$scope.selected = false;
+										}else{
+											console.log("afficherTest");
+											$scope.calculerDuree();
+											$scope.selected = true;
+										}
+									};
+									
+									//checkBoth
+									$scope.checkBoth();
+								  
+								
+									
+									$scope.query = function(searchText) {
+										 console.log("Seach query");
+										 var url1 = "/clients2?client="+searchText;
+										 
+										 
+										 return $http({
+										      method: 'GET',
+										      url: url1
+										   }).then(function (success){
+											   return success.data;
+										   },function(error){
+											   console.log("eroor",error);
+										   });
+										  };
+									
+									
+									$scope.submitForm = function(isValid) {
+
+									    // check to make sure the form is completely valid
+									    if (isValid && ($scope.selectedItem !=null)) {
+									    	$scope.error = false;
+									     $scope.saveIntervention();
+									    }else{
+									    	$scope.error = true;
+									    	
+									    }
+
+									  };
+									
+								  
+								  $scope.saveIntervention = function(){
+									  var dateDebut = moment($scope.dateDebut).format("DD/MM/YYYY HH:mm:ss");
+									  var heureDebut = moment($scope.heureDebut).format("DD/MM/YYYY HH:mm:ss");
+									   var heureFin  = moment($scope.heureFin).format("DD/MM/YYYY HH:mm:ss");
+									   
+									   var dateDebut1 = moment(dateDebut,"DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY");
+									   var heureDebut1 = moment(heureDebut,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+									   var heureFin1 = moment(heureFin,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
+									   
+									   
+									   var dateDebut2 = dateDebut1.concat(" "+heureDebut1); 
+									   var dateMinuit = moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+"00:00:01");
+									 
+									   var duree="";
+									   var dateFin;
+									   
+									   if((moment(heureDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(heureFin,"DD/MM/YYYY HH:mm:ss"))) && (moment(dateDebut ,"DD/MM/YYYY HH:mm:ss").isBefore(moment(dateMinuit,"DD/MM/YYYY HH:mm:ss")))){
+											  var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
+											  duree=s;
+											  console.log("durree avant 1 jour = "+s);
+											  dateFin = dateDebut1.concat(" "+heureFin1);
+											  console.log("date Fin same = "+dateFin);
+											}else{
+												var s= moment.utc(moment(heureFin ,"DD/MM/YYYY HH:mm:ss").diff(moment(heureDebut,"DD/MM/YYYY HH:mm:ss"))).format("HH:mm:ss")
+												duree=s;  
+												console.log("duree fin apres 1day  "+s);
+												dateFin=moment(dateDebut1, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY").concat(" "+heureFin1);
+												console.log("date fin apres 1day  "+dateFin);
+											}
+									   
+									   var params = "dateDebut="+dateDebut2+"&dateFin="+dateFin+"&heureDebut="+heureDebut1+"&heureFin="+heureFin1+"&client="+$scope.client
+									      +"&nature="+$scope.nature+"&descProjet="+$scope.descProjet +"&" +
+									      		"="+$scope.nature+"&ville="+$scope.ville+"&duree="+duree;
+										  
+										  console.log("date1="+params);
+										  
+										  var client ={"id":$scope.selectedItem.id}
+										  var nature = {"id":$scope.nature};
+										  
+										  var lieu = {"id":$scope.lieu};
+										  var ville = {"id":$scope.ville};
+										  
+										  var type = {"id":$scope.type};
+										  
+										  var mail = User.getEmail();
+										  
+										  console.log("mail "+mail);
+										  var user = {
+												  "username":mail
+										  }
+										  
+										  var dataObj = {
+													"dateDebut": dateDebut2,
+													"dateFin": dateFin,
+													"heureDebut": heureDebut1,
+													"heureFin":heureFin1,
+													"client":client,
+													"nature":nature,
+													"descProjet":$scope.descProjet,
+													"lieu":lieu,
+													"type":type,
+													"ville":ville,
+													"duree":duree,
+													"user":user
+											};	
+										  
+										  console.log("dataObj"+ JSON.stringify(dataObj));
+										  $scope.message={
+												  "error" : "erreur",
+												  "success":"success"
+											  };
+										  
+										  
+										  $http({
+											    method: 'PUT',
+											    url: '/ActivitesEmployer/'+$scope.id+'/',
+											    data: dataObj,
+											    headers: {'Content-Type': 'application/json'}
+											}).then(function(response) {
+												console.log("Response PUT "+JSON.stringify(response));
+												if(response.config.data!=""){
+													
+													$scope.message = response;
+													$scope.reset();
+													$scope.success=true;
+												    $scope.message.success="Votre intervention a été modifé avec succès";
+													//$mdDialog.hide();
+													$route.reload();
+												}else{
+													console.log("between");
+													$scope.success=false;
+													$scope.error=true;
+													$scope.message.error="Vous ne pouvez pas faire deux interventions en même temps !";
+													console.log(response);
+												}
+												
+												
+										    }, 
+										    function(response) { // optional
+										    	$scope.error=true;
+												$scope.message.error="Votre intervention n'a pas été ajouté !";
+												console.log(response);
+										    });
+										  
+										 
+								  };
+								  
+								  $scope.reset = function(){
+									  	
+									    $scope.heureFin = null;
+									    $scope.selectedItem = null;
+								  		$scope.client = "";
+								  		$scope.nature ="";
+								  		$scope.descProjet="";
+								  		$scope.lieu="";
+								  		$scope.ville="";
+								  		$scope.duree="";
+								  		$scope.success=false;
+								  		$scope.selected = false;
+								  		$scope.error=false;
+								  		
+								  	}
+								  
+								  $http({
+								      method: 'GET',
+								      url: "/clients1"
+								   }).then(function (success){
+									   //console.log(JSON.stringify(response));
+									   $scope.clients = success.data;
+								   },function (error){
+									  $scope.errorMessage = error.message;	
+								   });
+							  		
+							  		
+							  		$http({
+							  	      method: 'GET',
+							  	      url: "/natures1"
+							  	   }).then(function (success){
+							  		   $scope.natures = success.data;
+							  		   console.log("natures " + $scope.natures);
+							  	   },function (error){
+							  		   $scope.errorMessage = error.message;	
+							  	   });
+							  	
+								  
+								  
+							  		$http({
+							  	      method: 'GET',
+							  	      url: "/lieux1"
+							  	   }).then(function (success){
+							  		   $scope.lieux = success.data;
+							  	   },function (error){
+							  		   $scope.errorMessage = error.message;	
+							  	   });
+								  
+							  		$http({
+							  	      method: 'GET',
+							  	      url: "/villes"
+							  	   }).then(function (success){
+							  		   
+							  		   $scope.villes = success.data;
+							  	   },function (error){
+							  		   $scope.errorMessage = error.message;	
+							  	   });
+							  		
+							  		
+							  		$http({
+							    	      method: 'GET',
+							    	      url: "/types1"
+							    	   }).then(function (success){
+							    		   
+							    		   $scope.types = success.data;
+							    	   },function (error){
+							    		   $scope.errorMessage = error.message;	
+							    	   });
+								  
+								   
+								  
+								  
+								    $scope.hide = function() {
+								      $mdDialog.hide();
+								    };
+
+								    $scope.cancel = function() {
+								      $mdDialog.cancel();
+								    };
+
+								    $scope.answer = function(answer) {
+								      $mdDialog.hide(answer);
+								    };
+								  
+							  };
+
+							  
+							  $scope.mySplit = function(string, nb,sep) {
+							        var array = string.split(',');
+							        return array[nb];
+							    }
 
 				    $scope.chargerEvent = function(){
 				    	console.log("ActiviteEmployer ",$scope.activitesEmployer);
@@ -1055,7 +2484,7 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				    		var color = getRandomColor();
 				    		
 				    		
-				    		var title = '<i class="fa fa-user"></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].user.nom+'     </span><i class="fa fa-building" style="margin-left: 5px;></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].client.client+'</span><i class="fa fa-suitcase"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">Nature :  '+$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> Action:  '+$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> durée :  '+ $scope.activitesEmployer[i].duree;
+				    		var title =' <p hidden>,' +$scope.activitesEmployer[i].id+',</p><i class="fa fa-user"></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].user.nom+'     </span><i class="fa fa-building" style="margin-left: 5px;></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].client.client+'</span><i class="fa fa-suitcase"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">Nature :  '+$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> Action:  '+$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> durée :  '+ $scope.activitesEmployer[i].duree;
 					    	var color1;
 				    		if($scope.activitesEmployer[i].type.type == "Réaliser"){
 					    		color1 = '#70FFE7';
@@ -1071,6 +2500,56 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 					                primary: color1, // the primary event color (should be darker than secondary)
 					                secondary: color1 // the secondary event color (should be lighter than primary)
 					              },
+					              actions: [{
+					                  label:'<i class=\'glyphicon glyphicon-pencil\'></i>',
+					                  onClick: function(args) {
+					                	console.log(JSON.stringify(args));
+					                	console.log("idSplit  "+$scope.mySplit(args.calendarEvent.title,1));
+					                	//console.log("idSplit  "+$scope.mySplit(args.calendarEvent.actions[0].label,1));
+					                	
+					                	$http({
+					        			    method: 'GET',
+					        			    url: "ActivitesEmploye?id="+$scope.mySplit(args.calendarEvent.title,1),
+					        			    headers: {'Content-Type': 'application/json'}
+					        			}).then(function(response) {
+					        					
+					        					$scope.activiterEmployer = response.data;
+					        					console.log(" respGetActiEmpl1 "+$scope.activiterEmployer);
+					        					$scope.success=true;
+					        					$scope.modifier($scope.activiterEmployer);
+							                    //alert.show('Edited ', $scope.activiterEmployer);
+					        				
+					        		    }, 
+					        		    function(response) { // optional
+					        				console.log(response);
+					        		    });
+					                	
+					                	
+					                  }
+					                },
+					                 {
+					                    label: '<i class=\'glyphicon glyphicon-remove\'></i>',
+					                    onClick: function(args) {
+					                    	
+					                    	$http({
+						        			    method: 'GET',
+						        			    url: "ActivitesEmploye?id="+$scope.mySplit(args.calendarEvent.title,1),
+						        			    headers: {'Content-Type': 'application/json'}
+						        			}).then(function(response) {
+						        					
+						        					$scope.activiterEmployer = response.data;
+						        					console.log(" respGetActiEmpl1 "+$scope.activiterEmployer);
+						        					$scope.success=true;
+						        					$scope.supprimer($scope.activiterEmployer);
+								                    //alert.show('Edited ', $scope.activiterEmployer);
+						        				
+						        		    }, 
+						        		    function(response) { // optional
+						        				console.log(response);
+						        		    });
+					                 }
+					                }
+					          ],
 					            draggable: false, //Allow an event to be dragged and dropped
 					    	    resizable: false, //Allow an event to be resizable
 					    	    incrementsBadgeTotal: true, //If set to false then will not count towards the badge total amount on the month and year view

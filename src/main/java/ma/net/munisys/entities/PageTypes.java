@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PageTypes implements Serializable {
 	
-	private List<Type> natures;
+	private List<Type> types;
 	private int page;
 	private int nombreTypes;
 	private int totalPages;
@@ -39,11 +39,11 @@ public class PageTypes implements Serializable {
 	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
 	}
-	public List<Type> getNatures() {
-		return natures;
+	public List<Type> getTypes() {
+		return types;
 	}
-	public void setNatures(List<Type> natures) {
-		this.natures = natures;
+	public void setTypes(List<Type> types) {
+		this.types = types;
 	}
 	public int getNombreTypes() {
 		return nombreTypes;

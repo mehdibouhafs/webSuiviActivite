@@ -3,7 +3,7 @@
 	
         <!-- page content -->
         
-        <div class="right_col" role="main" ng-controller="clientController">
+        <div class="right_col" role="main" ng-controller="typeController">
           <div class="">
             
             <div class="clearfix"></div>
@@ -11,7 +11,7 @@
               <div class="col-md-6 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nouveau Client <small>Munisys</small></h2>
+                    <h2>Statut des interventions </h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -23,15 +23,16 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    
-                    <div class="form-group" ng-if="error==true" ng-cloak>
+                   
+                    <form id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
+                      
+                       <div class="form-group" ng-if="error==true" ng-cloak>
 				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
 					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-danger">
 	  						<strong>Erreur au formulaire !</strong> <br/>Veuillez remplir les champs obligatoire !
-	  						* Sinon l'utilisateur est déja créer
+	  						* Sinon le statut est déja créer
 						 </div>
 					 </div>
-				     
 				     
 				     <div class="form-group" ng-if="success==true" ng-cloak>
 				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
@@ -39,20 +40,18 @@
 	  						<strong>Success!</strong><br/> {{message.success}} 
 						 </div>
 					 </div>
-                    <form id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
-                    
-                      <label for="fullname">Client * :</label>
-                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="client" required placeholder="Tapez le nom du client" />
+                      
+                      <label for="fullname">Statut de l'intervention * :</label>
+                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="type" required placeholder="Statut de l'intervention" />
 
-                      <div class="ln_solid"></div>
+                     
+					 <div class="ln_solid"></div>
                       <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-12 col-sm-6 col-xs-12">
 						  <button class="btn btn-primary" type="reset" ng-click="reset()">Reset</button>
-                          <button type="submit" class="btn btn-success" >Créer un client</button>
+                          <button type="submit" class="btn btn-success" >Créer un statut des interventions</button>
                         </div>
                       </div>
-                      
-
                     </form>
                     
                     
@@ -64,7 +63,7 @@
               <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nos Clients <small>Nos clients</small></h2>
+                    <h2>Statuts des interventions <small>Tout les statuts des interventions</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -80,21 +79,22 @@
                       <thead>
                         <tr>
                           
-                          <th>Client</th>
+                          <th>Statut de l'intervention</th>
                           <th>Actions</th>
-                         
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="even pointer" ng-repeat="o in clients.clients track by $index">
+                        <tr class="even pointer" ng-repeat="o in types.types">
 	                        	
-	                        	<td width="80%" >{{o.client}}</td>
-	                        	<td width="20%"><button type="button" class="btn btn-default" ng-click="modifier(o,$event)"><i class="glyphicon glyphicon-pencil">
+	                        	<td class=" ">{{o.type}}</td>
+				  				<td width="20%"><button type="button" class="btn btn-default"  ng-click="modifier(o,$event)"><i class="glyphicon glyphicon-pencil">
 								 </i></button></td>
 				  		   </tr>
                       </tbody>
                     </table>
-                    <div paging
+
+
+					<div paging
 				                page="currentPage" 
 				                page-size="pageSize" 
 				                total="totale"
@@ -111,7 +111,6 @@
 							    show-prev-next="true"
 							    show-first-last="true">
 	           				 </div>  
-
                   </div>
                 </div>
               </div>
@@ -122,4 +121,5 @@
          </div>
        </div>
        
-      
+        
+        <!-- /page content -->

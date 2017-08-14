@@ -14,6 +14,7 @@ import ma.net.munisys.business.ClientBusiness;
 import ma.net.munisys.business.LieuBusiness;
 import ma.net.munisys.entities.Client;
 import ma.net.munisys.entities.Lieu;
+import ma.net.munisys.entities.Nature;
 import ma.net.munisys.entities.PageClients;
 import ma.net.munisys.entities.PageLieux;
 
@@ -42,27 +43,17 @@ public class LieuRestService {
 	}
 
 	
-	@RequestMapping(value="/lieux/clientId",method = RequestMethod.PUT)
-	public Lieu updateClient(@PathVariable Long clientId,@RequestBody Lieu lieu) {
-		return lieuBusiness.updateLieu(clientId, lieu);
-	}
-
-	/*
-	@RequestMapping(value="/getLoggedUser")
-	public Map<String, Object> getLoggedUser(HttpServletRequest httpServletRequest){
-		HttpSession httpSession = httpServletRequest.getSession();
-		SecurityContext securityContext = (SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
-		String username = securityContext.getAuthentication().getName();
-		List<String> roles = new ArrayList<>();
-		for(GrantedAuthority g : securityContext.getAuthentication().getAuthorities()){
-			roles.add(g.getAuthority());
-		}
-		Map<String,Object> params = new HashMap<>();
-		params.put("username", username);
-		params.put("roles", roles);
-		return params;
+	
+	
+	
+	@RequestMapping(value="/lieuse",method = RequestMethod.GET)
+	public Lieu updateLieu2(@RequestParam(name="id")Long lieuid,@RequestParam(name="lieu")String lieu){
 		
-	}*/
+		return lieuBusiness.updateLieu(lieuid,lieu);
+	}
+	
+
+	
 	
 	
 }
