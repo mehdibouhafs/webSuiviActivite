@@ -1,6 +1,6 @@
 	        <!-- page content -->
         
-        <div class="right_col" role="main" ng-controller="chargerAllInterventions">
+        <div class="right_col" role="main" ng-controller="chargerAllInterventions" style="min-height: 750px;">
           <div class="">
             
             <div class="clearfix"></div>
@@ -22,61 +22,52 @@
 	
 	                  <div class="x_content">
 
+
+						 <form>
+						    <div class="form-group">
+						      <div class="input-group">
+						        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+						        <input type="text" class="form-control" placeholder="Filtre" ng-model="query3" ng-change="updateFilteredList()"/>
+						      </div>      
+						    </div>
+						  </form>
 	
 	                    <div class="table-responsive">
-	                      <table class="table table-striped jambo_table bulk_action">
+	                    	<table class="table table-striped jambo_table bulk_action" ng-cloak  at-table at-paginated at-list="filteredList" at-config="config">
 	                        <thead>
-	                          <tr class="headings">
-	                            <th class="column-title">Collaborateur</th>
-	                            <th class="column-title">Date Debut </th>
-	                            <th class="column-title">Date Fin </th>
-	                            <th class="column-title">Heure Debut </th>
-	                            <th class="column-title">Heure Fin </th>
-	                            <th class="column-title">Duree </th>
-	                            <th class="column-title">Client </th>
-	                            <th class="column-title">Nature</th>
-	                            <th class="column-title">Desc Projet</th>
-	                            <th class="column-title">Lieu</th>
-	                            <th class="column-title">Ville</th>
-	                            <th class="column-title">Statut</th>
-	                          </tr>
+	                         
 	                        </thead>
 	
 	                        <tbody>
-	                        <tr class="even pointer" ng-repeat="o in activitesEmployes.activitesEmployer">
-	                        			<td class="" >{{o.user.nom}}</td>
-				  						<td class=" ">{{o.dateDebut}}</td>
-				  						<td class=" ">{{o.dateFin}}</td>
-				  						<td class=" ">{{o.heureDebut}}</td>
-				  						<td class=" ">{{o.heureFin}}</td>
-				  						<td class=" ">{{o.duree}}</td>
-				  						<td class=" ">{{o.client.client}}</td>
-				  						<td class=" ">{{o.nature.nature}}</td>
-				  						<td class=" ">{{o.descProjet}}</td>
-				  						<td class=" ">{{o.lieu.lieu}}</td>
-				  						<td class=" ">{{o.ville.ville}}</td>
-				  						<th class=""> <span ng-class='whatClassIsIt(o.type.type)'>{{o.type.type}}</span></th>
+	                        <tr class="even pointer">
+	                        			<td class=" "  at-implicit at-title="Collaborateur" at-attribute="user.nom"></td>
+				  						<td class=" "  at-implicit at-sortable at-attribute="dateDebut"  at-initial-sorting="desc"></td>
+				  						<td class=" " at-implicit at-sortable at-attribute="dateFin"  ></td>
+				  						<td class=" " at-implicit  at-attribute="heureDebut"></td>
+				  						<td class=" " at-implicit  at-attribute="heureFin"></td>
+				  						<td class=" " at-implicit  at-attribute="duree"></td>
+				  						<td class=" " at-implicit  at-attribute="client.client" at-title="client"></td>
+				  						<td class=" "  at-implicit  at-attribute="nature.nature" at-title="Nature"></td>
+				  						<td class=" "  at-implicit  at-attribute="projet.projet" at-title="Projet"></td>
+				  						<td class=" "  at-implicit  at-attribute="descProjet" at-title="DescProjet"></td>
+				  						<td class=" " at-implicit  at-attribute="lieu.lieu" at-title="Lieu"></td>
+				  						<td class=" " at-implicit  at-attribute="ville.ville" at-title="Ville"></td>
+				  						
+				  						<td class=""  at-title="Statut"> <span ng-class='whatClassIsIt(item.type.type)'>{{item.type.type}}</span></td>
+				  						<td class=""  at-title="Options">
+				  							<button ng-click="updateEtat(item)" ng-if='whatClassIsIt(item.type.type) == "label label-info"' type="button" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-edit"></span></button>
+					  						<button ng-confirm-click="Êtes-vous sûr de vouloir supprimer définitivement l'intervention de item.user.nom ?" confirmed-click="delete1(item)"  ng-if='whatClassIsIt(item.type.type) == "label label-info"' type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
+				  						</td>
 				  					</tr>
 	                        </tbody>
-	                      </table>              
+	                      </table>  
+	                      <at-pagination at-list="filteredList" at-config="config"></at-pagination>  
+	                    
+	                    
+	                    
+	                                 
 	                    </div>
-							<div paging
-				                page="currentPage" 
-				                page-size="pageSize" 
-				                total="totale"
-				                paging-action="goToPage(page)"
-				                text-first="first"
-							    text-last="last"
-							    text-next="next"
-							    text-prev="prev"
-							    text-title-page="Page {page} Hover Over"
-							    text-title-first="First hover"
-							    text-title-last="Last hover"
-							    text-title-next="Next hover"
-							    text-title-prev="Prev hover"
-							    show-prev-next="true"
-							    show-first-last="true">
-	           				 </div>  	
+							
 							
 	                  </div>
 	                </div>

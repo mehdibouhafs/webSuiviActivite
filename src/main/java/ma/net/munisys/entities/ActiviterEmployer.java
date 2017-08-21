@@ -29,11 +29,16 @@ public class ActiviterEmployer implements Serializable {
     @OneToOne
     private Nature nature;
     private String descProjet;
+    
+    @OneToOne
+    private Projet projet;
+    
     @OneToOne
     private Lieu lieu;
     @OneToOne
     private Ville ville;
     private String duree;
+    private String dureeFormated;
     @OneToOne
     private Type type;
     
@@ -182,13 +187,45 @@ public class ActiviterEmployer implements Serializable {
 		this.user = user;
 	}
 	
+	
+	
+
+	public Projet getProjet() {
+		return projet;
+	}
+
+
+	public void setProjet(Projet projet) {
+		this.projet = projet;
+	}
+	
+	
+
+
+	public String getDureeFormated() {
+		return dureeFormated;
+	}
+
+
+	public void setDureeFormated(String dureeFormated) {
+		this.dureeFormated = dureeFormated;
+	}
+
 
 	@Override
 	public String toString() {
-		return "ActiviterEmployer [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
-				+ ", heureDebut=" + heureDebut + ", heureFin=" + heureFin + ", client=" + client + ", nature=" + nature
-				+ ", descProjet=" + descProjet + ", lieu=" + lieu + ", ville=" + ville + ", duree=" + duree + ", tag="
-				+ tag + ", user=" + user + "]";
+		return "ActiviterEmployer [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", heureDebut="
+				+ heureDebut + ", heureFin=" + heureFin + ", client=" + client + ", nature=" + nature + ", descProjet="
+				+ descProjet + ", projet=" + projet + ", lieu=" + lieu + ", ville=" + ville + ", duree=" + duree
+				+ ", dureeFormated=" + dureeFormated + ", type=" + type + ", tag=" + tag + ", user=" + user + "]";
 	}
+
+
+	
+	
+	
+	
+
+	
 	
 }

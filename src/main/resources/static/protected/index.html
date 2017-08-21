@@ -57,8 +57,8 @@
                 <img src="../production/images/img.jpg" alt="." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Bienvenue,</span>
-                <h2 ng-cloak >{{nomUser}}</h2>
+                <span style="color: white;">Bienvenue,</span>
+                <h2 ng-cloak style="color: white;">{{nomUser}}</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -78,6 +78,7 @@
                   <li><a href="/nouvelleIntervention"><i class="fa fa-suitcase"></i> Nouvelle Intervention </a></li>
                   <li ng-show="admin" ng-cloak><a href="/Allinterventions"><i class="fa fa-calendar-check-o"></i> Tout les interventions</a></li>
                   <li><a href="/mesinterventions"><i class="fa fa-calendar-check-o"></i> Mes interventions</a></li>
+                  <li ng-cloak><a href="/interventionGroupe"><i class="fa fa-calendar-check-o"></i> Interventions du groupe</a></li>
                   <li ng-show="admin" ng-cloak><a><i class="fa fa-database"></i> Référentiel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/nouveauUtilisateur"><i class="fa fa-user"></i> Nouveau Utilisateur</a></li>
@@ -85,9 +86,11 @@
                       <li><a href="/nouvelleNature"><i class="fa fa-tasks"></i> Nouvelle nature intervention</a></li>
                       <li><a href="/nouveauLieu"><i class="fa fa-institution"></i> Nouveau Lieu</a></li>
                       <li><a href="/nouveauStatut"><i class="fa fa-institution"></i> Nouveau Statut</a></li>
+                      <li><a href="/nouveauProjet"><i class="fa fa-institution"></i> Nouveau Projet</a></li>
+                      <li><a href="/nouveauJour"><i class="fa fa-institution"></i> Nouveau Jour Férié</a></li>
                     </ul>
                   </li>
-                  <li><a href="/help"><i class="fa fa-info"></i> Help </span></a>
+                  <li><a href="/help"><i class="fa fa-info"></i> Help </span></a></li>
                     
                 </ul>
               </div>
@@ -166,6 +169,12 @@
     <script src="../vendors/angularjs/angular-ui-router.min.js"></script>
     <script src="../vendors/angularjs/angular-material.min.js"></script>
     <script src="../vendors/angularjs/angular-animate.min.js"></script>
+     <script src="../vendors/angularjs/angular-tabs.min.js"></script>
+     <script src="../vendors/angularjs/angular-table.min.js"></script>
+    
+    <script src="../vendors/angularjs/Chart.min.js"></script>
+     <script src="../vendors/angularjs/angular-chart.js"></script>
+    <script src="../vendors/angularjs/Chart.bundle.min.js"></script>
     <script src="../vendors/angularjs/angular-sanitize.js"></script>
     <script src="../vendors/angularjs/ui-bootstrap-tpls.min.js"></script>
      <script src="../vendors/angularjs/select.js"></script>
@@ -173,12 +182,28 @@
     <script src="../vendors/angularjs/angular-bootstrap-colorpicker@3.0.31.js"></script>
     <script src="../vendors/angularjs/angular-bootstrap-calendar@0.29.3.js"></script>
     <script src="../vendors/angularjs/ocLazyLoad.min.js"></script>
-    <script src="../vendors/angularjs/example.js"></script>
+    <script src="../vendors/angularjs/munitime/calendar.js"></script>
+    <script src="../vendors/angularjs/munitime/admin.js"></script>
      <script src="../vendors/angularjs/helpers.js"></script>
-    <script src="../vendors/angularjs/app.js"></script>
-    <script src="../vendors/angularjs/tableauDeBord.js"></script>
+    <script src="../vendors/angularjs/munitime/app.js"></script>
+    <script src="../vendors/angularjs/munitime/tableauDeBord.js"></script>
     
-   
+    
+    <script src="../vendors/angularjs/munitime/allInterventions.js"></script>
+    <script src="../vendors/angularjs/munitime/client.js"></script>
+    <script src="../vendors/angularjs/munitime/nature.js"></script>
+    <script src="../vendors/angularjs/munitime/lieu.js"></script>
+    <script src="../vendors/angularjs/munitime/type.js"></script>
+    <script src="../vendors/angularjs/munitime/utilisateur.js"></script>
+     <script src="../vendors/angularjs/munitime/dialog/showEventCalendar.js"></script>
+   <script src="../vendors/angularjs/munitime/dialog/admin/showEventAdminCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/dialog/admin/deleteEventAdminCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/dialog/admin/updateEventAdminCalendar.js"></script>
+     <script src="../vendors/angularjs/munitime/dialog/updateEventCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/dialog/rangeEventCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/interventionGroupe.js"></script>
+    <script src="../vendors/angularjs/munitime/projet.js"></script>
+    <script src="../vendors/angularjs/munitime/jourFerie.js"></script>
     
    <script type="text/javascript" src="../vendors/angularjs/angular-material-datetimepicker.min.js"></script>
    <script type="text/javascript" src="../vendors/angularjs/paging.js"></script>
@@ -217,6 +242,7 @@
     <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/angularjs/fr.js"></script>
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     
    

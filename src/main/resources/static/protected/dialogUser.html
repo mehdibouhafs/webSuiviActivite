@@ -40,6 +40,35 @@
                       <input type="text" id="email" class="form-control" name="email"  ng-model="emaill"  placeholder="Tapez une addresse email valide" readonly />
 					</div>
 					
+					
+					<div class="form-group">
+                    <label for="selectClient"> Groupe <span class="required">*</span></label>
+	                    
+		             <select  class="form-control" id="selectClient" ng-model="groupe" ng-options="item.codeGroupe as item.nomGroupe for item in groupes">
+		                            <option value="">Selectionner le groupe </option>
+		                            
+		                   </select>
+		                  
+		                
+	                </div>
+	                
+	                
+	                
+	                <div class="form-group">
+	               <label for="roles">Roles *</label>
+	               
+ 					 
+ 					 
+ 		    <ui-select ng-model="roleSelected" multiple theme="selectize">
+	            <ui-select-match placeholder="Selectionnez les roles">{{$item.role}}</ui-select-match>
+	            <ui-select-choices repeat="item in roles | filter: $select.search">
+	              <div ng-bind-html="item.role | highlight: $select.search"></div>
+	              <small ng-bind-html="item.description | highlight: $select.search"></small>
+	            </ui-select-choices>
+          </ui-select>
+ 					 </div>
+					
+					
 					<div class="form-group">
 					  <label for="passwordd">Mot de passe * :</label>
                       <input type="password" id="passwordd" name="passwordd" class="form-control" ng-model="passwordd" required placeholder="Tapez un nouveau mot de passe">

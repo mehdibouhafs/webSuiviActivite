@@ -1,0 +1,222 @@
+<md-dialog aria-label="Modifier votre intervention">
+  <form ng-cloak name="interventionForm" ng-submit="submitForm(interventionForm.$valid)" novalidate>
+    <md-toolbar style="background-color: #2a3f54;">
+      <div class="md-toolbar-tools">
+        <h2>Modifier {{userName}}</h2>
+        
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="/production/images/close.png" aria-label="fermer"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+      
+      				<div class="form-group" ng-if="error==true" ng-cloak>
+				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+					     <div class="col-md-9 col-sm-9 col-xs-12 alert alert-danger">
+	  						<strong>Erreur au formulaire !</strong> <br/>{{message.error}}
+						 </div>
+					 </div>
+				     
+				     
+				     <div class="form-group" ng-if="success==true" ng-cloak>
+				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+					     <div class="col-md-9 col-sm-9 col-xs-12 alert alert-success" ng-cloak>
+	  						<strong>Success!</strong><br/> {{message.success}} 
+						 </div>
+					 </div>
+					 
+					<div class="form-group">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de début votre intervention <span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12" >
+	                        
+	                			<div class="input-group date" id="myDatePicker">
+		                            <input class="form-control md-input" time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date de début de l'intérvention"
+										ng-model="dateDebut" format="DD/MM/YYYY" ok-text="valider" cancel-text="Annuler" ng-change="changeDebut()" required>
+										<span class="input-group-addon" ng-click="displayDialogDateDebut()">
+			                               <span class="glyphicon glyphicon-calendar"></span>
+			                            </span>
+							    </div>
+							    
+	                    </div>
+                    </div>
+                    
+                    <div class="form-group">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTimePicker">Heure de début d'intervention <span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12" >
+                        	
+		                     <div class="input-group date" id="myTimePicker">
+	                           
+								<span class="input-group-addon" ng-click="displayDialogHeureDebut()">
+			                               <span class="fa fa-clock-o"></span>
+			                            </span>
+								<input type="time" id="exampleInput" name="input" ng-model="heureDebut" classe="form-control input-small" style="height: 35px;"
+       								placeholder="Heure de début de votre intervention" ng-change="checkBoth()"  />
+								
+							</div>
+								
+							
+                        </div>
+	            
+                    </div>
+                    
+                    <div class="form-group">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de Fin d'intervention <span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12" >
+	                        
+	                			<div class="input-group date" id="myDatePicker">
+		                            <input class="form-control md-input" time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date de Fin de l'intérvention"
+										ng-model="dateFinale" format="DD/MM/YYYY" min-date="minDate" ok-text="valider" cancel-text="Annuler" ng-change="changeFin()" required>
+										<span class="input-group-addon" ng-click="displayDialogDateFin()">
+			                               <span class="glyphicon glyphicon-calendar"></span>
+			                            </span>
+							    </div>
+							    
+	                    </div>
+                    </div>
+                    
+                     <div class="form-group">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTimePicker1">Heure de fin de l'intervention <span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+	                        
+                           <div class="input-group date" id="myTimePicker1">
+	                            <span class="input-group-addon" ng-click="displayDialogHeureFin()"> 
+			                        <span class="fa fa-clock-o"></span>
+			                    </span>
+								<input type="time" id="exampleInput" name="input" ng-model="heureFin" classe="form-control input-small" style="height: 35px;"
+       								placeholder="Heure de Fin de votre intervention" min="{{dateTimeStart}}"  ng-change="checkBoth()"  />
+								
+			               </div>
+			               
+			               <div  ng-if="selected">
+			               		<p><strong ng-cloak style="    background: green;color: white;"> Durée = {{duree1}}</strong></p>  
+			               </div>
+			               
+	                    </div>
+                    </div>
+                    
+                  
+                   
+                    
+                  
+                 
+                 
+                      
+                      
+                    <div class="form-group row">
+                    
+                  
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectClient">Client <span class="required">*</span></label>
+	                    <div class="col-md-9 col-sm-9 col-xs-12">
+		                   <!--  - <select  class="form-control" id="selectClient" ng-model="client" ng-options="item.id as item.client for item in clients" required>
+		                            <option value="">Selectionner un client</option>
+		                            
+		                   </select>-->
+		                   <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in query(searchText)" md-item-text="item.client" placeholder="Veuillez Saisir le client où selectionnez le client depuis la site" ng-cloak >
+							  <md-item-template>
+							    <span md-highlight-text="searchText" ng-cloak>{{item.client}}</span>
+							  </md-item-template>
+							  <md-not-found>
+							    No matches found.
+							  </md-not-found>
+						  </md-autocomplete>
+		                  
+		                </div>
+	                </div>
+	                
+	                <div class="form-group row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectClient">Nature de l'intervention <span class="required">*</span></label>
+	                    <div class="col-md-9 col-sm-9 col-xs-12">
+		                    <select  class="form-control" id="selectClient" ng-model="nature" ng-options="item.id as item.nature for item in natures" >
+		                            <option value="">Selectionner la nature de l'intervention</option>
+		                            
+		                   </select>
+		                  
+		                </div>
+	                </div>
+	                
+	                
+	                <div class="form-group row">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectProjet">Projet <span class="required">*</span></label>
+	                    <div class="col-md-9 col-sm-9 col-xs-12">
+		                    <select  class="form-control" id="selectLieu" ng-model="projet" ng-options="item.id as item.projet for item in projets">
+		                            <option value="">Sélectionner le Projet</option>
+		                   </select>
+		                  
+		                </div>
+	                </div>
+                    
+                    
+
+                      <div class="form-group row">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descProjet">Desc Projet /Comm.Action <span class="required">*</span>
+                        </label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                          <input type="text" id="descProjet" required class="form-control col-md-7 col-xs-12 " ng-model="descProjet"  placeholder="Description du projet où Commenter l'action" >
+                        </div>
+                      </div>
+                      
+                      
+                      <div class="form-group row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectLieu">Lieu de l'intervention <span class="required">*</span></label>
+	                    <div class="col-md-9 col-sm-9 col-xs-12">
+		                    <select  class="form-control" id="selectLieu"  ng-model="lieu" ng-options="item.id as item.lieu for item in lieux" >
+		                            <option value="">Sélectionner le lieu</option>
+		                           
+		                   </select>
+		                  
+		                </div>
+	                </div>
+	                
+	                <div class="form-group row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectVille">Ville d'intervention <span class="required">*</span></label>
+	                    <div class="col-md-9 col-sm-9 col-xs-12">
+		                    <select  class="form-control" id="selectVille" ng-model="ville" ng-options="item.id as item.ville for item in villes" >
+		                            <option value="">Sélectionner une ville</option>
+		                           
+		                   </select>
+		                  
+		                </div>
+	                </div>
+	                
+	                <div class="form-group row">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectStatut"> Statut de l'intérvention   <span class="required">*</span></label>
+	                    <div class="col-md-9 col-sm-9 col-xs-12">
+		                    <select  class="form-control" id="selectStatut" ng-model="type" ng-options="item.id as item.type for item in types" >
+		                            <option value="">Sélectionner le statut de cette intérvention </option>
+		                           
+		                   </select>
+		                  
+		                </div>
+	                </div>
+                      
+       
+            
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-confirm-click="Êtes-vous sûr de vouloir supprimer définitivement cette intervention ?" confirmed-click="delete1(o)"  style="background-color: red;color: white;">
+       Supprimer
+      </md-button>
+      
+       <md-button ng-click="reset()">
+       Vider les champs
+      </md-button>
+      
+      <md-button ng-click="answer('not useful')">
+       Annuler
+      </md-button>
+       
+       <md-button type="submit" style="background-color: blue;color: white;">
+        Modifier 
+      </md-button>
+      
+    </md-dialog-actions>
+  </form>
+</md-dialog>

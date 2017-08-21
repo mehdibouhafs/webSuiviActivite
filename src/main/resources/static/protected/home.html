@@ -1,30 +1,29 @@
 	        <!-- page content -->
         
 <!-- page content -->
-        <div class="right_col" role="main" ng-controller="histogrammeController" style="background-color: white;">
+        <div class="right_col" role="main" ng-controller="histogrammeController" style="background-color: white;min-height: 750px;" >
           <!-- top tiles -->
           <div class="row tile_count" ng-controller="countController">
           <label class="col-md-1 col-sm-1 col-xs-12"></label>
+          
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Nb° interventions Réaliser</span>
+              <span class="count_top"><i class="fa fa-user"></i> Volume ITV Réalisées</span>
               <div class="count"  style="color: blue;">{{nbActiviterRealiser}}</div>
-              
-             
             </div>
+            
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Nb° interventions Plannifier</span>
+              <span class="count_top"><i class="fa fa-user"></i> Volume ITV Plannifiées</span>
               <div class="count"  style="color: blue;">{{nbActiviterPlannifier}}</div>
-              
-             
             </div>
-            <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Nb° clients intervenu </span>
+            
+            <!--  <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Nb° clients </span>
               <div class="count"  style="color: green;">{{nbClient}}</div>
-         
-            </div>
+            </div>-->
+            
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Nb° natures intervenu</span>
-              <div class="count"  style="color: red;">{{nbNature}}</div>
+              <span class="count_top"><i class="fa fa-clock-o"></i> Taux de productivité</span>
+              <div class="count"  style="color: red;">{{tauxActuel}}%</div>
          
             </div>
             <label class="col-md-1 col-sm-1 col-xs-12"></label>
@@ -34,27 +33,37 @@
           
           
           <div class="row">
-          	<div class="col-md-6 col-sm-6 col-xs-12">
+          
+	          <div class="col-md-6 col-sm-6 col-xs-12 " ng-controller="LineChartCtroler">
+			         	<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
+			  </div>	
+	          	
+	          	
+	          	<div class="col-md-6 col-sm-6 col-xs-12 " ng-controller="GenericChartCtrl">
+	          		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
+	          	</div>
+          </div>
+           
+          <div class="row">
+          	
+          	 <div class="col-md-6 col-sm-6 col-xs-12 " ng-controller="GenericChartCtrl2">
           		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
           	</div>
-          	
-          	<div class="col-md-6 col-sm-6 col-xs-12" ng-controller="HideSeriesController">
-          		<div google-chart chart="myChartObject" agc-on-select="hideSeries(selectedItem)" style="height:300px; width:100%;"></div>
-          	</div>
-          	
          
+         		<div class="col-md-6 col-sm-6 col-xs-12">
+          		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
+          	
+          </div>
           	
           
           </div>
-          
+          <!--  
           <div class="row">
-          	 <div class="col-md-6 col-sm-6 col-xs-12 " ng-controller="GenericChartCtrl">
-          		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
-          	</div>
+          	
           	<div class="col-md-6 col-sm-6 col-xs-12" ng-controller="GenericChartCtroler">
           		<div google-chart chart="myChartObject" style="height:300px; width:100%;"></div>
           	</div>
-          </div>
+          </div>-->
           
       </div>
             

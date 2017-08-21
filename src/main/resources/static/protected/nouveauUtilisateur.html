@@ -2,7 +2,7 @@
 	
         <!-- page content -->
         
-        <div class="right_col" role="main" ng-controller="utilisateurController">
+        <div class="right_col" role="main" ng-controller="utilisateurController as vm" style="min-height: 750px;">
           <div class="">
             
             <div class="clearfix"></div>
@@ -52,6 +52,36 @@
 					</div>
 					
 					<div class="form-group">
+                    <label for="selectClient"> Groupe <span class="required">*</span></label>
+	                    
+		             <select  class="form-control" id="selectClient" ng-model="groupe" ng-options="item.codeGroupe as item.nomGroupe for item in groupes">
+		                            <option value="">Selectionner le groupe </option>
+		                            
+		                   </select>
+		                  
+		                
+	                </div>
+	                
+	                
+	                
+	                <div class="form-group">
+	               <label for="roles">Roles *</label>
+	               
+ 					 
+ 					 
+ 		    <ui-select ng-model="vm.roleSelected" multiple theme="selectize">
+	            <ui-select-match placeholder="Selectionnez les roles">{{$item.role}}</ui-select-match>
+	            <ui-select-choices repeat="item in roles | filter: $select.search">
+	              <div ng-bind-html="item.role | highlight: $select.search"></div>
+	              <small ng-bind-html="item.description | highlight: $select.search"></small>
+	            </ui-select-choices>
+          </ui-select>
+ 					 </div>
+ 					 
+	                
+					
+					
+					<div class="form-group">
 					  <label for="password">Mot de passe * :</label>
                       <input type="password" id="password" name="password" class="form-control" ng-model="password" required placeholder="Tapez votre mot de passe">
                      </div>
@@ -69,10 +99,11 @@
                   
                       <div class="ln_solid"></div>
                       <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-						  <button class="btn btn-primary" type="reset" ng-click="reset()">Reset</button>
-                          <button type="submit" class="btn btn-success" >Créer un utilisateur</button>
-                        </div>
+                        
+                        
+                        
+                        	<button type="submit" class="btn btn-success" >Créer un utilisateur</button>
+                        
                       </div>
                       
                       
@@ -104,6 +135,7 @@
                         <tr>
                           <th>Utilisateur</th>
                           <th>Email</th>
+                          <th>Groupe</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -113,6 +145,7 @@
 	                        	
 	                        	<td class=" ">{{o.nom}}</td>
 				  				<td class=" ">{{o.username}}</td>
+				  				<td class="">{{o.groupe.nomGroupe}}</td>
 				  				<td width="20%"><button type="button" class="btn btn-default" ng-click="modifier(o,$event)"><i class="glyphicon glyphicon-pencil">
 								 </i></button></td>
 				  		   </tr>

@@ -10,12 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ManyToAny;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
@@ -26,7 +28,11 @@ public class User implements Serializable {
 	private String username;
 	private String nom;
 	private String password;
+	@JsonProperty
 	private Boolean active;
+	
+	@ManyToOne
+	private Groupe groupe;
 	
 	@ManyToMany
 	@JoinTable(name="USERS_ROLE")
@@ -78,6 +84,8 @@ public class User implements Serializable {
 	public Boolean getActive() {
 		return active;
 	}
+	
+	@JsonSetter
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
@@ -114,6 +122,20 @@ public class User implements Serializable {
 		this.nom = nom;
 	}
 	
+	
+	
+
+	public Groupe getGroupe() {
+		return groupe;
+	}
+
+
+	@JsonSetter
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
+	}
+
+
 
 	@Override
 	public String toString() {

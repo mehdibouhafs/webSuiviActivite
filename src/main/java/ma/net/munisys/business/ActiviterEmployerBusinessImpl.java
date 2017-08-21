@@ -2,6 +2,7 @@ package ma.net.munisys.business;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import ma.net.munisys.dao.ActiviterEmployerRepository;
 import ma.net.munisys.dao.UserRepository;
 import ma.net.munisys.entities.ActiviterEmployer;
+import ma.net.munisys.entities.Client;
+import ma.net.munisys.entities.Nature;
 import ma.net.munisys.entities.PageActiviterEmployer;
 import ma.net.munisys.entities.User;
 
@@ -41,6 +44,26 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 			}
 			
 		}else{
+			
+			/*System.out.println("Last Date DEbut " + activiterEmployer.getDateDebut());
+			
+			System.out.println("Last Date Fin " + activiterEmployer.getDateFin());
+			
+			Calendar calendar=Calendar.getInstance();
+			calendar.setTime(activiterEmployer.getDateDebut());
+			calendar.set(Calendar.SECOND,(calendar.get(Calendar.SECOND)-1));
+			
+			Calendar calendar1=Calendar.getInstance();
+			calendar1.setTime(activiterEmployer.getDateFin());
+			calendar1.set(Calendar.SECOND,(calendar.get(Calendar.SECOND)+1));
+			
+			activiterEmployer.setDateDebut(calendar.getTime());
+			activiterEmployer.setDateFin(calendar1.getTime());
+			   
+			System.out.println("New Date DEbut " + activiterEmployer.getDateDebut());
+			
+			System.out.println("New Date Fin " + activiterEmployer.getDateFin());*/
+
 			return activiterEmployerRepository.save(activiterEmployer);
 		}
 		
@@ -52,28 +75,23 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	
 
 	@Override
-	public PageActiviterEmployer listActivitesEmployer(int page, int size) {
-		PageActiviterEmployer pageActiviterEmployer = new PageActiviterEmployer();
+	public List<ActiviterEmployer> listActivitesEmployer() {
+		/*PageActiviterEmployer pageActiviterEmployer = new PageActiviterEmployer();
 		Page<ActiviterEmployer> pageActiviterEmp = activiterEmployerRepository.findActiviterEmployer(new PageRequest(page-1, size));
 		pageActiviterEmployer.setActivitesEmployers(pageActiviterEmp.getContent());
 		pageActiviterEmployer.setNombreOperations(pageActiviterEmp.getNumberOfElements());
 		pageActiviterEmployer.setPage(pageActiviterEmp.getNumber());
 		pageActiviterEmployer.setTotalPages(pageActiviterEmp.getTotalPages());
-		pageActiviterEmployer.setTotalActiviterEmployer(pageActiviterEmp.getTotalElements());
-		return pageActiviterEmployer;
+		pageActiviterEmployer.setTotalActiviterEmployer(pageActiviterEmp.getTotalElements());*/
+		return activiterEmployerRepository.findActiviterEmployer();
 	}
 
 	@Override
-	public PageActiviterEmployer listActivitesEmployerByUser(String email,int page, int size) {
+	public List<ActiviterEmployer> listActivitesEmployerByUser(String email) {
 		//User user = userRepository.findOne(email);
-		PageActiviterEmployer pageActiviterEmployer = new PageActiviterEmployer();
-		Page<ActiviterEmployer> pageActiviterEmp = activiterEmployerRepository.findActiviterEmployer(email, new PageRequest(page-1, size));
-		pageActiviterEmployer.setActivitesEmployers(pageActiviterEmp.getContent());
-		pageActiviterEmployer.setNombreOperations(pageActiviterEmp.getNumberOfElements());
-		pageActiviterEmployer.setPage(pageActiviterEmp.getNumber());
-		pageActiviterEmployer.setTotalPages(pageActiviterEmp.getTotalPages());
-		pageActiviterEmployer.setTotalActiviterEmployer(pageActiviterEmp.getTotalElements());
-		return pageActiviterEmployer;
+		
+		return activiterEmployerRepository.findActiviterEmployer(email);
+		
 	}
 
 	@Override
@@ -91,6 +109,8 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		df.setTimeZone(TimeZone.getTimeZone("GMT"));
 		System.out.println("Date pour teste " + df.format(activiterEmployer.getDateDebut()) + " Date Fin "+ df.format(activiterEmployer.getDateFin()));
+		
+		System.out.println("id liste "+ activitesBetween.get(0).getId()  + "id path " + idActiviterEmployer);
 		if(activitesBetween.size()>=1 && (activitesBetween.get(0).getId() != idActiviterEmployer)){
 			System.out.println("TRouve !=null ");
 			for(ActiviterEmployer acEmployer : activitesBetween){
@@ -172,9 +192,9 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public List<ActiviterEmployer> findByDatesAfterBefore(String username, Date DateDebut, Date DateFin) {
+	public List<ActiviterEmployer> findByDatesAfterBefore(String username,String type, Date DateDebut, Date DateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.findByDatesAfterBefore(username, DateDebut, DateFin);
+		return activiterEmployerRepository.findByDatesAfterBefore(username,type,DateDebut, DateFin);
 	}
 
 
@@ -198,17 +218,17 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public int countNatureActiviteEmp(String email) {
+	public int countNatureActiviteEmp(String email,String type) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.countNatureActiviteEmp(email);
+		return activiterEmployerRepository.countNatureActiviteEmp(email,type);
 	}
 
 
 
 	@Override
-	public int countClientActiviteEmp(String email) {
+	public int countClientActiviteEmp(String email,String type) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.countClientActiviteEmp(email);
+		return activiterEmployerRepository.countClientActiviteEmp(email,type);
 	}
 
 
@@ -217,6 +237,72 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	public int countTypeActiviteEmp(String email, String type) {
 		// TODO Auto-generated method stub
 		return activiterEmployerRepository.countTypeActiviteEmp(email,type);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> findActiviterByUserAfterBefore(String email, Date DateDebut, Date DateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findActiviterByUserAfterBefore(email,"Réaliser",DateDebut, DateFin);
+	}
+
+
+
+	@Override
+	public List<Client> distinctClientForUser(String email,String type) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.distinctClientForUser(email, type);
+	}
+
+
+
+	@Override
+	public int countActiviterEmployerByClientEtDate(String email, String client, Date DateDebut, Date DateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countActiviterEmployerByClientEtDate(email, client, DateDebut, DateFin);
+	}
+
+
+
+	@Override
+	public int countActiviterEmployerByEmailByClient(String email, String client,String type) {
+		// TODO Auto-generated method stub
+		
+		return activiterEmployerRepository.countActiviterEmployerByEmailByClient(email, client,type);
+	}
+
+
+
+	@Override
+	public int countActiviterEmployerByEmailByNature(String email, String nature,String type) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countActiviterEmployerByEmailByNature(email, nature,type);
+	}
+
+
+
+	@Override
+	public List<Nature> distinctNatureForUser(String email,String type) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.distinctNatureForUser(email,type);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> activiterEmployerByEmailByNatureByDate(String email, String nature, String type,
+			Date DateDebut, Date DateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.activiterEmployerByEmailByNatureByDate(email, nature, type, DateDebut, DateFin);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> findActiviterByGroupe(Long codeGroupe) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findActiviterByGroupe(codeGroupe);
 	}
 	
 }

@@ -38,7 +38,7 @@ public class UserBusinessImpl implements UserBusiness {
 	public User saveUser(User user) {
 		user.setActive(true);
 		User u = userRepository.save(user);
-		addRoleToUser(user.getUsername(),"employer");
+		//addRoleToUser(user.getUsername(),"employer");
 		return u;
 	}
 
@@ -111,6 +111,7 @@ public class UserBusinessImpl implements UserBusiness {
 		params.put("username", username);
 		params.put("nom", user.getNom());
 		params.put("roles", roles);
+		params.put("groupe", user.getGroupe());
 		return params;
 		
 	}
