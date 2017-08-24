@@ -61,8 +61,8 @@ app.controller("projetController",function($scope,$http,$mdDialog,$mdMedia){
 	$scope.reset = function(){
 		$scope.projetId=null;
 		$scope.projet = null;
-		$scope.success=false;
-  		$scope.error=false;
+		//$scope.success=false;
+  		//$scope.error=false;
 	}
 	
 	

@@ -218,25 +218,25 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public int countNatureActiviteEmp(String email,String type) {
+	public int countNatureActiviteEmp(String email,String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.countNatureActiviteEmp(email,type);
+		return activiterEmployerRepository.countNatureActiviteEmp(email,type,dateDebut,dateFin);
 	}
 
 
 
 	@Override
-	public int countClientActiviteEmp(String email,String type) {
+	public int countClientActiviteEmp(String email,String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.countClientActiviteEmp(email,type);
+		return activiterEmployerRepository.countClientActiviteEmp(email,type,dateDebut,dateFin);
 	}
 
 
 
 	@Override
-	public int countTypeActiviteEmp(String email, String type) {
+	public int countTypeActiviteEmp(String email, String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.countTypeActiviteEmp(email,type);
+		return activiterEmployerRepository.countTypeActiviteEmp(email,type,dateDebut,dateFin);
 	}
 
 
@@ -250,9 +250,9 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public List<Client> distinctClientForUser(String email,String type) {
+	public List<Client> distinctClientForUser(String email,String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.distinctClientForUser(email, type);
+		return activiterEmployerRepository.distinctClientForUser(email, type,dateDebut,dateFin);
 	}
 
 
@@ -266,7 +266,7 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public int countActiviterEmployerByEmailByClient(String email, String client,String type) {
+	public int countActiviterEmployerByEmailByClient(String email, String client,String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
 		
 		return activiterEmployerRepository.countActiviterEmployerByEmailByClient(email, client,type);
@@ -275,7 +275,7 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public int countActiviterEmployerByEmailByNature(String email, String nature,String type) {
+	public int countActiviterEmployerByEmailByNature(String email, String nature,String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
 		return activiterEmployerRepository.countActiviterEmployerByEmailByNature(email, nature,type);
 	}
@@ -283,9 +283,9 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public List<Nature> distinctNatureForUser(String email,String type) {
+	public List<Nature> distinctNatureForUser(String email,String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.distinctNatureForUser(email,type);
+		return activiterEmployerRepository.distinctNatureForUser(email,type,dateDebut,dateFin);
 	}
 
 
@@ -303,6 +303,87 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	public List<ActiviterEmployer> findActiviterByGroupe(Long codeGroupe) {
 		// TODO Auto-generated method stub
 		return activiterEmployerRepository.findActiviterByGroupe(codeGroupe);
+	}
+
+
+
+	@Override
+	public int countNatureActiviteEmp2(String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countNatureActiviteEmp2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public int countClientActiviteEmp2(String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countClientActiviteEmp2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public int countTypeActiviteEmp2(String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countTypeActiviteEmp2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public List<Client> distinctClientForUser2(String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.distinctClientForUser2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public List<Nature> distinctNatureForUser2(String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.distinctNatureForUser2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> findByDatesAfterBefore2(String type, Date dateDebut, Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.findByDatesAfterBefore2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public List<ActiviterEmployer> activiterEmployerByEmailByNatureByDate2(String nature, String type, Date dateDebut,
+			Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.activiterEmployerByEmailByNatureByDate2(nature,type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public int countActiviterEmployerByEmailByClient2(String client, String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countActiviterEmployerByEmailByClient2(client,type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public int countActiviterEmployerByEmailByNature2(String nature, String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.countActiviterEmployerByEmailByNature2(nature,type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public List<User> distinctUserForUser2(String type,Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		return activiterEmployerRepository.distinctUserForUser2(type,dateDebut,dateFin);
 	}
 	
 }

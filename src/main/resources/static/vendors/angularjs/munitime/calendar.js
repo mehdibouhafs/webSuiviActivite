@@ -21,6 +21,7 @@ app.config(['$routeProvider','$locationProvider',function($routeProvider,$locati
 	$routeProvider.when('/nouveauClient',{templateUrl:'/protected/nouveauClient.html'});
 	$routeProvider.when('/nouveauProjet',{templateUrl:'/protected/nouveauProjet.html'});
 	$routeProvider.when('/nouveauJour',{templateUrl:'/protected/nouveauJour.html'});
+	$routeProvider.when('/directeurHome',{templateUrl:'/protected/directeurHome.html'});
 	$routeProvider.otherwise('/index');
 	$locationProvider.html5Mode({enabled:true,requireBase:false});
 }
@@ -91,7 +92,8 @@ app.factory('User', function(){
 	        roles:[],
 	        groupe:'',
 	        admin:false,
-	        chefgroupe:false
+	        chefgroupe:false,
+	        directeur:false
 	    };
     
     return {
@@ -124,6 +126,12 @@ app.factory('User', function(){
         },
         setChefgroupe: function (chefgroupe) {
             user.chefgroupe = chefgroupe;
+        },
+        getDirecteur: function () {
+            return user.directeur;
+        },
+        setDirecteur: function (directeur) {
+            user.directeur = directeur;
         }
     };
    
@@ -151,6 +159,58 @@ app.factory('Dated', function(){
         }
     };
    
+});
+
+app.factory('switched', function(){
+	
+	var switched = {
+	        informations: false,
+	        
+	    };
+    
+    return {
+        getInformations: function () {
+            return switched.informations;
+        },
+        setInformations: function (informations) {
+        	switched.informations = informations;
+        }
+        
+    };
+   
+});
+
+
+
+app.controller("switchController",function($scope,$location,switched){
+	
+	
+	 	console.log("info.getInformation() "+ switched.getInformations());
+		if(switched.getInformations() == false){
+			$scope.informations = false;
+			$scope.information = "Mon tableau de bord";
+		}else{
+			$scope.informations = true;
+			$scope.information = "Tableau de bord administrateur";
+		}
+		
+		$scope.switche = function(){
+			if($scope.informations == false){
+				console.log("Clicked");
+				$scope.informations = true;
+			
+				$location.path('/directeurHome');
+				switched.setInformations(true);
+				$scope.information = "Tableau de bord administrateur";
+			}else{
+				$scope.informations = false;
+				switched.setInformations(false);
+				$location.path('/index');
+				$scope.information = "Mon tableau de bord";
+			}
+		}
+		
+		
 });
 
 
@@ -195,12 +255,24 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 		  
 		  console.log("checkAdmin");
 		  angular.forEach(User.getRoles(), function(value, key) {
-			  console.log("keeeeey = "+key + ': ' + value);
+			  console.log("keeeeey = "+key + ': ' + JSON.stringify(value));
 			  
-			  if(value === "ROLE_admin"){
+			  if(value.role==="directeur"){
+				  User.setDirecteur(true);
+				  $scope.directeur = true;
+			  }
+			  
+			  if(value.role === "admin"){
 				  User.setAdmin(true);
 				  $scope.admin = true;
 			  }
+			  
+			  if(value.role ==="owner"){
+				  User.setChefgroupe(true);
+				  $scope.chefGroupe = true;
+			  }
+	  
+			  
 			});
 	  }
 	  

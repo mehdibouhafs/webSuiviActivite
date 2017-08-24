@@ -27,10 +27,10 @@ app.controller("jourController",function($scope,$http,$mdDialog,$mdMedia){
 	
 	$scope.creerLieu = function(){
 		
-		console.log("jour ferie " + moment($scope.dateExcludedd).format("DD/MM/YYYY HH:mm:ss"));
+		console.log("jour ferie " + moment($scope.dateExcludede).format("DD/MM/YYYY"));
 		
 		var dataObj = {
-				"dateExcluded": moment($scope.dateExcludedd).format("DD/MM/YYYY HH:mm:ss")
+				"dateExcluded": moment($scope.dateExcludede).format("DD/MM/YYYY")
 				
 		};	
 	  
@@ -45,29 +45,30 @@ app.controller("jourController",function($scope,$http,$mdDialog,$mdMedia){
 		    data: dataObj,
 		    headers: {'Content-Type': 'application/json'}
 		}).then(function(response) {
-			console.log("lol "+response)
+			
 			$scope.message = response;
 			$scope.success=true;
-			$scope.message.success="Le jour férié : " +$scope.dateExcluded+" a été ajouté avec succès";
+			$scope.message.success="Le jour férié : " +moment($scope.dateExcludede).format("DD/MM/YYYY")+" a été ajouté avec succès";
+		
 			$scope.reset();
 			$scope.chargerAllDateExcluded();
 	    },function(response) { // optional
-	    	//$scope.error=true;
-			//$scope.message.error="L'utilisateur n'a pas été ajouté !";
+	    	$scope.error=true;
+			$scope.message.error="L'utilisateur n'a pas été ajouté !";
 			console.log("error");
 	    });
 	}
 	
 	$scope.reset = function(){
-		$scope.dateExcluded = null;
-		$scope.success=false;
-  		$scope.error=false;
+		$scope.dateExcludede = null;
+		//$scope.success=false;
+  		//$scope.error=false;
 	}
 	
 	
 	$scope.chargerAllDateExcluded = function(){
 		
-		  var url1 = "/chargerAllDateExcluded?page="+$scope.pageCourante+"&size="+$scope.pageSize;
+		  var url1 = "/chargerAll?page="+$scope.pageCourante+"&size="+$scope.pageSize;
 		  $http({
 		      method: 'GET',
 		      url: url1
@@ -132,6 +133,7 @@ app.controller("jourController",function($scope,$http,$mdDialog,$mdMedia){
 			 function DialogController($scope,$http,$mdDialog,$mdMedia,items,$route){	
 					
 					$scope.dateExcludedd = items.dateExcluded;
+					$scope.dateExcludeddd = $scope.dateExcludedd;
 					
 					$scope.dateExcluded = items;
 					$scope.submitForm = function(isValid) {
@@ -154,10 +156,9 @@ app.controller("jourController",function($scope,$http,$mdDialog,$mdMedia){
 						  console.log("dateExcludedd 2 " + $scope.dateExcludedd);
 						  
 						  console.log(" moment2 " + moment($scope.dateExcludedd,"DD/MM/YYYY").format("DD-MM-YYYY"));
-						  var url = "/dateExcludede?dateExcluded="+moment($scope.dateExcludedd).format("DD-MM-YYYY");
+						  var url = "/dateExcludede?lastDateExcluded="+$scope.dateExcludedd+"&dateExcluded="+moment($scope.dateExcludeddd).format("DD-MM-YYYY");
 						  console.log("url " +url);
-						 
-						
+
 						  
 						  $scope.message = {
 								  "success":"success",

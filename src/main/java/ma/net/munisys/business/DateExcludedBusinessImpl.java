@@ -29,6 +29,8 @@ public class DateExcludedBusinessImpl implements DateExcludedBusiness {
 	@Override
 	public DateExcluded saveDateExcluded(DateExcluded dateExcluded) {
 		// TODO Auto-generated method stub
+		
+		
 		return dateExcludedRepository.save(dateExcluded);
 	}
 
@@ -45,12 +47,15 @@ public class DateExcludedBusinessImpl implements DateExcludedBusiness {
 	}
 
 	@Override
-	public DateExcluded updateDateExcluded(Date dateExcluded) {
+	public DateExcluded updateDateExcluded(Date lastDateExcluded,Date dateExcluded) {
 		
-		DateExcluded dateExcluded1 = dateExcludedRepository.findOne(dateExcluded);		
-		dateExcluded1.setDateExcluded(dateExcluded);
+		DateExcluded dateExcluded1 = dateExcludedRepository.findOne(lastDateExcluded);
+		dateExcludedRepository.delete(dateExcluded1);
+		
+		DateExcluded dExcluded = new DateExcluded();
+		dExcluded.setDateExcluded(dateExcluded);
 		//lieu.setId(id);
-		return dateExcludedRepository.save(dateExcluded1);
+		return dateExcludedRepository.save(dExcluded);
 	}
 
 	@Override

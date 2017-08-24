@@ -36,21 +36,54 @@ public interface ActiviterEmployerRepository extends JpaRepository<ActiviterEmpl
 	public List<ActiviterEmployer> findActiviterEmployer();
 	
 	
-	@Query("select count(distinct e.client) from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2")
-	public int countClientActiviteEmp(String email,String type);
+	@Query("select count(distinct e.client) from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public int countClientActiviteEmp(String email,String type,Date dateDebut,Date dateFin);
 	
-	@Query("select count(e) from ActiviterEmployer e where e.user.username = ?1 and e.type.type = ?2")
-	public int countTypeActiviteEmp(String email,String type);
+	@Query("select count(e) from ActiviterEmployer e where e.user.username = ?1 and e.type.type = ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public int countTypeActiviteEmp(String email,String type,Date dateDebut,Date dateFin);
 	
-	@Query("select distinct e.client from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2")
-	public List<Client> distinctClientForUser(String email,String type);
+	@Query("select distinct e.client from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public List<Client> distinctClientForUser(String email,String type,Date dateDebut,Date dateFin);
 	
-	@Query("select distinct e.nature from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2")
-	public List<Nature> distinctNatureForUser(String email,String type);
+	@Query("select distinct e.nature from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public List<Nature> distinctNatureForUser(String email,String type,Date dateDebut,Date dateFin);
 	
 	
-	@Query("select count(distinct e.nature) from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2")
-	public int countNatureActiviteEmp(String email,String type);
+	@Query("select count(distinct e.nature) from ActiviterEmployer e where e.user.username = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public int countNatureActiviteEmp(String email,String type,Date dateDebut,Date dateFin);
+	
+	@Query("select count(distinct e.nature) from ActiviterEmployer e where e.type.type= ?1 and (e.dateDebut > ?2  and e.dateFin < ?3)")
+	public int countNatureActiviteEmp2(String type,Date dateDebut,Date dateFin);
+
+	
+	@Query("select count(distinct e.client) from ActiviterEmployer e where e.type.type= ?1 and (e.dateDebut > ?2  and e.dateFin < ?3) ")
+	public int countClientActiviteEmp2(String type,Date dateDebut,Date dateFin);
+	
+	@Query("select count(e) from ActiviterEmployer e where e.type.type = ?1 and (e.dateDebut > ?2  and e.dateFin < ?3)")
+	public int countTypeActiviteEmp2(String type,Date dateDebut,Date dateFin);
+	
+	@Query("select distinct e.client from ActiviterEmployer e where e.type.type= ?1 and (e.dateDebut > ?2  and e.dateFin < ?3)")
+	public List<Client> distinctClientForUser2(String type,Date dateDebut,Date dateFin);
+	
+	@Query("select distinct e.nature from ActiviterEmployer e where e.type.type= ?1 and (e.dateDebut > ?2  and e.dateFin < ?3)")
+	public List<Nature> distinctNatureForUser2(String type,Date dateDebut,Date dateFin);
+	
+	
+	@Query("select distinct e.user from ActiviterEmployer e where e.type.type= ?1 and (e.dateDebut > ?2  and e.dateFin < ?3)")
+	public List<User> distinctUserForUser2(String type,Date dateDebut,Date dateFin);
+	
+	@Query("select o from ActiviterEmployer o where o.type.type = :a and (o.dateDebut > :y  and o.dateFin < :z)")
+	public List<ActiviterEmployer>  findByDatesAfterBefore2(@Param("a")String type,@Param("y")Date DateDebut,@Param("z") Date DateFin);
+	
+	@Query("select e from ActiviterEmployer e where e.nature.nature = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public List<ActiviterEmployer> activiterEmployerByEmailByNatureByDate2(String nature,String type,Date DateDebut,Date DateFin);
+	
+	
+	@Query("select count(e) from ActiviterEmployer e where e.client.client = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public int countActiviterEmployerByEmailByClient2(String client,String type,Date DateDebut,Date DateFin);
+	
+	@Query("select count(e) from ActiviterEmployer e where e.nature.nature = ?1 and e.type.type= ?2 and (e.dateDebut > ?3  and e.dateFin < ?4)")
+	public int countActiviterEmployerByEmailByNature2(String nature,String type,Date DateDebut,Date DateFin);
 	
 	public List<ActiviterEmployer> findByUser(User user);
 	

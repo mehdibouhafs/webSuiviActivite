@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class DateExcluded implements Serializable {
 	
 	@Id
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateExcluded;
 	
 	

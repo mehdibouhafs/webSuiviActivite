@@ -43,13 +43,17 @@ public class DateExcludedRestService {
 		
 	
 	@RequestMapping(value="/dateExcludede",method = RequestMethod.GET)
-	public DateExcluded updateLieu2(@RequestParam(name="dateExcluded")String dateExcluded){
+	public DateExcluded updateLieu2(@RequestParam(name="lastDateExcluded")String lastDateExcluded,@RequestParam(name="dateExcluded")String dateExcluded){
+		
+		System.out.println(" Date Excluded " + dateExcluded);
 		 
-	     Date dateExcluded1;
+	     Date dateExcluded1,lastDateExcluded1;
 		try {
 			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			dateExcluded1 = df.parse(dateExcluded);
-			return dateExcludedBusiness.updateDateExcluded(dateExcluded1);
+			DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
+			lastDateExcluded1 = df2.parse(lastDateExcluded);
+			return dateExcludedBusiness.updateDateExcluded(lastDateExcluded1,dateExcluded1);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

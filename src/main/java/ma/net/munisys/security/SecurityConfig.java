@@ -25,12 +25,21 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	auth.inMemoryAuthentication()
 	  .withUser("hasna").password("123").roles("USER");
 	  */
-	   auth.jdbcAuthentication()
+	 /*  auth.jdbcAuthentication()
 	     .dataSource(dataSource)
 	     .usersByUsernameQuery("select username as principal,password as credentials,active from users where username=?")
 	     .authoritiesByUsernameQuery("select user_username as principal, roles_role as role from users_role where user_username=?")
 	     .rolePrefix("ROLE_");
-	     //.passwordEncoder();
+	     //.passwordEncoder();*/
+	   
+	   auth
+       .ldapAuthentication().contextSource()
+       .url("ldap://130.24.31.215:3268/DC=MUNISYS,DC=INTRANET")
+       .managerDn("CN=stage01,ou=Munisys-Casa,DC=MUNISYS,DC=INTRANET")
+       .managerPassword("123456") 
+       
+       .and().userSearchFilter("(mail={0})")
+       .userSearchBase("");
 }
    
    @Override

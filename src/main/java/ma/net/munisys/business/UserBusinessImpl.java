@@ -102,15 +102,20 @@ public class UserBusinessImpl implements UserBusiness {
 		HttpSession httpSession = httpServletRequest.getSession();
 		SecurityContext securityContext = (SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
 		String username = securityContext.getAuthentication().getName();
-		List<String> roles = new ArrayList<>();
-		for(GrantedAuthority g : securityContext.getAuthentication().getAuthorities()){
-			roles.add(g.getAuthority());
-		}
+		
+		System.out.println("username " + username);
+		
+		System.out.println(" voir " + securityContext.getAuthentication().toString());
+		
+		//List<String> roles = new ArrayList<>();
+		
+		
 		User user = getUser(username);
+		System.out.println("User " + user.toString());
 		Map<String,Object> params = new HashMap<>();
 		params.put("username", username);
 		params.put("nom", user.getNom());
-		params.put("roles", roles);
+		params.put("roles", user.getRoles());
 		params.put("groupe", user.getGroupe());
 		return params;
 		

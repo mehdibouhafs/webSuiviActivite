@@ -32,6 +32,7 @@ import ma.net.munisys.entities.Nature;
 import ma.net.munisys.entities.NatureStatistics;
 import ma.net.munisys.entities.PageActiviterEmployer;
 import ma.net.munisys.entities.Statistics;
+import ma.net.munisys.entities.User;
 
 
 @RestController
@@ -46,16 +47,9 @@ public class ActiviterEmployerRestService{
 	@RequestMapping(value="/countActiviterEmployer",method = RequestMethod.GET)
 	public Statistics countNatureActiviteEmp(@RequestParam(name="email") String email) {
 		
-		int nbNature =  activiterEmployerBusiness.countNatureActiviteEmp(email,"Réaliser");
-		int nbClient = activiterEmployerBusiness.countClientActiviteEmp(email,"Réaliser");
-		int nbActiviterRealiser = activiterEmployerBusiness.countTypeActiviteEmp(email, "Réaliser");
-		int nbActiviterPlannifier = activiterEmployerBusiness.countTypeActiviteEmp(email, "Planifier");
-		List<Client> distinctClientForUsers = activiterEmployerBusiness.distinctClientForUser(email,"Réaliser");
-		List<Nature> distinctNatureForUsers = activiterEmployerBusiness.distinctNatureForUser(email,"Réaliser");
+		
 		//System.out.println("Taille "+ distinctClientForUsers);
-		
-		
-		
+
 		Date dt = getFirstDateBeforeOneMonth(new Date());
 				
 		/*	Date dt=	new Date();
@@ -94,6 +88,14 @@ public class ActiviterEmployerRestService{
 		c4.add(Calendar.MONTH, -1);
 		dt3 = c4.getTime();*/
 		//Frist Day
+		int nbNature =  activiterEmployerBusiness.countNatureActiviteEmp(email,"Réaliser",dt, getDatePlusOne(new Date()));
+		int nbClient = activiterEmployerBusiness.countClientActiviteEmp(email,"Réaliser",dt, getDatePlusOne(new Date()));
+		
+		List<Client> distinctClientForUsers = activiterEmployerBusiness.distinctClientForUser(email,"Réaliser",dt, getDatePlusOne(new Date()));
+		List<Nature> distinctNatureForUsers = activiterEmployerBusiness.distinctNatureForUser(email,"Réaliser",dt, getDatePlusOne(new Date()));
+		int nbActiviterRealiser = activiterEmployerBusiness.countTypeActiviteEmp(email, "Réaliser",dt, getDatePlusOne(new Date()));
+		int nbActiviterPlannifier = activiterEmployerBusiness.countTypeActiviteEmp(email, "Planifier",dt, getDatePlusOne(new Date()));
+				
 				List<ActiviterEmployer> actiThisMonth = activiterEmployerBusiness.findByDatesAfterBefore(email,"Réaliser", dt, getDatePlusOne(new Date()));
 				List<ActiviterEmployer> actiLastMonth = activiterEmployerBusiness.findByDatesAfterBefore(email,"Réaliser",dt1, dt);
 				List<ActiviterEmployer> actiLastLastMonth = activiterEmployerBusiness.findByDatesAfterBefore(email,"Réaliser", dt2, dt1);
@@ -194,14 +196,14 @@ public class ActiviterEmployerRestService{
 				System.out.println("Last Lastt Month " + actiLasLasttMonth.size());*/
 				
 				Statistics statistics = new Statistics(nbActiviterRealiser, nbActiviterPlannifier, nbClient, nbNature);
-				statistics.setTauxActuel(String.format("%.2f",DureeMonth.calculeTaux(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size())));
+				
 		
 		for(Client e :distinctClientForUsers){
 			ClientStatistics clientStatistics = new ClientStatistics();
 			clientStatistics.setClient(e.getClient());
 			//clientStatistics.setNbInterventionMonth(activiterEmployerBusiness.countActiviterEmployerByClientEtDate(email, e.getClient(), dt, new Date()));
 			clientStatistics.setMonth("month3");
-			clientStatistics.setNbInterventions1(activiterEmployerBusiness.countActiviterEmployerByEmailByClient(email,e.getClient(),"Réaliser"));
+			clientStatistics.setNbInterventions1(activiterEmployerBusiness.countActiviterEmployerByEmailByClient(email,e.getClient(),"Réaliser",dt, new Date()));
 			statistics.getClientStatistics().add(clientStatistics);
 		}
 		
@@ -210,7 +212,7 @@ public class ActiviterEmployerRestService{
 			natureStatistics.setNature(e.getNature());
 			//clientStatistics.setNbInterventionMonth(activiterEmployerBusiness.countActiviterEmployerByClientEtDate(email, e.getClient(), dt, new Date()));
 			natureStatistics.setMonth("month00");
-			natureStatistics.setNbInterventionsNature(activiterEmployerBusiness.countActiviterEmployerByEmailByNature(email,e.getNature(),"Réaliser"));
+			natureStatistics.setNbInterventionsNature(activiterEmployerBusiness.countActiviterEmployerByEmailByNature(email,e.getNature(),"Réaliser",dt, new Date()));
 			statistics.getNatureStatistics().add(natureStatistics);
 		}
 		
@@ -220,9 +222,14 @@ public class ActiviterEmployerRestService{
 		statistics.setNbInterventionMois2(actiLastLastMonth.size());
 		statistics.setNbInterventionMois1(actiLasLasttMonth.size());
 		
+		
+		Double a = DureeMonth.calculeDureeHoursMonth(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size());
+		Double b = DureeMonth.calculeTempsMaxMonth(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size());
+		statistics.setTauxActuel(String.format("%.2f",a/b * 100));
+		
 		DureeMonth dureeMonth = new DureeMonth();
-		dureeMonth.setNbhoursMonth(DureeMonth.calculeDureeHoursMonth(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size()));
-		dureeMonth.setTaux(DureeMonth.calculeTempsMaxMonth(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size()));
+		dureeMonth.setNbhoursMonth(a);
+		dureeMonth.setTaux(b);
 		statistics.getDureeStatistics().add(dureeMonth);
 		
 		DureeMonth dureeMonth11 = new DureeMonth();
@@ -239,6 +246,245 @@ public class ActiviterEmployerRestService{
 		
 		
 		return statistics;
+	}
+	
+	
+	
+	
+	
+	@RequestMapping(value="/countActiviterEmployer2",method = RequestMethod.GET)
+	public Statistics countNatureActiviteEmp2() {
+		
+		
+		//System.out.println("Taille "+ distinctClientForUsers);
+		
+		
+		
+		Date dt = getFirstDateBeforeOneMonth(new Date());
+				
+		/*	Date dt=	new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(dt); 
+		//c.add(Calendar.MONTH, -1);
+		c.set(Calendar.DAY_OF_MONTH, 1); 
+		dt = c.getTime();*/
+		
+		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		String dateDebut1 = df.format(dt);
+		//System.out.println("Date debut dt " + dateDebut1 + " Date Fin  " + df.format(new Date()));
+
+		Date dt1 = getFirstDateBeforeOneMonth(dt);
+		/*Date dt1 = dt;
+		Calendar c2 = Calendar.getInstance();
+		c2.setTime(dt1);
+		c2.add(Calendar.MONTH, -1);
+		dt1 = c2.getTime();*/
+		
+		//System.out.println("Date debut dt1 " + df.format(dt1) + " Date Fin 1 " + df.format(dt));
+		Date dt2= getFirstDateBeforeOneMonth(dt1);
+		/*Date dt2 = dt1;
+		Calendar c3 = Calendar.getInstance();
+		c3.setTime(dt1);
+		c3.add(Calendar.MONTH, -1);
+		dt2 = c3.getTime();*/
+		
+		//System.out.println("Date debut dt2 " + df.format(dt2) + " Date Fin 2 " + df.format(dt1));
+		
+		Date dt3 = getFirstDateBeforeOneMonth(dt2);
+		/*Date dt3 = dt2;
+		Calendar c4 = Calendar.getInstance();
+		c4.setTime(dt2);
+		c4.add(Calendar.MONTH, -1);
+		dt3 = c4.getTime();*/
+		//Frist Day
+		int nbNature =  activiterEmployerBusiness.countNatureActiviteEmp2("Réaliser", dt, getDatePlusOne(new Date()));
+		int nbClient = activiterEmployerBusiness.countClientActiviteEmp2("Réaliser", dt, getDatePlusOne(new Date()));
+		int nbActiviterRealiser = activiterEmployerBusiness.countTypeActiviteEmp2("Réaliser", dt, getDatePlusOne(new Date()));
+		int nbActiviterPlannifier = activiterEmployerBusiness.countTypeActiviteEmp2("Planifier", dt, getDatePlusOne(new Date()));
+		List<Client> distinctClientForUsers = activiterEmployerBusiness.distinctClientForUser2("Réaliser", dt, getDatePlusOne(new Date()));
+		List<Nature> distinctNatureForUsers = activiterEmployerBusiness.distinctNatureForUser2("Réaliser", dt, getDatePlusOne(new Date()));
+				List<ActiviterEmployer> actiThisMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser", dt, getDatePlusOne(new Date()));
+				List<ActiviterEmployer> actiLastMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser",dt1, dt);
+				List<ActiviterEmployer> actiLastLastMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser", dt2, dt1);
+				List<ActiviterEmployer> actiLasLasttMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser", dt3, dt2);
+				
+				
+				List<String> dureeThisMonth = new ArrayList<>();
+				List<String> dureeLastMonth = new ArrayList<>();
+				List<String> dureeLaseLastsMonth = new ArrayList<>();
+				
+				System.out.println("Activiti taille This month " + actiThisMonth.size() + " value = " +actiThisMonth.toString() );
+				System.out.println("Day Start " + dt);
+				System.out.println("Day end " + getDatePlusOne(new Date()));
+				
+				for(ActiviterEmployer activiterEmployer : actiThisMonth){
+					dureeThisMonth.add(activiterEmployer.getDuree());
+				}
+				
+				for(ActiviterEmployer activiterEmployer : actiLastMonth){
+					dureeLastMonth.add(activiterEmployer.getDuree());
+				}
+				
+				for(ActiviterEmployer activiterEmployer : actiLastLastMonth){
+					dureeLaseLastsMonth.add(activiterEmployer.getDuree());
+				}
+				
+				
+				System.out.println("Activite Travaille ce mois " + dureeThisMonth);
+				System.out.println("Activite Travaille  mois precedant  " + dureeThisMonth);
+				System.out.println("Activite Travaille mois precedant precedant " + dureeLaseLastsMonth);
+				String dureeMonth1 = DureeMonth.sumDuree(dureeThisMonth,"Duree Travaille This month");
+				String dureeMonth2 = DureeMonth.sumDuree(dureeLastMonth,"Duree Travaille last month");
+				String dureeMonth3 = DureeMonth.sumDuree(dureeLaseLastsMonth,"Duree Travaille last last month");
+				
+				Date dt4 = getFirstDateMineOne(new Date());
+						
+				/*Date dt4 =	new Date();
+				Calendar c5 = Calendar.getInstance();
+				c5.setTime(dt4);
+				c5.set(Calendar.DAY_OF_MONTH, 1);
+				c5.add(Calendar.DAY_OF_WEEK, -1);
+				dt4 = c5.getTime();*/
+				
+				Date dt5 = getDatePlusOne(new Date());
+				/*
+				Date dt5 = new Date();
+				Calendar c6 = Calendar.getInstance();
+				c6.setTime(dt5);
+				
+				c6.add(Calendar.DAY_OF_WEEK, 1);
+				dt5 = c6.getTime();*/
+				
+				
+				
+				System.out.println("DT4 " +dt4);
+				System.out.println("DT5 " +dt5);
+				List<ActiviterEmployer> activiteEnConge = activiterEmployerBusiness.activiterEmployerByEmailByNatureByDate2("Congé","Réaliser",dt4,getDatePlusOne(dt5));
+				List<ActiviterEmployer> activiteEnConge2 = activiterEmployerBusiness.activiterEmployerByEmailByNatureByDate2("Congé","Réaliser",getFirstDateMineOne(dt4),getDatePlusOne(dt4));
+				List<ActiviterEmployer> activiteEnConge3 = activiterEmployerBusiness.activiterEmployerByEmailByNatureByDate2("Congé","Réaliser",getFirstDateMineOne(dt5),getDatePlusOne(dt5));
+				if(activiteEnConge!=null){
+					System.out.println("Activite Congé" + activiteEnConge);
+				}
+				
+				List<String> dureeCongeThisMonth = new ArrayList<>();
+				 
+				for(ActiviterEmployer activiterEmployer : activiteEnConge){
+					dureeCongeThisMonth.add(activiterEmployer.getDuree());
+				}
+				
+				
+				List<String> dureeCongeLastMonth = new ArrayList<>();
+				 
+				for(ActiviterEmployer activiterEmployer : activiteEnConge2){
+					dureeCongeLastMonth.add(activiterEmployer.getDuree());
+				}
+				
+				List<String> dureeCongeLaseLastsMonth = new ArrayList<>();
+				 
+				for(ActiviterEmployer activiterEmployer : activiteEnConge3){
+					dureeCongeLaseLastsMonth.add(activiterEmployer.getDuree());
+				}
+				
+				String dureeCongeMonth1 = DureeMonth.sumDuree(dureeCongeThisMonth,"Duree Conge This Month");
+				String dureeCongeMonth2 = DureeMonth.sumDuree(dureeCongeLastMonth,"Duree Conge Last Month");
+				String dureeCongeMonth3  = DureeMonth.sumDuree(dureeCongeLaseLastsMonth,"Duree Conge Last Last Month");
+				
+				
+				
+				
+				System.out.println("Durrée conge this month " + dureeCongeMonth1);
+				
+				
+				List<DateExcluded> dates =  dateExcludedBusiness.findByDatesBetween(dt,new Date());
+				System.out.println(dates);
+				
+				
+				
+				/*System.out.println("this Month " + actiThisMonth.size());
+				System.out.println("Last Month " + actiLastMonth.size());
+				System.out.println("Last Last Month " + actiLastLastMonth.size());
+				System.out.println("Last Lastt Month " + actiLasLasttMonth.size());*/
+				
+				
+				List<User> userActif = activiterEmployerBusiness.distinctUserForUser2("Réaliser",dt, getDatePlusOne(new Date()));
+				
+				Statistics statistics = new Statistics(nbActiviterRealiser, nbActiviterPlannifier, nbClient, nbNature);
+				Double taux = DureeMonth.calculeTaux(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size());
+				Double res = taux / userActif.size();
+				statistics.setTauxActuel(String.format("%.2f",res));
+		
+		for(Client e :distinctClientForUsers){
+			ClientStatistics clientStatistics = new ClientStatistics();
+			clientStatistics.setClient(e.getClient());
+			//clientStatistics.setNbInterventionMonth(activiterEmployerBusiness.countActiviterEmployerByClientEtDate(email, e.getClient(), dt, new Date()));
+			clientStatistics.setMonth("month3");
+			clientStatistics.setNbInterventions1(activiterEmployerBusiness.countActiviterEmployerByEmailByClient2(e.getClient(),"Réaliser",dt4,new Date()));
+			statistics.getClientStatistics().add(clientStatistics);
+		}
+		
+		for(Nature e :distinctNatureForUsers){
+			NatureStatistics natureStatistics = new NatureStatistics();
+			natureStatistics.setNature(e.getNature());
+			//clientStatistics.setNbInterventionMonth(activiterEmployerBusiness.countActiviterEmployerByClientEtDate(email, e.getClient(), dt, new Date()));
+			natureStatistics.setMonth("month00");
+			natureStatistics.setNbInterventionsNature(activiterEmployerBusiness.countActiviterEmployerByEmailByNature2(e.getNature(),"Réaliser",dt4,new Date()));
+			statistics.getNatureStatistics().add(natureStatistics);
+		}
+		
+		
+		statistics.setNbInterventionMois4(actiThisMonth.size());
+		statistics.setNbInterventionMois3(actiLastMonth.size());
+		statistics.setNbInterventionMois2(actiLastLastMonth.size());
+		statistics.setNbInterventionMois1(actiLasLasttMonth.size());
+		
+		List<User> userActif1 = activiterEmployerBusiness.distinctUserForUser2("Réaliser",getFirstDateMineOne(dt4), dt4);//mois2
+		
+		
+		
+		Double a = DureeMonth.calculeDureeHoursMonth(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size());
+		Double b = DureeMonth.calculeTempsMaxMonth(dureeMonth1,dt4,new Date(),dureeCongeMonth1,dates.size());
+		statistics.setTauxActuel(String.format("%.2f",a/b/userActif.size() * 100));
+		
+		DureeMonth dureeMonth = new DureeMonth();
+		if(userActif.size()>0){
+		dureeMonth.setNbhoursMonth(a/userActif.size());
+		}else{
+			dureeMonth.setNbhoursMonth(0);
+		}
+		dureeMonth.setTaux(b);
+		statistics.getDureeStatistics().add(dureeMonth);
+		
+		DureeMonth dureeMonth11 = new DureeMonth();
+		Date dt6 = getFirstDateMineOne(dt4);
+		Double nbH = DureeMonth.calculeDureeHoursMonth(dureeMonth2,getFirstDateMineOne(dt4),dt4,dureeCongeMonth1,dates.size());
+		if(userActif1.size()>0){
+		dureeMonth11.setNbhoursMonth(nbH /userActif1.size());
+		}else{
+			dureeMonth11.setNbhoursMonth(0);
+		}
+		dureeMonth11.setTaux(DureeMonth.calculeTempsMaxMonth(dureeMonth2,getFirstDateMineOne(dt4),dt4,dureeCongeMonth2,dates.size()));
+		statistics.getDureeStatistics().add(dureeMonth11);
+		
+		List<User> userActif2 = activiterEmployerBusiness.distinctUserForUser2("Réaliser",getFirstDateMineOne(dt6),dt6);//month3
+		
+		
+		DureeMonth dureeMonth22 = new DureeMonth();
+		if(userActif2.size()>2){
+			Double nbH2 = DureeMonth.calculeDureeHoursMonth(dureeMonth3,getFirstDateMineOne(dt6),dt6,dureeCongeMonth1,dates.size());
+		dureeMonth22.setNbhoursMonth(nbH2 / userActif2.size());
+		}else{
+			dureeMonth22.setNbhoursMonth(0);
+		}
+		
+		dureeMonth22.setTaux(DureeMonth.calculeTempsMaxMonth(dureeMonth3,getFirstDateMineOne(dt6),dt6,dureeCongeMonth3,dates.size()));
+		
+		
+		
+		statistics.getDureeStatistics().add(dureeMonth22);
+		
+		return statistics;
+		
 	}
 
 	

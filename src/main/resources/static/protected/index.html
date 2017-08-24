@@ -46,7 +46,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="/index" class="site_title"><i class="fa fa-building"></i> <span><img src="../production/images/munisys.png" alt="Munisys" height="63" width="170" /></span></a>
+              <a class="site_title"><i class="fa fa-building"></i> <span><img src="../production/images/munisys.png" alt="Munisys" height="63" width="170" /></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -69,25 +69,24 @@
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>General</h3>
-                
                 <ul class="nav side-menu">
-               
-                  <li><a href="/index"><i class="fa fa-home"></i> Home </a></li>
-                  <li><a href="/adminCalendar" ng-show="admin" ng-cloak><i class="fa fa-calendar-check-o"></i> Admin calendrier </a></li>
-                  <li><a href="/moncalendrier"><i class="fa fa-calendar"></i> Mon calendrier </a></li>
-                  <li><a href="/nouvelleIntervention"><i class="fa fa-suitcase"></i> Nouvelle Intervention </a></li>
-                  <li ng-show="admin" ng-cloak><a href="/Allinterventions"><i class="fa fa-calendar-check-o"></i> Tout les interventions</a></li>
-                  <li><a href="/mesinterventions"><i class="fa fa-calendar-check-o"></i> Mes interventions</a></li>
-                  <li ng-cloak><a href="/interventionGroupe"><i class="fa fa-calendar-check-o"></i> Interventions du groupe</a></li>
+                  <li  ng-show="directeur"><a href="/directeurHome"><i class="fa fa-line-chart"></i> Tableau de bord </a></li>
+                  <li ng-hide="directeur"><a href="/index"><i class="fa fa-home"></i> Home </a></li>
+                  <li ng-show="directeur || admin"><a href="/adminCalendar" ng-cloak><i class="fa fa-calendar-check-o"></i> Admin calendrier </a></li>
+                  <li ng-hide="directeur"><a href="/moncalendrier"><i class="fa fa-calendar"></i> Mon calendrier </a></li>
+                  <li ng-hide="directeur"><a href="/nouvelleIntervention"><i class="fa fa-suitcase"></i> Nouvelle Intervention </a></li>
+                  <li ng-show="admin || directeur" ng-cloak><a href="/Allinterventions"><i class="fa fa-calendar-check-o"></i> Tout les interventions</a></li>
+                  <li ng-hide="directeur"><a href="/mesinterventions" ><i class="fa fa-calendar-plus-o"></i> Mes interventions</a></li>
+                  <li ng-cloak ng-show="chefGroupe"><a href="/interventionGroupe"><i class="fa fa-users"></i> Interventions du groupe</a></li>
                   <li ng-show="admin" ng-cloak><a><i class="fa fa-database"></i> Référentiel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/nouveauUtilisateur"><i class="fa fa-user"></i> Nouveau Utilisateur</a></li>
                       <li><a href="/nouveauClient"><i class="fa fa-building"></i> Nouveau Client</a></li>
                       <li><a href="/nouvelleNature"><i class="fa fa-tasks"></i> Nouvelle nature intervention</a></li>
-                      <li><a href="/nouveauLieu"><i class="fa fa-institution"></i> Nouveau Lieu</a></li>
-                      <li><a href="/nouveauStatut"><i class="fa fa-institution"></i> Nouveau Statut</a></li>
-                      <li><a href="/nouveauProjet"><i class="fa fa-institution"></i> Nouveau Projet</a></li>
-                      <li><a href="/nouveauJour"><i class="fa fa-institution"></i> Nouveau Jour Férié</a></li>
+                      <li><a href="/nouveauLieu"><i class="fa fa-map-marker"></i> Nouveau Lieu</a></li>
+                      <li><a href="/nouveauStatut"><i class="fa fa-bookmark"></i> Nouveau Statut</a></li>
+                      <li><a href="/nouveauProjet"><i class="fa fa-newspaper-o"></i> Nouveau Projet</a></li>
+                      <li><a href="/nouveauJour"><i class="fa fa-hand-scissors-o"></i> Nouveau Jour Férié</a></li>
                     </ul>
                   </li>
                   <li><a href="/help"><i class="fa fa-info"></i> Help </span></a></li>
@@ -126,7 +125,6 @@
                   </ul>
                 </li>
 
-                
               </ul>
             </nav>
           </div>
@@ -135,16 +133,11 @@
 		
 	
         <!-- page content -->
-        
-       
-       
-       <div ng-view></div>
-       
-	              
-            
-       
-        
-        <!-- /page content -->
+
+       <div ng-view>
+      
+       </div>
+              <!-- /page content -->
 
         <!-- footer content -->
         <footer>
@@ -204,7 +197,7 @@
     <script src="../vendors/angularjs/munitime/interventionGroupe.js"></script>
     <script src="../vendors/angularjs/munitime/projet.js"></script>
     <script src="../vendors/angularjs/munitime/jourFerie.js"></script>
-    
+    <script src="../vendors/angularjs/munitime/directeurHome.js"></script>
    <script type="text/javascript" src="../vendors/angularjs/angular-material-datetimepicker.min.js"></script>
    <script type="text/javascript" src="../vendors/angularjs/paging.js"></script>
      

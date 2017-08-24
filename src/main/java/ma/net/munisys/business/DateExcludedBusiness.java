@@ -19,6 +19,6 @@ public interface DateExcludedBusiness {
 	public DateExcluded saveDateExcluded(DateExcluded dateExcluded);
 	public List<DateExcluded> listDateExcluded();
 	public List<DateExcluded> findByDatesBetween(Date nouvelleDateDebut, Date nouvelleDateFin);
-	public DateExcluded updateDateExcluded(Date dateExcluded);
+	public DateExcluded updateDateExcluded(Date lastDateExcluded,Date dateExcluded);
 	public PageDateExlcuded listDateExcluded(int page, int size);
 }
