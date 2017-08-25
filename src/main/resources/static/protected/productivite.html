@@ -1,0 +1,129 @@
+
+	
+        <!-- page content -->
+        
+        <div class="right_col" role="main" ng-controller="productiviteController" style="min-height: 750px;">
+          <div class="">
+            
+
+            <div class="row">
+            	 <label class="col-md-2 col-sm-2 col-xs-12">
+            	 
+            	 </label>
+	              <div class="col-md-8 col-sm-4 col-xs-12">
+	                <div class="x_panel">
+	                  <div class="x_title">
+	                    <h2> Productivité des collaborateurs </h2>
+	                    
+	                    <div class="clearfix"></div>
+	                  </div>
+	
+	                  <div class="x_content">
+	                  
+	                  	  <form>
+						 <div class="row" style="margin: 10px;"> 
+						 <label class="control-label col-md-1 col-sm-1 col-xs-12"></label>
+						  <div class="form-group">
+						  
+		                    	<label class="control-label col-md-1 col-sm-1 col-xs-12" for="myDatePicker">Date début </label>
+			                        <div class="col-md-4 col-sm-4 col-xs-12">
+				                        
+				                			<div class="input-group date" id="myDatePicker">
+					                            <input class="form-control md-input" time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date début"
+													ng-model="dateDebut" format="DD/MM/YYYY" ok-text="valider" cancel-text="Annuler" ng-change="changeDebut()" required>
+													<span class="input-group-addon" ng-click="displayDialogDateDebut()" >
+						                               <span class="glyphicon glyphicon-calendar"></span>
+						                            </span>
+										    </div>
+										    
+				                    </div>
+	                      
+	                    	
+	                      
+	                    	<label class="control-label col-md-1 col-sm-1 col-xs-12" for="myDatePicker">Date Fin </label>
+	                        <div class="col-md-4 col-sm-4 col-xs-12" >
+		                        
+		                			<div class="input-group date" id="myDatePicker">
+			                            <input class="form-control md-input" time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date Fin"
+											ng-model="dateFin" format="DD/MM/YYYY" min-date="minDate" ok-text="valider" cancel-text="Annuler" ng-change="changeFin()" required>
+											<span class="input-group-addon" ng-click="displayDialogDateFin()" >
+				                               <span class="glyphicon glyphicon-calendar"></span>
+				                            </span>
+								    </div>
+								    
+		                    </div>
+		                  </div> 
+                    
+                    	
+                    	</div>  
+						    
+						  </form> 	  
+						  
+						  
+						  <form style="margin:15px;">
+						    <div class="form-group">
+						      <div class="input-group">
+						        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+						        <input type="text" class="form-control" placeholder="Filtre" ng-model="query3" ng-change="updateFilteredList()"/>
+						      </div>      
+						    </div>
+						  </form>
+	                  
+	                  
+	                  
+	                    <div class="table-responsive">
+	                      <table class="table table-striped jambo_table bulk_action" ng-cloak  at-table at-paginated at-list="filteredList" at-config="config">
+	                        <thead>
+	                         
+	                        </thead>
+	
+	                        <tbody>
+	                        <tr class="even pointer">
+	                        			
+				  						<td class=" "  at-implicit at-attribute="userName"></td>
+				  						<td class=" " at-implicit at-sortable at-attribute="taux"  ></td>
+
+				  					</tr>
+	                        </tbody>
+	                      </table>  
+	                      <at-pagination at-list="filteredList" at-config="config"></at-pagination>  	
+							            
+	                    </div>
+							
+	                  </div>
+	                </div>
+	              </div>
+	              <label class="col-md-2 col-sm-2 col-xs-12"></label>
+	            </div>
+	            
+	          </div>
+	       </div>
+	              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+       
+        
+        <!-- /page content -->
+
+   

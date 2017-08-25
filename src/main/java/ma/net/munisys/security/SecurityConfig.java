@@ -38,7 +38,7 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
        .managerDn("CN=stage01,ou=Munisys-Casa,DC=MUNISYS,DC=INTRANET")
        .managerPassword("123456") 
        
-       .and().userSearchFilter("(mail={0})")
+       .and().userSearchFilter("(mailNickname={0})")
        .userSearchBase("");
 }
    

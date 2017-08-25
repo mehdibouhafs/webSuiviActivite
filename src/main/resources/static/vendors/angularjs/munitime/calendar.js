@@ -22,6 +22,7 @@ app.config(['$routeProvider','$locationProvider',function($routeProvider,$locati
 	$routeProvider.when('/nouveauProjet',{templateUrl:'/protected/nouveauProjet.html'});
 	$routeProvider.when('/nouveauJour',{templateUrl:'/protected/nouveauJour.html'});
 	$routeProvider.when('/directeurHome',{templateUrl:'/protected/directeurHome.html'});
+	$routeProvider.when('/productivite',{templateUrl:'/protected/productivite.html'});
 	$routeProvider.otherwise('/index');
 	$locationProvider.html5Mode({enabled:true,requireBase:false});
 }

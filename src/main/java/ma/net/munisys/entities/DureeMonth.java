@@ -72,7 +72,7 @@ public class DureeMonth implements Serializable {
 		    long mm = tm / 60;
 		    tm %= 60;
 		    long ss = tm;
-		    System.out.println("Sum Duree "+ month+" " + format(hh) + ":" + format(mm) + ":" + format(ss));
+		   // System.out.println("Sum Duree "+ month+" " + format(hh) + ":" + format(mm) + ":" + format(ss));
 		    return format(hh) + ":" + format(mm) + ":" + format(ss);
 		    
 		   
@@ -103,7 +103,7 @@ public class DureeMonth implements Serializable {
 	        		totaleHourConge = nbHoliday * 8;
 	        	}else{
 	        		nbHoliday = Double.parseDouble(totaleConges[0]) +(Double.parseDouble(totaleConges[1])/60);
-	        		System.out.println("NB HOLI LI " + nbHoliday);
+	        		//System.out.println("NB HOLI LI " + nbHoliday);
 	        		totaleHourConge = nbHoliday;
 	        	}
 	        }else{
@@ -167,7 +167,7 @@ public class DureeMonth implements Serializable {
 	        
 	        double taux= calcHeure + calcMinute;
 	        
-	        System.out.println("Taux Calcule " + taux);
+	        //System.out.println("Taux Calcule " + taux);
 	        
 	        
 	        //System.out.println("Heure Brute "  +heureBrute + " heure et minuteBrute "+ minuteBrute);
@@ -253,12 +253,12 @@ public class DureeMonth implements Serializable {
 
 	        //System.out.println("Heure Brute "  +heureBrute + " heure et minuteBrute "+ minuteBrute);
 
-	        System.out.println(" Taux calculeDureeHoursMonth " + taux );
+	        //System.out.println(" Taux calculeDureeHoursMonth " + taux );
 	        double res = taux / 24; // diviser par 8h par jour
-	        System.out.println(" RES calculeDureeHoursMonth par mois " + res);
+	        //System.out.println(" RES calculeDureeHoursMonth par mois " + res);
 	       
 	        String result = new DecimalFormat("##.##").format(res);
-	        System.out.println(" new Result " + result);
+	        //System.out.println(" new Result " + result);
 	        //double v =  (v1-totale) * 8; // day  jour work - conge  * 8h     
 	        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
 	        try {

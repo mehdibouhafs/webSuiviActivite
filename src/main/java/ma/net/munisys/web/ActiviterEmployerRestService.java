@@ -32,6 +32,7 @@ import ma.net.munisys.entities.Nature;
 import ma.net.munisys.entities.NatureStatistics;
 import ma.net.munisys.entities.PageActiviterEmployer;
 import ma.net.munisys.entities.Statistics;
+import ma.net.munisys.entities.TauxUser;
 import ma.net.munisys.entities.User;
 
 
@@ -152,9 +153,7 @@ public class ActiviterEmployerRestService{
 				List<ActiviterEmployer> activiteEnConge = activiterEmployerBusiness.activiterEmployerByEmailByNatureByDate(email,"Congé","Réaliser",dt4,getDatePlusOne(dt5));
 				List<ActiviterEmployer> activiteEnConge2 = activiterEmployerBusiness.activiterEmployerByEmailByNatureByDate(email,"Congé","Réaliser",getFirstDateMineOne(dt4),getDatePlusOne(dt4));
 				List<ActiviterEmployer> activiteEnConge3 = activiterEmployerBusiness.activiterEmployerByEmailByNatureByDate(email,"Congé","Réaliser",getFirstDateMineOne(dt5),getDatePlusOne(dt5));
-				if(activiteEnConge!=null){
-					System.out.println("Activite Congé" + activiteEnConge);
-				}
+				
 				
 				List<String> dureeCongeThisMonth = new ArrayList<>();
 				 
@@ -182,11 +181,11 @@ public class ActiviterEmployerRestService{
 				
 				
 				
-				System.out.println("Durrée conge this month " + dureeCongeMonth1);
+				//System.out.println("Durrée conge this month " + dureeCongeMonth1);
 				
 				
 				List<DateExcluded> dates =  dateExcludedBusiness.findByDatesBetween(dt,new Date());
-				System.out.println(dates);
+				//System.out.println(dates);
 				
 				
 				
@@ -242,9 +241,7 @@ public class ActiviterEmployerRestService{
 		dureeMonth22.setNbhoursMonth(DureeMonth.calculeDureeHoursMonth(dureeMonth3,getFirstDateMineOne(dt6),dt6,dureeCongeMonth1,dates.size()));
 		dureeMonth22.setTaux(DureeMonth.calculeTempsMaxMonth(dureeMonth3,getFirstDateMineOne(dt6),dt6,dureeCongeMonth3,dates.size()));
 		statistics.getDureeStatistics().add(dureeMonth22);
-		
-		
-		
+
 		return statistics;
 	}
 	
@@ -308,8 +305,7 @@ public class ActiviterEmployerRestService{
 				List<ActiviterEmployer> actiLastMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser",dt1, dt);
 				List<ActiviterEmployer> actiLastLastMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser", dt2, dt1);
 				List<ActiviterEmployer> actiLasLasttMonth = activiterEmployerBusiness.findByDatesAfterBefore2("Réaliser", dt3, dt2);
-				
-				
+
 				List<String> dureeThisMonth = new ArrayList<>();
 				List<String> dureeLastMonth = new ArrayList<>();
 				List<String> dureeLaseLastsMonth = new ArrayList<>();
@@ -570,6 +566,23 @@ public class ActiviterEmployerRestService{
 	}
 	
 	
+	
+	
+	
+	
+	@RequestMapping(value="/ActiviterEmployerTauxByDate",method = RequestMethod.GET)
+	public List<TauxUser> getTauxUsers(@RequestParam(name="dateDebut")  String dateDebut,@RequestParam(name="dateFin") String dateFin) {
+		try {
+	        DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	        Date dateDebut1 = df.parse(dateDebut);
+	        Date dateFin1 = df.parse(dateFin);
+	        return activiterEmployerBusiness.getStatisticUsers(dateDebut1, dateFin1);
+		 	} catch (ParseException e) {
+		        //WebApplicationException ...("Date format should be yyyy-MM-dd'T'HH:mm:ss", Status.BAD_REQUEST);
+		    }
+			return null;
+		
+		}
 
 	
 	/*

@@ -30,7 +30,8 @@ app.controller("jourController",function($scope,$http,$mdDialog,$mdMedia){
 		console.log("jour ferie " + moment($scope.dateExcludede).format("DD/MM/YYYY"));
 		
 		var dataObj = {
-				"dateExcluded": moment($scope.dateExcludede).format("DD/MM/YYYY")
+				"dateExcluded": moment($scope.dateExcludede).format("DD/MM/YYYY"),
+				"intitule":$scope.intitule
 				
 		};	
 	  
@@ -48,7 +49,7 @@ app.controller("jourController",function($scope,$http,$mdDialog,$mdMedia){
 			
 			$scope.message = response;
 			$scope.success=true;
-			$scope.message.success="Le jour férié : " +moment($scope.dateExcludede).format("DD/MM/YYYY")+" a été ajouté avec succès";
+			$scope.message.success="Le jour férié : " +$scope.intitule+" a été ajouté avec succès";
 		
 			$scope.reset();
 			$scope.chargerAllDateExcluded();

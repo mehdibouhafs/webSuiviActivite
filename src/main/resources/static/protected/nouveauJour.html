@@ -40,7 +40,7 @@
 					 
                     <form id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
                     
-                      <div class="form-group">
+                      <div class="form-group row">
                     	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Jour férié <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12" >
@@ -55,12 +55,25 @@
 							    
 	                    </div>
                     </div>
+                    
+                    <div class="form-group row">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="jourferie"> intitulé du jour </span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" >
+	                        
+	                			<div  id="jourferie">
+		                            
+                      			<input type="text" class="form-control"  ng-model="intitule" required placeholder="intitulé du jour férié" />
+							    </div>
+							    
+	                    </div>
+                    </div>
 
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12">
-						  <button class="btn btn-primary" type="reset" ng-click="reset()">Reset</button>
-                          <button type="submit" class="btn btn-success" >Ajouter un jour férié</button>
+						  
+                          <button type="submit" class="btn btn-success" >Ajouter</button>
                         </div>
                       </div>
 
@@ -90,12 +103,14 @@
                       <thead>
                         <tr>
                           <th>Jour Férié</th>
+                          <th>Intitulé</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr class="even pointer" ng-repeat="o in dateExcludeds.pages">
 				  				<td class=" ">{{o.dateExcluded}}</td>
+				  				<td class=" ">{{o.intitule}}</td>
 				  				<td width="20%"><button type="button" class="btn btn-default" ng-click="modifier(o,$event)"><i class="glyphicon glyphicon-pencil">
 								 </i></button></td>
 				  		   </tr>

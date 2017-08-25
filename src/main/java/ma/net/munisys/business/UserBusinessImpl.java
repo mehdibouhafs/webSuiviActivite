@@ -103,9 +103,9 @@ public class UserBusinessImpl implements UserBusiness {
 		SecurityContext securityContext = (SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
 		String username = securityContext.getAuthentication().getName();
 		
-		System.out.println("username " + username);
+		//System.out.println("username " + username);
 		
-		System.out.println(" voir " + securityContext.getAuthentication().toString());
+		//System.out.println(" voir " + securityContext.getAuthentication().toString());
 		
 		//List<String> roles = new ArrayList<>();
 		

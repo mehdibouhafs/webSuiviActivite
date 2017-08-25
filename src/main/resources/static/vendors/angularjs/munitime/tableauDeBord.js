@@ -197,7 +197,7 @@ app.controller("countController",function($scope,$http,User){
 			 ]};*/
 			
 			 $scope.myChartObject.options = {
-			     'title': 'Nombre d\'interventions par client :'
+			     'title': 'Répartition d\'interventions par client :'
 			 };
 			 
 			 console.log("myVar11 "+JSON.stringify($scope.myChartObject.data));
@@ -260,7 +260,7 @@ app.controller("countController",function($scope,$http,User){
 			 ]};*/
 			
 			 $scope.myChartObject.options = {
-			     'title': 'Nombre d\'interventions par nature  :'
+			     'title': 'Répartition d\'interventions par nature  :'
 			 };
 			 
 			 console.log("myVar11 "+JSON.stringify($scope.myChartObject.data));
@@ -536,12 +536,12 @@ app.controller("countController",function($scope,$http,User){
 			                },
 			                {
 			                    id: "Taux requis id",
-			                    label: "Taux en jour homme ",
+			                    label: "Objectif",
 			                    type: "number"
 			                }, 
 			                {
 			                    id: "Taux Productivitéd",
-			                    label: "Taux de productivité",
+			                    label: "Taux réalisé",
 			                    type: "number"
 			                }
 			                
@@ -584,7 +584,7 @@ app.controller("countController",function($scope,$http,User){
 			                ]
 			            },
 	                'options': {
-	                    'title': 'Taux de productivité par rapport au taux requis',
+	                    'title': 'Taux de productivité par rapport à la capacité',
 	                    'isStacked': true
 	                    
 	

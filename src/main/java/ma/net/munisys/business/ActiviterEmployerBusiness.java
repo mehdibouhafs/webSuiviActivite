@@ -11,6 +11,7 @@ import ma.net.munisys.entities.ActiviterEmployer;
 import ma.net.munisys.entities.Client;
 import ma.net.munisys.entities.Nature;
 import ma.net.munisys.entities.PageActiviterEmployer;
+import ma.net.munisys.entities.TauxUser;
 import ma.net.munisys.entities.User;
 
 
@@ -83,4 +84,7 @@ public interface ActiviterEmployerBusiness {
 	public int countActiviterEmployerByEmailByNature2(String nature,String type,Date DateDebut,Date DateFin);
 	
 	public List<User> distinctUserForUser2(String type,Date dateDebut,Date dateFin);
+	
+	
+	public List<TauxUser> getStatisticUsers(Date dateDebut,Date dateFin);
 }

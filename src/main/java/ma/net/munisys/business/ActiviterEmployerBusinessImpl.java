@@ -2,6 +2,7 @@ package ma.net.munisys.business;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,8 +17,11 @@ import ma.net.munisys.dao.ActiviterEmployerRepository;
 import ma.net.munisys.dao.UserRepository;
 import ma.net.munisys.entities.ActiviterEmployer;
 import ma.net.munisys.entities.Client;
+import ma.net.munisys.entities.DateExcluded;
+import ma.net.munisys.entities.DureeMonth;
 import ma.net.munisys.entities.Nature;
 import ma.net.munisys.entities.PageActiviterEmployer;
+import ma.net.munisys.entities.TauxUser;
 import ma.net.munisys.entities.User;
 
 @Service
@@ -28,6 +32,10 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private DateExcludedBusiness dateExcludedBusiness;
+	
 	
 
 	@Override
@@ -384,6 +392,44 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	public List<User> distinctUserForUser2(String type,Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
 		return activiterEmployerRepository.distinctUserForUser2(type,dateDebut,dateFin);
+	}
+
+
+
+	@Override
+	public List<TauxUser> getStatisticUsers(Date dateDebut,Date dateFin) {
+		// TODO Auto-generated method stub
+		List<TauxUser> tauxUsers  = new ArrayList<>();
+		List<User> userActif = activiterEmployerRepository.distinctUserForUser2("Réaliser",dateDebut,dateFin);
+		List<DateExcluded> dateExcluded =  dateExcludedBusiness.findByDatesBetween(dateDebut,dateFin);
+		
+		for(User user : userActif){
+			TauxUser tauxUser = new TauxUser();
+			
+			List<ActiviterEmployer> actiThisDate = findByDatesAfterBefore(user.getUsername(),"Réaliser", dateDebut, dateFin);
+			List<ActiviterEmployer> activiteEnConge = activiterEmployerByEmailByNatureByDate(user.getUsername(),"Congé","Réaliser",dateDebut,dateFin);
+			List<String> dureeThisDate = new ArrayList<>();
+			for(ActiviterEmployer activiterEmployer : actiThisDate){
+				dureeThisDate.add(activiterEmployer.getDuree());
+			}
+			String dureeTotalThisDate = DureeMonth.sumDuree(dureeThisDate,"Duree Travaille Date");
+			
+			List<String> dureeCongeThisDate = new ArrayList<>();
+			 
+			for(ActiviterEmployer activiterEmployer : activiteEnConge){
+				dureeCongeThisDate.add(activiterEmployer.getDuree());
+			}
+			String dureeTotalCongeThisDate = DureeMonth.sumDuree(dureeCongeThisDate,"Duree Conge This Date");
+			
+			Double a = DureeMonth.calculeDureeHoursMonth(dureeTotalThisDate,dateDebut,dateFin,dureeTotalCongeThisDate,dateExcluded.size());
+			Double b = DureeMonth.calculeTempsMaxMonth(dureeTotalThisDate,dateDebut,dateFin,dureeTotalCongeThisDate,dateExcluded.size());
+			tauxUser.setUser(user.getNom());
+			tauxUser.setTaux(String.format("%.2f",a/b * 100)+"%");
+			
+			tauxUsers.add(tauxUser);
+		}
+		
+		return tauxUsers;
 	}
 	
 }

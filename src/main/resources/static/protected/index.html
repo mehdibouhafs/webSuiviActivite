@@ -13,15 +13,11 @@
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+ 
 	
     <!-- bootstrap-progressbar -->
     <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+ 
    
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
@@ -30,7 +26,7 @@
    <!-- bootstrap-datetimepicker -->
     <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
  
-     <link rel="stylesheet" href="../vendors/angularjs/angular-material.min.css"">
+    <link rel="stylesheet" href="../vendors/angularjs/angular-material.min.css"">
     <link rel="stylesheet" href="../vendors/angularjs/material-datetimepicker.css"">
     
     <link href="../vendors/angularjs/colorpicker.min.css" rel="stylesheet">
@@ -71,6 +67,15 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li  ng-show="directeur"><a href="/directeurHome"><i class="fa fa-line-chart"></i> Tableau de bord </a></li>
+                  
+                  
+                   <li ng-show="admin || directeur" ng-cloak><a><i class="fa fa-laptop"></i> Reporting <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/productivite"><i class="fa fa-gavel"></i> Productivité </a></li>
+                    </ul>
+                  </li>
+
+                  
                   <li ng-hide="directeur"><a href="/index"><i class="fa fa-home"></i> Home </a></li>
                   <li ng-show="directeur || admin"><a href="/adminCalendar" ng-cloak><i class="fa fa-calendar-check-o"></i> Admin calendrier </a></li>
                   <li ng-hide="directeur"><a href="/moncalendrier"><i class="fa fa-calendar"></i> Mon calendrier </a></li>
@@ -80,16 +85,16 @@
                   <li ng-cloak ng-show="chefGroupe"><a href="/interventionGroupe"><i class="fa fa-users"></i> Interventions du groupe</a></li>
                   <li ng-show="admin" ng-cloak><a><i class="fa fa-database"></i> Référentiel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/nouveauUtilisateur"><i class="fa fa-user"></i> Nouveau Utilisateur</a></li>
-                      <li><a href="/nouveauClient"><i class="fa fa-building"></i> Nouveau Client</a></li>
-                      <li><a href="/nouvelleNature"><i class="fa fa-tasks"></i> Nouvelle nature intervention</a></li>
-                      <li><a href="/nouveauLieu"><i class="fa fa-map-marker"></i> Nouveau Lieu</a></li>
-                      <li><a href="/nouveauStatut"><i class="fa fa-bookmark"></i> Nouveau Statut</a></li>
-                      <li><a href="/nouveauProjet"><i class="fa fa-newspaper-o"></i> Nouveau Projet</a></li>
-                      <li><a href="/nouveauJour"><i class="fa fa-hand-scissors-o"></i> Nouveau Jour Férié</a></li>
+                      <li><a href="/nouveauUtilisateur"><i class="fa fa-user"></i>Utilisateur</a></li>
+                      <li><a href="/nouveauClient"><i class="fa fa-building"></i>Client</a></li>
+                      <li><a href="/nouvelleNature"><i class="fa fa-tasks"></i>Nature intervention</a></li>
+                      <li><a href="/nouveauLieu"><i class="fa fa-map-marker"></i>Lieu</a></li>
+                      <li><a href="/nouveauStatut"><i class="fa fa-bookmark"></i>Statut</a></li>
+                      <li><a href="/nouveauProjet"><i class="fa fa-newspaper-o"></i> Projet</a></li>
+                      <li><a href="/nouveauJour"><i class="fa fa-hand-scissors-o"></i> Jour Férié</a></li>
                     </ul>
                   </li>
-                  <li><a href="/help"><i class="fa fa-info"></i> Help </span></a></li>
+                  <li><a href="/help"><i class="fa fa-info"></i> Aide </span></a></li>
                     
                 </ul>
               </div>
@@ -142,7 +147,7 @@
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Munisys - @Copyright 2017 by Bouhafs Mehdi
+            MUNISYS - ©Copyright 2017 
           </div>
           <div class="clearfix"></div>
         </footer>
@@ -156,6 +161,29 @@
     <script src="../vendors/angularjs/moment.min.js"></script>
     <script src="../vendors/angularjs/interactjs@1.2.9.js"></script>
     <script src="../vendors/angularjs/angular.min.js"></script>
+     <script src="../vendors/angularjs/munitime/calendar.js"></script>
+         <script src="../vendors/angularjs/munitime/admin.js"></script>
+     <script src="../vendors/angularjs/helpers.js"></script>
+       <script src="../vendors/angularjs/munitime/directeurHome.js"></script>
+    <script src="../vendors/angularjs/munitime/app.js"></script>
+    <script src="../vendors/angularjs/munitime/tableauDeBord.js"></script>
+    
+    <script src="../vendors/angularjs/munitime/productivite.js"></script>
+    <script src="../vendors/angularjs/munitime/allInterventions.js"></script>
+    <script src="../vendors/angularjs/munitime/client.js"></script>
+    <script src="../vendors/angularjs/munitime/nature.js"></script>
+    <script src="../vendors/angularjs/munitime/lieu.js"></script>
+    <script src="../vendors/angularjs/munitime/type.js"></script>
+    <script src="../vendors/angularjs/munitime/utilisateur.js"></script>
+     <script src="../vendors/angularjs/munitime/dialog/showEventCalendar.js"></script>
+   <script src="../vendors/angularjs/munitime/dialog/admin/showEventAdminCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/dialog/admin/deleteEventAdminCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/dialog/admin/updateEventAdminCalendar.js"></script>
+     <script src="../vendors/angularjs/munitime/dialog/updateEventCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/dialog/rangeEventCalendar.js"></script>
+    <script src="../vendors/angularjs/munitime/interventionGroupe.js"></script>
+    <script src="../vendors/angularjs/munitime/projet.js"></script>
+    <script src="../vendors/angularjs/munitime/jourFerie.js"></script>
      <script src="../vendors/angularjs/angular-route.min.js"></script>
      <script type="text/javascript" src="../vendors/angularjs/angular-aria.min.js"></script>
 	<script src="../vendors/angularjs/ng-google-chart.min.js"></script>
@@ -175,29 +203,9 @@
     <script src="../vendors/angularjs/angular-bootstrap-colorpicker@3.0.31.js"></script>
     <script src="../vendors/angularjs/angular-bootstrap-calendar@0.29.3.js"></script>
     <script src="../vendors/angularjs/ocLazyLoad.min.js"></script>
-    <script src="../vendors/angularjs/munitime/calendar.js"></script>
-    <script src="../vendors/angularjs/munitime/admin.js"></script>
-     <script src="../vendors/angularjs/helpers.js"></script>
-    <script src="../vendors/angularjs/munitime/app.js"></script>
-    <script src="../vendors/angularjs/munitime/tableauDeBord.js"></script>
-    
-    
-    <script src="../vendors/angularjs/munitime/allInterventions.js"></script>
-    <script src="../vendors/angularjs/munitime/client.js"></script>
-    <script src="../vendors/angularjs/munitime/nature.js"></script>
-    <script src="../vendors/angularjs/munitime/lieu.js"></script>
-    <script src="../vendors/angularjs/munitime/type.js"></script>
-    <script src="../vendors/angularjs/munitime/utilisateur.js"></script>
-     <script src="../vendors/angularjs/munitime/dialog/showEventCalendar.js"></script>
-   <script src="../vendors/angularjs/munitime/dialog/admin/showEventAdminCalendar.js"></script>
-    <script src="../vendors/angularjs/munitime/dialog/admin/deleteEventAdminCalendar.js"></script>
-    <script src="../vendors/angularjs/munitime/dialog/admin/updateEventAdminCalendar.js"></script>
-     <script src="../vendors/angularjs/munitime/dialog/updateEventCalendar.js"></script>
-    <script src="../vendors/angularjs/munitime/dialog/rangeEventCalendar.js"></script>
-    <script src="../vendors/angularjs/munitime/interventionGroupe.js"></script>
-    <script src="../vendors/angularjs/munitime/projet.js"></script>
-    <script src="../vendors/angularjs/munitime/jourFerie.js"></script>
-    <script src="../vendors/angularjs/munitime/directeurHome.js"></script>
+   
+
+  
    <script type="text/javascript" src="../vendors/angularjs/angular-material-datetimepicker.min.js"></script>
    <script type="text/javascript" src="../vendors/angularjs/paging.js"></script>
      
@@ -206,33 +214,15 @@
     <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
     <script src="../vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
+   
   
-    <!-- gauge.js -->
-    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+   
     <!-- bootstrap-progressbar -->
     <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="../vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons -->
-    <script src="../vendors/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="../vendors/Flot/jquery.flot.js"></script>
-    <script src="../vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="../vendors/Flot/jquery.flot.time.js"></script>
-    <script src="../vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="../vendors/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    <script src="../vendors/DateJS/build/date.js"></script>
-    <!-- JQVMap -->
-    <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+   
+   
+   
+   
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../vendors/angularjs/fr.js"></script>

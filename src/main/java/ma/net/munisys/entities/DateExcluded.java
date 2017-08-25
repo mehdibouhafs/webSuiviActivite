@@ -15,6 +15,8 @@ public class DateExcluded implements Serializable {
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dateExcluded;
 	
+	private String intitule;
+	
 	
 	public DateExcluded() {
 		// TODO Auto-generated constructor stub
@@ -26,6 +28,16 @@ public class DateExcluded implements Serializable {
 
 	public void setDateExcluded(Date dateExcluded) {
 		this.dateExcluded = dateExcluded;
+	}
+	
+	
+
+	public String getIntitule() {
+		return intitule;
+	}
+
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
 	}
 
 	@Override

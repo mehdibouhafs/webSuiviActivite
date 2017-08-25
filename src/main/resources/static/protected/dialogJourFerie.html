@@ -13,7 +13,7 @@
     <md-dialog-content>
       <div class="md-dialog-content">
       
-     	<div class="form-group" ng-if="error==true" ng-cloak>
+     	<div class="form-group row" ng-if="error==true" ng-cloak>
 	     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
 		     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-danger">
 				<strong>Erreur au formulaire !</strong> <br/>{{message.error}}
@@ -21,14 +21,14 @@
 			 </div>
 		 </div>
 	     
-	     <div class="form-group" ng-if="success==true" ng-cloak>
+	     <div class="form-group row" ng-if="success==true" ng-cloak>
 	     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
 		     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-success" ng-cloak>
 						<strong>Success!</strong><br/> {{message.success}} 
 			 </div>
 		 </div>
                    
-          <div class="form-group">
+          <div class="form-group row">
                     	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Jour férié <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12" >
@@ -51,7 +51,7 @@
     <md-dialog-actions layout="row">
     
       <md-button ng-click="answer('not useful')">
-       Cancel
+       Annuler
       </md-button>
        <md-button type="submit" style="background-color: blue;color: white;">
         Modifier
