@@ -10,13 +10,15 @@
           <label class="col-md-1 col-sm-1 col-xs-12"></label>
           
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Volume ITV Réalisées</span>
+              <span class="count_top"><i class="fa fa-check"></i> Volume ITV Réalisées</span>
               <div class="count"  style="color: blue;">{{nbActiviterRealiser}}</div>
+              <span class="count_bottom"> du mois courant</span>
             </div>
             
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-user"></i> Volume ITV Plannifiées</span>
+              <span class="count_top"><i class="fa fa-calendar"></i> Volume ITV Plannifiées</span>
               <div class="count"  style="color: blue;">{{nbActiviterPlannifier}}</div>
+               <span class="count_bottom"> du mois courant</span>
             </div>
             
             <!--  <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
@@ -25,13 +27,14 @@
             </div>-->
             
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Taux de productivité</span>
+              <span class="count_top"><i class="fa fa-calculator"></i> Taux de productivité</span>
               <div class="count"  style="color: red;">{{tauxActuel}}%</div>
+              <span class="count_bottom"> du mois courant</span>
          
             </div>
             
             <div class="col-md-2 col-sm-2 col-xs-6 tile_stats_count" ng-show="admin" ng-controller="switchController">
-              <span class="count_top"><i class="fa fa-clock-o"></i> {{information}}  </span>
+              <span class="count_top"><i class="fa fa-toggle-on"></i> {{information}}  </span>
 			 <div class="count"  style="color: red;"> <button type="button" class="btn btn-primary"  ng-click="switche()">Switchez</button></div>
             </div>
             <label class="col-md-1 col-sm-1 col-xs-12"></label>

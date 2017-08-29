@@ -35,6 +35,16 @@ public class NatureRestService {
 	public List<Nature> listNatures() {
 		return natureBusiness.listNaturess();
 	}
+	
+	@RequestMapping(value="/natures2",method = RequestMethod.GET)
+	public List<Nature> listNatures2() {
+		return natureBusiness.findNaturesIn();
+	}
+	
+	@RequestMapping(value="/natures3",method = RequestMethod.GET)
+	public List<Nature> listNatures3() {
+		return natureBusiness.findNaturesNotIn();
+	}
 
 	@RequestMapping(value="/natures",method = RequestMethod.GET)
 	public PageNatures listNaturess(@RequestParam(name="page",defaultValue="1") int page,@RequestParam(name="size",defaultValue="1")int size) {
@@ -46,6 +56,7 @@ public class NatureRestService {
 		return natureBusiness.updateNature(natureId, nature);
 	}
 
+	
 	
 	
 	/*

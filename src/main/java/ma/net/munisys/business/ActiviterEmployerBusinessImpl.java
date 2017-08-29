@@ -112,21 +112,24 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	@Override
 	public ActiviterEmployer updateActiviteEmployer(Long idActiviterEmployer,ActiviterEmployer activiterEmployer) {
 		
+		System.out.println("id " + idActiviterEmployer);
+		
 		activiterEmployer.setId(idActiviterEmployer);
 		List<ActiviterEmployer> activitesBetween = findByDatesBetween(activiterEmployer.getUser().getUsername(),activiterEmployer.getDateDebut(), activiterEmployer.getDateFin());
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		df.setTimeZone(TimeZone.getTimeZone("GMT"));
-		System.out.println("Date pour teste " + df.format(activiterEmployer.getDateDebut()) + " Date Fin "+ df.format(activiterEmployer.getDateFin()));
+		
 		
 		System.out.println("id liste "+ activitesBetween.get(0).getId()  + "id path " + idActiviterEmployer);
 		if(activitesBetween.size()>=1 && (activitesBetween.get(0).getId() != idActiviterEmployer)){
-			System.out.println("TRouve !=null ");
+			
 			for(ActiviterEmployer acEmployer : activitesBetween){
 				System.out.println(acEmployer.toString());
 			}
 			
 		}else{
-			
+			//activiterEmployerRepository.deleteActiviterEmployer(idActiviterEmployer);
+			//System.out.println("Activiter to save " + activiterEmployer.toString());
 			return activiterEmployerRepository.save(activiterEmployer);
 		}
 		
@@ -252,7 +255,7 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	@Override
 	public List<ActiviterEmployer> findActiviterByUserAfterBefore(String email, Date DateDebut, Date DateFin) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.findActiviterByUserAfterBefore(email,"Réaliser",DateDebut, DateFin);
+		return activiterEmployerRepository.findActiviterByUserAfterBefore(email,"Réalisée",DateDebut, DateFin);
 	}
 
 
@@ -400,14 +403,14 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 	public List<TauxUser> getStatisticUsers(Date dateDebut,Date dateFin) {
 		// TODO Auto-generated method stub
 		List<TauxUser> tauxUsers  = new ArrayList<>();
-		List<User> userActif = activiterEmployerRepository.distinctUserForUser2("Réaliser",dateDebut,dateFin);
+		List<User> userActif = activiterEmployerRepository.distinctUserForUser2("Réalisée",dateDebut,dateFin);
 		List<DateExcluded> dateExcluded =  dateExcludedBusiness.findByDatesBetween(dateDebut,dateFin);
 		
 		for(User user : userActif){
 			TauxUser tauxUser = new TauxUser();
 			
-			List<ActiviterEmployer> actiThisDate = findByDatesAfterBefore(user.getUsername(),"Réaliser", dateDebut, dateFin);
-			List<ActiviterEmployer> activiteEnConge = activiterEmployerByEmailByNatureByDate(user.getUsername(),"Congé","Réaliser",dateDebut,dateFin);
+			List<ActiviterEmployer> actiThisDate = findByDatesAfterBefore(user.getUsername(),"Réalisée", dateDebut, dateFin);
+			List<ActiviterEmployer> activiteEnConge = activiterEmployerByEmailByNatureByDate(user.getUsername(),"Congé","Réalisée",dateDebut,dateFin);
 			List<String> dureeThisDate = new ArrayList<>();
 			for(ActiviterEmployer activiterEmployer : actiThisDate){
 				dureeThisDate.add(activiterEmployer.getDuree());

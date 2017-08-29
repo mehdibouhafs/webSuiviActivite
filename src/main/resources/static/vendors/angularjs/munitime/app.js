@@ -35,10 +35,87 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
   $scope.admin=false;
   
   
+  $scope.typeActivite = {type:"Projet"};
   
+  $scope.support = {numDemande:"",objet:"",identifiant:"",dateDemande:"",contrat:""};
   
+  $scope.support1 = {numDemande:"",objet:"",identifiant:"",dateDemande:"",contrat:""};
+ 
+  $scope.updateProjets = function(){
+	  if($scope.typeActivite.type === "Projet" && $scope.selectedItem.codeClient != null){
+		  $http({
+ 	  	      method: 'GET',
+ 	  	      url: "/projetByClient?codeClient="+$scope.selectedItem.codeClient
+ 	  	   }).then(function (success){
+ 	  		   console.log("projetByClient?codeClient="+$scope.selectedItem.codeClient);
+ 	  		   $scope.projets = success.data;
+ 	  	   },function (error){
+ 	  		   $scope.errorMessage = error.message;	
+ 	  	   });
+ 		  
+	  }
+  }
   
+  $scope.loadInformationsSupport = function(){
+	
+	  if($scope.support.numDemande.length === 0){
+		 
+		  $scope.informationError = false;
+	  }else{
+		  $http({
+		      method: 'GET',
+		      url: "/getSupport?numDemande="+$scope.support.numDemande
+		   }).then(function (success){
+			   console.log("support " + JSON.stringify(success.data));
+			   $scope.support1 = success.data;
+			   
+			   if( $scope.support1.numDemande !=null){
+			   $scope.informationError=false;
+			   $scope.informations = true;
+			   $scope.selectedItem= $scope.support1.client;
+			   
+			   console.log("support " + $scope.support);
+			   }else{
+				   $scope.informations = false;
+				   $scope.informationError=true;
+			   }
+		   },function (error){
+			   $scope.errorMessage = error.message;	
+		   });
+	  }
+	  
+  }
   
+  $scope.initSupport = function(){
+	  $scope.informationError=false;
+	  $scope.typeActivite.type="Support";
+	  $http({
+		      method: 'GET',
+		      url: "/natures2"
+		   }).then(function (success){
+			   $scope.natures = success.data;
+			   console.log("natures " + $scope.natures);
+		   },function (error){
+			   $scope.errorMessage = error.message;	
+		   });
+	  
+  }
+  
+  $scope.initProjet = function(){
+	  $scope.informationError=false;
+	   $scope.informations = false;
+	  $scope.typeActivite.type="Projet";
+	  $scope.support.numDemande = null;
+		$http({
+		      method: 'GET',
+		      url: "/natures3"
+		   }).then(function (success){
+			   $scope.natures = success.data;
+			   console.log("natures " + $scope.natures);
+		   },function (error){
+			   $scope.errorMessage = error.message;	
+		   });
+  }
   
   
   $scope.mySplit = function(string, nb) {
@@ -158,10 +235,18 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
   $scope.submitForm = function(isValid) {
 
 	    // check to make sure the form is completely valid
-	    if (isValid && ($scope.selectedItem !=null) && ($scope.selected == true)) {
-	    	$scope.error = false;
-	     $scope.saveIntervention();
+	    if (isValid && ($scope.selectedItem !=null) && ($scope.selected == true) ) {
+	    	
+	    	if(($scope.typeActivite.type=="Support" && $scope.informations==true ) ||$scope.typeActivite.type=="Projet" ){
+	    		$scope.error = false;
+	    	
+	    		$scope.saveIntervention();
+	    	}else{
+	    		$scope.error = true;
+	    	}
+	    	
 	    }else{
+	    	console.log("Not valid");
 	    	$scope.error = true;
 	    	
 	    }
@@ -177,21 +262,49 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 		  var type = {
 				  "id" : 1
 		  }
+		 
+		  if(o.typeActivite === "AP"){
+			  
+			  var dataObj = {
+					     "typeActivite": "AP",
+						"dateDebut":moment(o.dateDebut,"DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm:ss"),
+						"dateFin": moment(o.dateFin,"DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm:ss"),
+						"heureDebut": o.heureDebut,
+						"heureFin":o.heureFin,
+						"client":o.client,
+						"nature":o.nature,
+						"descProjet":o.descProjet,
+						"dureeFormated":o.dureeFormated,
+						"lieu":o.lieu,
+						"projet":o.projet,
+						"type":type,
+						"ville":o.ville,
+						"duree":o.duree,
+						"user":o.user
+						
+				};	  
+		  }else{
+			 
+			  var dataObj = {
+					    "typeActivite": "AS",
+						"dateDebut":o.dateDebut,
+						"dateFin": o.dateFin,
+						"heureDebut": o.heureDebut,
+						"heureFin":o.heureFin,
+						"client":o.client,
+						"nature":o.nature,
+						"descProjet":o.descProjet,
+						"dureeFormated":o.dureeFormated,
+						"lieu":o.lieu,
+						"support":o.support,
+						"type":type,
+						"ville":o.ville,
+						"duree":o.duree,
+						"user":o.user
+				};	  
+		  }
 		  
-		  var dataObj = {
-					"dateDebut":o.dateDebut,
-					"dateFin": o.dateFin,
-					"heureDebut": o.heureDebut,
-					"heureFin":o.heureFin,
-					"client":o.client,
-					"nature":o.nature,
-					"descProjet":o.descProjet,
-					"lieu":o.lieu,
-					"type":type,
-					"ville":o.ville,
-					"duree":o.duree,
-					"user":o.user
-			};	
+		  
 		  
 		  console.log("dataObj"+ JSON.stringify(dataObj));
 		  $scope.message={
@@ -216,7 +329,7 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 					//$mdDialog.hide();
 					$route.reload();
 				}else{
-					console.log("between");
+					//console.log("between");
 					//$scope.success=false;
 					//$scope.error=true;
 					//$scope.message.error="Vous ne pouvez pas faire deux interventions en même temps !";
@@ -353,22 +466,48 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 		   
 	   var heureFin6 =$scope.heureFin6;
 	   console.log("HeureFin6 "+heureFin6);
-	  var dataObj = {
-				"dateDebut": dateDebut6,
-				"dateFin": dateFin6,
-				"heureDebut": heureDebut6,
-				"heureFin": heureFin6,
-				"client":client,
-				"nature":nature,
-				"descProjet":$scope.descProjet,
-				"dureeFormated":$scope.duree1,
-				"lieu":lieu,
-				"type":type,
-				"ville":ville,
-				"projet":projet,
-				"duree":$scope.duree,
-				"user":user
-		};	
+	   
+	   var support = {
+				  "numDemande":$scope.support.numDemande
+		  }
+	   
+	   if($scope.typeActivite.type == "Projet"){
+		  var dataObj = {
+				    "typeActivite": "AP",
+					"dateDebut": dateDebut6,
+					"dateFin": dateFin6,
+					"heureDebut": heureDebut6,
+					"heureFin": heureFin6,
+					"client":client,
+					"nature":nature,
+					"descProjet":$scope.descProjet,
+					"dureeFormated":$scope.duree1,
+					"lieu":lieu,
+					"type":type,
+					"ville":ville,
+					"projet":projet,
+					"duree":$scope.duree,
+					"user":user
+			};	
+	   }else{
+		   var dataObj = {
+				    "typeActivite": "AS",
+					"dateDebut": dateDebut6,
+					"dateFin": dateFin6,
+					"heureDebut": heureDebut6,
+					"heureFin": heureFin6,
+					"client":client,
+					"nature":nature,
+					"descProjet":$scope.descProjet,
+					"dureeFormated":$scope.duree1,
+					"lieu":lieu,
+					"type":type,
+					"ville":ville,
+					"support":support,
+					"duree":$scope.duree,
+					"user":user
+			};	
+	   }
 	  
 	  $scope.message={
 			  "error" : "erreur",
@@ -411,6 +550,8 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
   };
   
   	$scope.reset = function(){
+  		$scope.initProjet();
+  		$scope.type=null;
   		$scope.dateDebut = null;
   		$scope.heureDebut = null;
   		$scope.dateFinale = null;
@@ -437,7 +578,7 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
   	
   		loadData();
   		
-  		
+  		 
   		
   		$scope.chargerUser = function(){
   			
@@ -455,8 +596,8 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
   			   User.setEmail(success.data.username);
   			   console.log("userFactory "+User.getEmail());
   			   User.setRoles(success.data.roles);
-  			  
-			   $scope.chargerInterventions();
+  			   $scope.chargerInterventions();
+			  
 			   
   				  
   		   },function (error){
@@ -466,18 +607,7 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
   		 
   	  };
   	  
-  	  $scope.checkAdmin = function(){
-  		  
-  		  console.log("checkAdmin");
-  		  angular.forEach(User.getRoles(), function(value, key) {
-  			  console.log("keeeeey = "+key + ': ' + value);
-  			  
-  			  if(value === "ROLE_admin"){
-  				  User.setAdmin(true);
-  				  $scope.admin = true;
-  			  }
-  			});
-  	  }
+  	  
   		
   		  $scope.chargerUser();
   		
@@ -526,8 +656,16 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 						   var dateFin = moment($scope.activitesEmployer[i].dateFin,'DD/MM/YYYY HH:mm:ss').add(1, 'seconds');
 						   $scope.activitesEmployer[i].dateDebut=moment(dateDebut,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
 						   $scope.activitesEmployer[i].dateFin=moment(dateFin,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
+						   $scope.activitesEmployer[i].heureDebut = moment($scope.activitesEmployer[i].heureDebut,'HH:mm:ss').format('HH:mm');
+						   $scope.activitesEmployer[i].heureFin = moment( $scope.activitesEmployer[i].heureFin,'HH:mm:ss').format('HH:mm');
+						   $scope.activitesEmployer[i].duree= moment($scope.activitesEmployer[i].duree,'HH:mm:ss').format('HH:mm:ss');
+						   if($scope.activitesEmployer[i].typeActivite === "AS"){
+							  
+							   $scope.activitesEmployer[i].projet.projet = $scope.activitesEmployer[i].support.objet;
+						   }
+						   
 					   }
-				console.log("j " + j);
+					   console.log("Hire "+ JSON.stringify($scope.activitesEmployer));
 			   
 			      $scope.filteredList = $scope.activitesEmployer;
 				  //$scope.currentPage = $scope.pageCourante;
@@ -560,10 +698,10 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 		  
 	  $scope.whatClassIsIt= function(someValue){
 		
-		     if(someValue=="Réaliser"){
+		     if(someValue=="Réalisée"){
 		    	 
 		            return "label label-success"
-		     }else if(someValue=="Planifier")
+		     }else if(someValue=="Planifiée")
 		         return "label label-info";
 		     
 		    };
@@ -571,9 +709,11 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 			    
 	    $scope.updateEventTableInterventions = function(activiteEmploye) {
 		    $mdDialog.show({
-		      controller: UpdateEventAdminCalendarController,
+		      controller: UpdateEventCalendarController,
 		      templateUrl: '/protected/dialogUpdateEvent2.html',
 		      parent: angular.element(document.body),
+		      clickOutsideToClose:true,
+		      fullscreen:true,
 		      locals: {
 		    	  items: activiteEmploye
 		       },
@@ -621,7 +761,7 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
  			
  			$http({
  		      method: 'GET',
- 		      url: "/natures1"
+ 		      url: "/natures3"
  		   }).then(function (success){
  			   $scope.natures = success.data;
  			   console.log("natures " + $scope.natures);

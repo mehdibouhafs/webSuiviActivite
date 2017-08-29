@@ -14,6 +14,7 @@ import ma.net.munisys.business.ClientBusiness;
 import ma.net.munisys.entities.Client;
 import ma.net.munisys.entities.PageActiviterEmployer;
 import ma.net.munisys.entities.PageClients;
+import ma.net.munisys.entities.Projet;
 
 
 @RestController
@@ -47,6 +48,12 @@ public class ClientRestService {
 	@RequestMapping(value="/clients/clientId",method = RequestMethod.PUT)
 	public Client updateClient(@PathVariable Long clientId,@RequestBody Client client) {
 		return clientBusiness.updateClient(clientId, client);
+	}
+	
+	
+	@RequestMapping(value="/projetByClient",method = RequestMethod.GET)
+	public List<Projet> findByclientProjet(@RequestParam(name="codeClient")String codeClient){
+		return  clientBusiness.findByclientProjet( codeClient);
 	}
 
 	

@@ -10,27 +10,18 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 				  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
 				  $scope.dateDebut = items.dateDebut;
 				  
-				  
 				  $scope.id = items.id;
-				  
-				  
-				  
+	  
 				  
 				  var heureDebut = moment(items.dateDebut,'DD/MM/YYYY HH:mm:ss').subtract(1, 'seconds');
 				  var dateFin0 =items.dateFin;
 				  var dateFin = moment(dateFin0,'DD/MM/YYYY HH:mm:ss').add(1, 'seconds');
-				  
-				  
+
 				  
 				  $scope.heureDebut =moment(heureDebut ,"DD/MM/YYYY HH:mm:ss").toDate();
-				  
-				  
-				  
+
 				  $scope.duree1 = items.dureeFormated;
-				  
-				 
-				  
-				  
+
 				  $scope.heureFin =moment(dateFin ,"DD/MM/YYYY HH:mm:ss").toDate();
 				  
 				  $scope.dateFin = moment( dateFin).format("DD/MM/YYYY HH:mm:ss");
@@ -121,6 +112,122 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 			  		  
 			  		   
 			  	 }; 
+			  	 
+			  	 
+			  	$scope.typeActivite = {type:"Projet"};
+			    
+			    $scope.support = {numDemande:"",objet:"",identifiant:"",dateDemande:"",contrat:""};
+			    
+			    $scope.support1 = {numDemande:"",objet:"",identifiant:"",dateDemande:"",contrat:""};
+			    
+			    $scope.typeActivite = {type:""};
+				  if(items.typeActivite === "AS"){
+					  $scope.typeActivite.type="Support";
+					  $scope.informations = true;
+					  $http({
+			 		      method: 'GET',
+			 		      url: "/natures2"
+			 		   }).then(function (success){
+			 			   $scope.natures = success.data;
+			 			   console.log("natures " + $scope.natures);
+			 		   },function (error){
+			 			   $scope.errorMessage = error.message;	
+			 		   });
+					  $scope.support1 = items.support;
+					  $scope.support.numDemande = items.support.numDemande;
+					  
+					  console.log(" affecter");
+				  }else{
+					  $scope.typeActivite.type="Projet";
+					  $scope.projet = items.projet.id;
+					  $http({
+			 		      method: 'GET',
+			 		      url: "/natures3"
+			 		   }).then(function (success){
+			 			   $scope.natures = success.data;
+			 			   console.log("natures " + $scope.natures);
+			 		   },function (error){
+			 			   $scope.errorMessage = error.message;	
+			 		   });
+				  }
+			   
+			    $scope.updateProjets = function(){
+			  	  if($scope.typeActivite.type === "Projet" && $scope.selectedItem.codeClient != null){
+			  		  $http({
+			   	  	      method: 'GET',
+			   	  	      url: "/projetByClient?codeClient="+$scope.selectedItem.codeClient
+			   	  	   }).then(function (success){
+			   	  		   console.log("projetByClient?codeClient="+$scope.selectedItem.codeClient);
+			   	  		   $scope.projets = success.data;
+			   	  	   },function (error){
+			   	  		   $scope.errorMessage = error.message;	
+			   	  	   });
+			   		  
+			  	  }
+			    }
+			    
+			    $scope.loadInformationsSupport = function(){
+			  	
+			    	console.log("$scope.support.numDemande " + $scope.support.numDemande);
+			    	
+			  	  if($scope.support.numDemande.length === 0){
+			  		 
+			  		  $scope.informationError = false;
+			  		 $scope.informations = false;
+			  	  }else{
+			  		  $http({
+			  		      method: 'GET',
+			  		      url: "/getSupport?numDemande="+$scope.support.numDemande
+			  		   }).then(function (success){
+			  			   $scope.support1 = success.data;
+			  			   
+			  			   if( $scope.support1.numDemande !=null){
+			  			   $scope.informationError=false;
+			  			   $scope.informations = true;
+			  			   $scope.selectedItem= $scope.support1.client;
+			  			  
+			  			   }else{
+			  				   $scope.informations = false;
+			  				   $scope.informationError=true;
+			  			   }
+			  		   },function (error){
+			  			   $scope.errorMessage = error.message;	
+			  		   });
+			  		  console.log("Else");
+			  	  }
+			  	  
+			    }
+			    
+			    $scope.initSupport = function(){
+			  	  $scope.informationError=false;
+			  	  $scope.typeActivite.type="Support";
+			  	  $http({
+			  		      method: 'GET',
+			  		      url: "/natures2"
+			  		   }).then(function (success){
+			  			   $scope.natures = success.data;
+			  			   console.log("natures " + $scope.natures);
+			  		   },function (error){
+			  			   $scope.errorMessage = error.message;	
+			  		   });
+			  	  
+			    }
+			    
+			    $scope.initProjet = function(){
+			  	  $scope.informationError=false;
+			  	   $scope.informations = false;
+			  	  $scope.typeActivite.type="Projet";
+			  	  $scope.support.numDemande = null;
+			  		$http({
+			  		      method: 'GET',
+			  		      url: "/natures3"
+			  		   }).then(function (success){
+			  			   $scope.natures = success.data;
+			  			   console.log("natures " + $scope.natures);
+			  		   },function (error){
+			  			   $scope.errorMessage = error.message;	
+			  		   });
+			    }
 				  
 					 
 					 $scope.changeDebut = function (){
@@ -246,18 +353,26 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 						  };
 					
 					
-					$scope.submitForm = function(isValid) {
+						  $scope.submitForm = function(isValid) {
 
-					    // check to make sure the form is completely valid
-					    if (isValid && ($scope.selectedItem !=null)) {
-					    	$scope.error = false;
-					     $scope.saveIntervention();
-					    }else{
-					    	$scope.error = true;
-					    	
-					    }
+							    // check to make sure the form is completely valid
+							    if (isValid && ($scope.selectedItem !=null) && ($scope.selected == true) ) {
+							    	
+							    	if(($scope.typeActivite.type=="Support" && $scope.informations==true ) ||$scope.typeActivite.type=="Projet" ){
+							    		$scope.error = false;
+							    	
+							    		$scope.saveIntervention();
+							    	}else{
+							    		$scope.error = true;
+							    	}
+							    	
+							    }else{
+							    	console.log("Not valid");
+							    	$scope.error = true;
+							    	
+							    }
 
-					  };
+							  };
 					
 				  
 				  $scope.saveIntervention = function(){
@@ -291,22 +406,49 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 					   
 					   var heureFin6 =$scope.heureFin6;
 					   console.log("HeureFin6 "+heureFin6);
-					  var dataObj = {
-								"dateDebut": dateDebut6,
-								"dateFin": dateFin6,
-								"heureDebut": heureDebut6,
-								"heureFin": heureFin6,
-								"client":client,
-								"nature":nature,
-								"descProjet":$scope.descProjet,
-								"dureeFormated":$scope.duree1,
-								"lieu":lieu,
-								"type":type,
-								"ville":ville,
-								"projet":projet,
-								"duree":$scope.duree,
-								"user":user
-						};	 
+					  
+					   var support = {
+								  "numDemande":$scope.support.numDemande
+						  }
+					  
+					  if($scope.typeActivite.type == "Projet"){
+						  var dataObj = {
+								    "typeActivite": "AP",
+									"dateDebut": dateDebut6,
+									"dateFin": dateFin6,
+									"heureDebut": heureDebut6,
+									"heureFin": heureFin6,
+									"client":client,
+									"nature":nature,
+									"descProjet":$scope.descProjet,
+									"dureeFormated":$scope.duree1,
+									"lieu":lieu,
+									"type":type,
+									"ville":ville,
+									"projet":projet,
+									"duree":$scope.duree,
+									"user":user
+							};	
+					   }else{
+						   var dataObj = {
+								    "typeActivite": "AS",
+									"dateDebut": dateDebut6,
+									"dateFin": dateFin6,
+									"heureDebut": heureDebut6,
+									"heureFin": heureFin6,
+									"client":client,
+									"nature":nature,
+									"descProjet":$scope.descProjet,
+									"dureeFormated":$scope.duree1,
+									"lieu":lieu,
+									"type":type,
+									"ville":ville,
+									"support":support,
+									"duree":$scope.duree,
+									"user":user
+							};	
+					   }
+					  
 					  
 					  
 						  $scope.message={
@@ -331,7 +473,7 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 									//$mdDialog.hide();
 									$route.reload();
 								}else{
-									console.log("between");
+									
 									$scope.success=false;
 									$scope.error=true;
 									$scope.message.error="Vous ne pouvez pas faire deux interventions en même temps !";
@@ -351,6 +493,7 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 				  
 				  $scope.reset = function(){
 					  	
+					    
 					    $scope.heureFin = null;
 					    $scope.selectedItem = null;
 				  		$scope.client = "";
@@ -380,15 +523,7 @@ function UpdateEventAdminCalendarController($scope, $mdDialog,$route,items,$http
 			 		   });
 			 			
 			 			
-			 			$http({
-			 		      method: 'GET',
-			 		      url: "/natures1"
-			 		   }).then(function (success){
-			 			   $scope.natures = success.data;
-			 			   console.log("natures " + $scope.natures);
-			 		   },function (error){
-			 			   $scope.errorMessage = error.message;	
-			 		   });
+			 			
 			 		
 			 		  
 			 		  

@@ -50,4 +50,16 @@ public class NatureBusinessImp implements NatureBusiness {
 		return pageNatures;
 	}
 
+	@Override
+	public List<Nature> findNaturesIn() {
+		// TODO Auto-generated method stub
+		return natureRepository.findNaturesIn();
+	}
+
+	@Override
+	public List<Nature> findNaturesNotIn() {
+		// TODO Auto-generated method stub
+		return natureRepository.findNaturesNotIn();
+	}
+
 }

@@ -89,8 +89,18 @@ app.controller("interventionGroupe",function($scope,$http,$route,User,$window,$m
 					   console.log(" VW "+ $scope.activitesEmployes[i].dateDebut);
 					   var dateDebut = moment($scope.activitesEmployes[i].dateDebut,'DD/MM/YYYY HH:mm:ss').subtract(1, 'seconds');
 					   var dateFin = moment($scope.activitesEmployes[i].dateFin,'DD/MM/YYYY HH:mm:ss').add(1, 'seconds');
-					   $scope.activitesEmployes[i].dateDebut=moment(dateDebut,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
-					   $scope.activitesEmployes[i].dateFin=moment(dateFin,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
+					   $scope.activitesEmployes[i].dateDebut=moment(dateDebut,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm');
+					   $scope.activitesEmployes[i].dateFin=moment(dateFin,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm');
+					   $scope.activitesEmployes[i].heureDebut = moment($scope.activitesEmployes[i].heureDebut,'HH:mm:ss').format('HH:mm');
+					   $scope.activitesEmployes[i].heureFin = moment( $scope.activitesEmployes[i].heureFin,'HH:mm:ss').format('HH:mm');
+					   $scope.activitesEmployes[i].duree= moment($scope.activitesEmployes[i].duree,'HH:mm:ss').format('HH:mm');
+					   
+					   if($scope.activitesEmployes[i].typeActivite === "AS"){
+							  
+						   $scope.activitesEmployes[i].projet.projet = $scope.activitesEmployes[i].support.objet;
+					   }
+					   
+					   
 				   }
 				 
 			   
@@ -113,12 +123,13 @@ app.controller("interventionGroupe",function($scope,$http,$route,User,$window,$m
 		      controller: UpdateEventCalendarController,
 		      templateUrl: '/protected/dialogUpdateEvent2.html',
 		      parent: angular.element(document.body),
+		      clickOutsideToClose:true,
+		      fullscreen:true,
 		      locals: {
 		    	  items: activiteEmploye
 		       },
 		      
-		      clickOutsideToClose:true,
-		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		      // Only for -xs, -sm breakpoints.
 		    })
 		    .then(function(answer) {
 		        $scope.status = 'You said the information was "' + answer + '".';

@@ -1,10 +1,13 @@
 package ma.net.munisys.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Projet implements Serializable {
@@ -13,6 +16,9 @@ public class Projet implements Serializable {
 	private String id;
 	private String projet;
 	private int statutProjet; 
+	
+	@ManyToOne
+	private Client client;
 	
 	
 	public String getId() {
@@ -33,10 +39,13 @@ public class Projet implements Serializable {
 	public void setStatutProjet(int statutProjet) {
 		this.statutProjet = statutProjet;
 	}
-	
-	
-	
-	
+	@JsonIgnore
+	public Client getClient() {
+		return client;
+	}
+	public void setClient(Client client) {
+		this.client = client;
+	}
 	
 
 }

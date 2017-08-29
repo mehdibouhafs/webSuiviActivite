@@ -170,12 +170,13 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 			      controller: showEventAdminController,
 			      templateUrl: '/protected/dialogShowEvent.html',
 			      parent: angular.element(document.body),
+			      clickOutsideToClose:true,
+			      fullscreen:true,
 			      locals: {
 			    	  items: activiteEmploye
 			       },
 			      
-			      clickOutsideToClose:true,
-			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			     // Only for -xs, -sm breakpoints.
 			    })
 			    .then(function(answer) {
 			        $scope.status = 'You said the information was "' + answer + '".';
@@ -330,7 +331,7 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				    		
 				    		var title =' <p hidden>,' +$scope.activitesEmployer[i].id+',</p><i class="fa fa-user"></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].user.nom+'     </span><i class="fa fa-building" style="margin-left: 5px;></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].client.client+'</span><i class="fa fa-suitcase"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">Nature :  '+$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> Action:  '+$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> durée :  '+ $scope.activitesEmployer[i].dureeFormated;
 					    	var color1;
-				    		if($scope.activitesEmployer[i].type.type == "Réaliser"){
+				    		if($scope.activitesEmployer[i].type.type == "Réalisée"){
 					    		color1 = '#70FFE7';
 					    	}else{
 					    		color1 = '#C8EEFF';

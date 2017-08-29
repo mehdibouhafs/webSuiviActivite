@@ -8,6 +8,16 @@ function showEventAdminController($scope, $mdDialog,$route,items,User,$http) {
 				 }
 			  
 			   console.log("items "+items);
+			   
+			   
+			   $scope.typeActivite = {type:""};
+				  if(items.typeActivite === "AS"){
+					  $scope.typeActivite.type="Support";
+					  $scope.support1 = items.support;
+				  }else{
+					  $scope.typeActivite.type="Projet";
+					  $scope.projet = items.projet.id;
+				  }
 			 
 			  //var dateDebutVrai =  moment(dateDebut, "DD/MM/YYYY").add(1, 'days').format("DD/MM/YYYY");
 			  $scope.dateDebut = items.dateDebut;
@@ -36,7 +46,7 @@ function showEventAdminController($scope, $mdDialog,$route,items,User,$http) {
 			  $scope.nature = items.nature.id;
 			  console.log("nature1 " + JSON.stringify(items.nature));
 			  $scope.ville = items.ville.id;
-			  $scope.projet = items.projet.id;
+			  
 			  $scope.descProjet = items.descProjet;
 			  $scope.lieu = items.lieu.id;
 			  $scope.type = items.type.id;

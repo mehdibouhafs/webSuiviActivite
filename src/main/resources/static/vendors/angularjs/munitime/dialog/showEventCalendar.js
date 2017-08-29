@@ -2,7 +2,16 @@
 function showEventController($scope, $mdDialog,$route,items,User,$http) {
 			   
 			
-				 $scope.userName = "mon intervention";
+			  $scope.userName = "mon intervention";
+			  
+			  $scope.typeActivite = {type:""};
+			  if(items.typeActivite === "AS"){
+				  $scope.typeActivite.type="Support";
+				  $scope.support1 = items.support;
+			  }else{
+				  $scope.typeActivite.type="Projet";
+				  $scope.projet = items.projet.id;
+			  }
 			 
 			  console.log("DialogControllerShowed click event User " );
 			  
@@ -44,7 +53,7 @@ function showEventController($scope, $mdDialog,$route,items,User,$http) {
 			  $scope.nature = items.nature.id;
 			  console.log("nature1 " + JSON.stringify(items.nature));
 			  $scope.ville = items.ville.id;
-			  $scope.projet = items.projet.id;
+			 
 			  $scope.descProjet = items.descProjet;
 			  $scope.lieu = items.lieu.id;
 			  $scope.type = items.type.id;
@@ -68,7 +77,7 @@ function showEventController($scope, $mdDialog,$route,items,User,$http) {
 		 			
 		 			$http({
 		 		      method: 'GET',
-		 		      url: "/natures1"
+		 		      url: "/natures3"
 		 		   }).then(function (success){
 		 			   $scope.natures = success.data;
 		 			   console.log("natures " + $scope.natures);

@@ -1,6 +1,5 @@
 package ma.net.munisys.dao;
 
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,17 +8,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ma.net.munisys.entities.ActiviterEmployer;
-import ma.net.munisys.entities.Client;
-import ma.net.munisys.entities.Lieu;
-import ma.net.munisys.entities.Projet;
-import ma.net.munisys.entities.User;
+import ma.net.munisys.entities.Support;
 
-public interface ProjetRepository extends JpaRepository<Projet,String> {
+
+
+public interface SupportRepository extends JpaRepository<Support,String> {
 	
-	@Query("select o from Projet o ORDER BY o.projet ASC")
-	public Page<Projet> findProjet(Pageable page);
+
+	@Query("select o from Support o")
+	public Page<Support> findSupport(Pageable page);
 	
 	
-	
+	@Query("select o from Support o where o.numDemande = :x")
+	public Support findSupport(@Param("x") String numDemande);
 	
 }

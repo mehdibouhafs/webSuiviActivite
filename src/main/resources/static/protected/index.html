@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="MyApp" ng-controller="calendar">
   <head>
+  
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Munitime </title>
+    <title>M'Time </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,7 +25,7 @@
     
     
    <!-- bootstrap-datetimepicker -->
-    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    
  
     <link rel="stylesheet" href="../vendors/angularjs/angular-material.min.css"">
     <link rel="stylesheet" href="../vendors/angularjs/material-datetimepicker.css"">
@@ -52,9 +53,9 @@
               <div class="profile_pic">
                 <img src="../production/images/img.jpg" alt="." class="img-circle profile_img">
               </div>
-              <div class="profile_info">
+              <div class="profile_info" ng-cloak>
                 <span style="color: white;">Bienvenue,</span>
-                <h2 ng-cloak style="color: white;">{{nomUser}}</h2>
+                <h2 xstyle="color: white;">{{nomUser}}</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -64,20 +65,21 @@
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
-                <h3>General</h3>
+                <h3>Menu</h3>
                 <ul class="nav side-menu">
                   <li  ng-show="directeur"><a href="/directeurHome"><i class="fa fa-line-chart"></i> Tableau de bord </a></li>
                   
                   
-                   <li ng-show="admin || directeur" ng-cloak><a><i class="fa fa-laptop"></i> Reporting <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="/productivite"><i class="fa fa-gavel"></i> Productivité </a></li>
-                    </ul>
-                  </li>
+                  
 
                   
                   <li ng-hide="directeur"><a href="/index"><i class="fa fa-home"></i> Home </a></li>
                   <li ng-show="directeur || admin"><a href="/adminCalendar" ng-cloak><i class="fa fa-calendar-check-o"></i> Admin calendrier </a></li>
+                   <li ng-show="admin || directeur" ng-cloak><a><i class="fa fa-laptop"></i> Rapports <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="/productivite"><i class="fa fa-gavel"></i> Productivité </a></li>
+                    </ul>
+                  </li>
                   <li ng-hide="directeur"><a href="/moncalendrier"><i class="fa fa-calendar"></i> Mon calendrier </a></li>
                   <li ng-hide="directeur"><a href="/nouvelleIntervention"><i class="fa fa-suitcase"></i> Nouvelle Intervention </a></li>
                   <li ng-show="admin || directeur" ng-cloak><a href="/Allinterventions"><i class="fa fa-calendar-check-o"></i> Tout les interventions</a></li>
@@ -107,6 +109,22 @@
             <!-- /menu footer buttons -->
           </div>
         </div>
+        
+         <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top"  href="/index">
+                <span class="fa fa-home" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" href="/help">
+                <span class="fa fa-info" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Profile" href="/profile">
+                <span class="fa fa-user" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Se déconnecter" ng-click="logout()">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -116,7 +134,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
 
-              <ul class="nav navbar-nav navbar-right">
+              <!--  <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="../production/images/img.jpg" alt="" ng-cloak>{{nomUser}}
@@ -130,7 +148,7 @@
                   </ul>
                 </li>
 
-              </ul>
+              </ul>-->
             </nav>
           </div>
         </div>
@@ -226,7 +244,7 @@
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../vendors/angularjs/fr.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+   
     
    
 

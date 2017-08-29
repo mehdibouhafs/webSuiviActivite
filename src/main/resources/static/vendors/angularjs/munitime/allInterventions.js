@@ -89,9 +89,17 @@ app.controller("chargerAllInterventions",function($scope,$http,$route,User,$wind
 					   console.log(" VW "+ $scope.activitesEmployes1[i].dateDebut);
 					   var dateDebut = moment($scope.activitesEmployes1[i].dateDebut,'DD/MM/YYYY HH:mm:ss').subtract(1, 'seconds');
 					   var dateFin = moment($scope.activitesEmployes1[i].dateFin,'DD/MM/YYYY HH:mm:ss').add(1, 'seconds');
-					   $scope.activitesEmployes1[i].dateDebut=moment(dateDebut,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
-					   $scope.activitesEmployes1[i].dateFin=moment(dateFin,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
-				   }
+					   $scope.activitesEmployes1[i].dateDebut=moment(dateDebut,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm');
+					   $scope.activitesEmployes1[i].dateFin=moment(dateFin,'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm');
+					   $scope.activitesEmployes1[i].heureDebut = moment($scope.activitesEmployes1[i].heureDebut,'HH:mm:ss').format('HH:mm');
+					   $scope.activitesEmployes1[i].heureFin = moment( $scope.activitesEmployes1[i].heureFin,'HH:mm:ss').format('HH:mm');
+					   $scope.activitesEmployes1[i].duree= moment($scope.activitesEmployes1[i].duree,'HH:mm:ss').format('HH:mm');
+				  
+					   if($scope.activitesEmployes1[i].typeActivite === "AS"){
+							  
+						   $scope.activitesEmployes1[i].projet.projet = $scope.activitesEmployes1[i].support.objet;
+					   }
+				  }
 				  
 				  $scope.filteredList = $scope.activitesEmployes1;
 				  //console.log("Page courante "+$scope.currentPage);
@@ -111,12 +119,13 @@ app.controller("chargerAllInterventions",function($scope,$http,$route,User,$wind
 		      controller: UpdateEventCalendarController,
 		      templateUrl: '/protected/dialogUpdateEvent2.html',
 		      parent: angular.element(document.body),
+		      clickOutsideToClose:true,
+		      fullscreen:true,
 		      locals: {
 		    	  items: activiteEmploye
 		       },
 		      
-		      clickOutsideToClose:true,
-		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		       // Only for -xs, -sm breakpoints.
 		    })
 		    .then(function(answer) {
 		        $scope.status = 'You said the information was "' + answer + '".';

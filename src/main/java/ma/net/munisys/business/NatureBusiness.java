@@ -14,5 +14,9 @@ public interface NatureBusiness {
 	public Nature updateNature(Long id, Nature nature);
 	
 	public PageNatures listNatures(int page, int size);
+	
+	public List<Nature> findNaturesIn();
+	
+	public List<Nature> findNaturesNotIn();
 
 }

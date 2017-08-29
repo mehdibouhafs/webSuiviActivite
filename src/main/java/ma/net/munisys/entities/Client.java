@@ -6,7 +6,10 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Client implements Serializable {
@@ -15,6 +18,10 @@ public class Client implements Serializable {
 	private Long id;
 	private String client;
 	private String codeClient;
+	@OneToMany(mappedBy="client")
+	private List<Projet> projets;
+	
+	
 
 	public Client() {
 		super();
@@ -54,6 +61,18 @@ public class Client implements Serializable {
 
 	public void setCodeClient(String codeClient) {
 		this.codeClient = codeClient;
+	}
+	
+	
+
+	@JsonIgnore
+	public List<Projet> getProjets() {
+		return projets;
+	}
+
+
+	public void setProjets(List<Projet> projets) {
+		this.projets = projets;
 	}
 
 

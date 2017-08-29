@@ -10,17 +10,11 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nouvelle Intervention <small>Munisys</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
+                    <h2>Nouvelle Intervention </h2>
+                    
                     <div class="clearfix"></div>
                   </div>
-                  <div class="x_content">
+                  <div class="x_content" style="margin-top: -20px;">
                     <br />
                     <form class="form-horizontal form-label-left" name="interventionForm" ng-submit="submitForm(interventionForm.$valid)" novalidate>
                     
@@ -39,7 +33,84 @@
 						 </div>
 					 </div>
 					 
-                    
+					 	
+		  		<div class="form-group row" ng-show="informationError">		
+		  			<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+		  			<div class="col-md-6 col-sm-6 col-xs-12 alert alert-danger">
+	  						<strong> Aucune demande trouvée avec le numero : {{support.numDemande}}</strong> <br/>
+					 </div>
+				</div>
+					 
+							
+					  <div class="form-group row">
+					  			<label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'activité : </label>
+		  						<div class="col-md-2 col-sm-2 col-xs-12" style="margin-top:7px;" >
+			  						<label>Projet: </label>
+			  						<input  type="radio" ng-model="typeActivite.type"  value="Projet" ng-change="initProjet()"/>
+			  						<label style="margin-left: 10px;" >Support: </label>
+								  	<input type="radio" ng-model="typeActivite.type" value="Support" ng-change="initSupport()"/>
+							  	</div>
+							  	<div class="input-group col-md-4 col-sm-4 col-xs-12"  ng-show="typeActivite.type=='Support'">
+							  	<span class="input-group-addon" ng-click="loadInformationsSupport()">
+			                               <span class="fa fa-search">
+			                               	
+			                               </span>
+			                            </span>
+							  		<input  type="text" class="form-control" ng-model="support.numDemande"  placeholder="N°de la demande" style="width: 97%;" ng-change="loadInformationsSupport()"  >
+							  	</div>
+		  				</div>
+		  		
+		  	
+		  				
+		  			<div class="form-group row" ng-show="informations">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+			  				<div class="panel-group col-md-6 col-sm-6 col-xs-12" id="accordion">
+								  <div class="panel panel-default">
+									    <div class="panel-heading">
+									      <h4 class="panel-title">
+									      <i class="fa fa-info"></i> 
+									        <a href="javascript:;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" style="margin-left: 10px;">
+									          Informations support
+									        </a>
+									      </h4>
+									       
+									    </div>
+									    <div id="collapseOne" class="panel-collapse collapse in">
+									      <div class="panel-body">
+									        <div class="row">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Objet: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.objet"  readonly="readonly"/>
+				  						        </div>
+				  						        
+				  						        <div class="row" style=" margin-top: 10px;">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Identifiant: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.identifiant"  readonly="readonly"/>
+				  						        </div>
+				  						        
+				  						        <div class="row"  style=" margin-top: 10px;">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Contrat: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.contrat"   readonly="readonly"/>
+				  						        </div>
+				  						        
+				  						        <div class="row"  style=" margin-top: 10px;">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Date de la demande: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.dateDemande | date:'dd/MM/yyyy HH:mm:ss'"  readonly="readonly"/>
+				  						        </div>
+									   
+									    </div>
+									  </div>
+								  </div>
+							</div>
+					</div>			  
+		  				
                     
                     <div class="form-group">
                     	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de début votre intervention <span class="required">*</span>
@@ -119,14 +190,7 @@
 			             
                     </div>
                     
-                    
-                    
-                  
-                  
-                      
-                      
-                      
-                    
+
                     
                     
                     <div class="form-group">
@@ -138,7 +202,7 @@
 		                            <option value="">Selectionner un client</option>
 		                            
 		                   </select>-->
-		                   <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in query(searchText)" md-item-text="item.client" placeholder="Veuillez Saisir le client où selectionnez le client depuis la site" ng-cloak>
+		                   <md-autocomplete md-selected-item="selectedItem" md-search-text="searchText" md-items="item in query(searchText)" md-item-text="item.client" placeholder="Veuillez Saisir le client" ng-cloak md-selected-item-change="updateProjets()">
 							  <md-item-template>
 							    <span md-highlight-text="searchText" ng-cloak>{{item.client}}</span>
 							  </md-item-template>
@@ -163,7 +227,7 @@
                     
                     
                     
-                     <div class="form-group">
+                     <div class="form-group" ng-show="typeActivite.type=='Projet'">
                     	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectProjet">Projet <span class="required">*</span></label>
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 		                    <select  class="form-control" id="selectLieu" ng-model="projet" ng-options="item.id as item.projet for item in projets">
@@ -177,7 +241,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descProjet">Desc Projet /Comm.Action <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="descProjet" required class="form-control col-md-7 col-xs-12 " ng-model="descProjet"  placeholder="Description du projet où Commenter l'action">
+                          <input type="text" id="descProjet" required class="form-control col-md-7 col-xs-12 " ng-model="descProjet"  placeholder="Description du projet où commenter l'action">
                         </div>
                       </div>
                       
@@ -224,9 +288,9 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button class="btn btn-primary" type="button" ng-click="home()">Cancel</button>
-						  <button class="btn btn-primary" type="reset" ng-click="reset()">Reset</button>
-                          <button type="submit" class="btn btn-success" >Submit</button>
+                          <button class="btn btn-primary" type="button" ng-click="home()">Annuler</button>
+						  <button class="btn btn-primary" type="reset" ng-click="reset()">Vider</button>
+                          <button type="submit" class="btn btn-success" >Valider</button>
                         </div>
                       </div>
                     </form>

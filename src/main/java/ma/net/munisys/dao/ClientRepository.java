@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ma.net.munisys.entities.Client;
-
+import ma.net.munisys.entities.Projet;
 public interface ClientRepository extends JpaRepository<Client,Long> {
 
 	
@@ -19,4 +19,8 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
 	
 	@Query("select p from Client p where p.client like :x")
 	public List<Client> getClients(@Param("x")String client);
+	
+	
+	@Query("select o.projets from Client o where o.codeClient = :x ")
+	public List<Projet> findByclientProjet(@Param("x")String codeClient);
 }

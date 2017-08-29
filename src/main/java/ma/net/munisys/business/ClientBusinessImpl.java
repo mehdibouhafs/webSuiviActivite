@@ -12,6 +12,7 @@ import ma.net.munisys.entities.ActiviterEmployer;
 import ma.net.munisys.entities.Client;
 import ma.net.munisys.entities.PageActiviterEmployer;
 import ma.net.munisys.entities.PageClients;
+import ma.net.munisys.entities.Projet;
 
 @Service
 public class ClientBusinessImpl implements ClientBusiness {
@@ -54,6 +55,12 @@ public class ClientBusinessImpl implements ClientBusiness {
 	public List<Client> getClients(String client) {
 		// TODO Auto-generated method stub
 		return clientRepository.getClients(client);
+	}
+
+	@Override
+	public List<Projet> findByclientProjet(String codeClient) {
+		// TODO Auto-generated method stub
+		return clientRepository.findByclientProjet(codeClient);
 	}
 
 }

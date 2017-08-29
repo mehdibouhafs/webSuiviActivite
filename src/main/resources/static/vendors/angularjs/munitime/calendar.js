@@ -2,6 +2,8 @@ var app = angular.module('MyApp', ['angular-table','angular-tabs','chart.js','go
 //angular.module('mwl.calendar.docs') //you will need to declare your module with the dependencies ['mwl.calendar', 'ui.bootstrap', 'ngAnimate']
 
 app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider){
+
+	
 	$routeProvider.when('/Allinterventions',{templateUrl:'/protected//Allinterventions.html'});
 	$routeProvider.when('/mesinterventions',{templateUrl:'/protected//mesinterventions.html'});
 	$routeProvider.when('/nouvelleIntervention',{templateUrl:'/protected/nouvelleIntervention.html'});
@@ -25,6 +27,7 @@ app.config(['$routeProvider','$locationProvider',function($routeProvider,$locati
 	$routeProvider.when('/productivite',{templateUrl:'/protected/productivite.html'});
 	$routeProvider.otherwise('/index');
 	$locationProvider.html5Mode({enabled:true,requireBase:false});
+	$locationProvider.hashPrefix('');
 }
 	
 ]);
@@ -384,12 +387,13 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 		      controller: showEventController,
 		      templateUrl: '/protected/dialogShowEvent.html',
 		      parent: angular.element(document.body),
+		      clickOutsideToClose:true,
+		      fullscreen:true,
 		      locals: {
 		    	  items: activiteEmploye
 		       },
 		      
-		      clickOutsideToClose:true,
-		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		       // Only for -xs, -sm breakpoints.
 		    })
 		    .then(function(answer) {
 		        $scope.status = 'You said the information was "' + answer + '".';
@@ -499,12 +503,13 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 		      controller: UpdateEventAdminCalendarController,
 		      templateUrl: '/protected/dialogUpdateEvent.html',
 		      parent: angular.element(document.body),
+		      clickOutsideToClose:true,
+		      fullscreen:true,
 		      locals: {
 		    	  items: activiteEmploye
 		       },
 		      
-		      clickOutsideToClose:true,
-		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		      // Only for -xs, -sm breakpoints.
 		    })
 		    .then(function(answer) {
 		        $scope.status = 'You said the information was "' + answer + '".';
@@ -524,12 +529,13 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 			      controller: deleteEventAdminController,
 			      templateUrl: '/protected/dialogDeleteEvent.html',
 			      parent: angular.element(document.body),
+			      clickOutsideToClose:true,
+			      fullscreen:true,
 			      locals: {
 			    	  items: activiteEmploye
 			       },
 			      
-			      clickOutsideToClose:true,
-			      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+			       // Only for -xs, -sm breakpoints.
 			    })
 			    .then(function(answer) {
 			        $scope.status = 'You said the information was "' + answer + '".';
@@ -568,10 +574,10 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 			 
 			  $scope.whatClassIsIt= function(someValue){
 				
-				     if(someValue=="Réaliser"){
+				     if(someValue=="Réalisée"){
 				    	 
 				            return "label label-success"
-				     }else if(someValue=="Planifier")
+				     }else if(someValue=="Planifiée")
 				         return "label label-info";
 				     
 				    }
@@ -590,7 +596,7 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 	    		$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">DescProjet:  '+
 	    		$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">durée :  '+ $scope.activitesEmployer[i].dureeFormated;
 	    		var color1;
-	    		if($scope.activitesEmployer[i].type.type == "Réaliser"){
+	    		if($scope.activitesEmployer[i].type.type == "Réalisée"){
 		    		color1 = '#70FFE7';
 		    	}else{
 		    		color1 = '#C8EEFF';
@@ -752,7 +758,7 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 		      parent: angular.element(document.body),
 		      targetEvent: ev,
 		      clickOutsideToClose:true,
-		      fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+		      fullscreen: true // Only for -xs, -sm breakpoints.
 		    })
 		    .then(function(answer) {
 		        $scope.status = 'You said the information was "' + answer + '".';
@@ -771,10 +777,10 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 		  
 		  whatClassIsIt= function(someValue){
 			  
-			     if(someValue=="Réaliser"){
+			     if(someValue=="Réalisée"){
 			    	
 			            return "label label-success"
-			     }else if(someValue=="Planifier")
+			     }else if(someValue=="Planifiée")
 			         return "label label-info";
 			     
 			    }

@@ -1,16 +1,20 @@
-<md-dialog aria-label="Detail de l'intervention">
+<md-dialog aria-label="Detail de l'intervention" style="max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;">
   <form ng-cloak name="interventionForm" ng-submit="submitForm(interventionForm.$valid)" novalidate>
     <md-toolbar style="background-color: #2a3f54;">
       <div class="md-toolbar-tools">
-         <h2>Détail de {{userName}}</h2>
-        
+         <h2>Détail de 22 {{userName}}</h2>
+         <span flex></span>
         <md-button class="md-icon-button" ng-click="cancel()">
-          <md-icon md-svg-src="/production/images/close.png" aria-label="fermer"></md-icon>
+          <md-icon md-svg-src="/production/images/ic_close_24px.svg" aria-label="fermer"></md-icon>
         </md-button>
       </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content >
       <div class="md-dialog-content">
       
       				<div class="form-group row" ng-if="error==true" ng-cloak>
@@ -28,14 +32,98 @@
 						 </div>
 					 </div>
 					 
+					 
+					 
+					 
+			   <div class="form-group row" ng-show="informationError">		
+		  			<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+		  			     <div class="col-md-6 col-sm-6 col-xs-12 alert alert-danger">
+	  						<strong> Aucune demande trouvée avec le numero : {{support.numDemande}}</strong> <br/>
+						 </div>
+				</div>
+					 
+							
+					  <div class="form-group row">
+					  			<label class="control-label col-md-3 col-sm-3 col-xs-12">Type d'activité : </label>
+		  						<div class="col-md-2 col-sm-2 col-xs-12" style="margin-top:7px;" >
+			  						<label>Projet: </label>
+			  						<input  type="radio" ng-model="typeActivite.type"  value="Projet" ng-change="initProjet()" disabled/>
+			  						<label style="margin-left: 10px;" >Support: </label>
+								  	<input type="radio" ng-model="typeActivite.type" value="Support" ng-change="initSupport()" disabled/>
+							  	</div>
+							  	<div class="input-group col-md-4 col-sm-4 col-xs-12"  ng-show="typeActivite.type=='Support'" >
+							  	<span class="input-group-addon" ng-click="loadInformationsSupport()">
+			                               <span class="fa fa-search">
+			                               	
+			                               </span>
+			                            </span>
+							  		<input  type="text" class="form-control" ng-model="support1.numDemande"  placeholder="N°de la demande" style="width: 97%;" ng-change="loadInformationsSupport()" disabled  >
+							  	</div>
+		  				</div>
+		  		
+		  	
+		  				
+		  			<div class="form-group row" ng-show="typeActivite.type=='Support'">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
+			  				<div class="panel-group col-md-6 col-sm-6 col-xs-12" id="accordion">
+								  <div class="panel panel-default">
+									    <div class="panel-heading">
+									      <h4 class="panel-title">
+									      <i class="fa fa-info"></i> 
+									        <a href="javascript:;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" style="margin-left: 10px;">
+									          Informations support
+									        </a>
+									      </h4>
+									       
+									    </div>
+									    <div id="collapseOne" class="panel-collapse collapse in">
+									      <div class="panel-body">
+									        <div class="row">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Objet: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.objet"  readonly="readonly"/>
+				  						        </div>
+				  						        
+				  						        <div class="row" style=" margin-top: 10px;">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Identifiant: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.identifiant"  readonly="readonly"/>
+				  						        </div>
+				  						        
+				  						        <div class="row"  style=" margin-top: 10px;">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Contrat: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.contrat"   readonly="readonly"/>
+				  						        </div>
+				  						        
+				  						        <div class="row"  style=" margin-top: 10px;">
+									           
+													<label class="col-md-2 col-sm-3 col-xs-5">Date de la demande: </label>
+												
+				  						             <input class="col-md-8 col-sm-8 col-xs-7"  type="text" ng-model="support1.dateDemande | date:'dd/MM/yyyy HH:mm:ss'"  readonly="readonly"/>
+				  						        </div>
+									   
+									    </div>
+									  </div>
+								  </div>
+							</div>
+					</div>		
+					 
+					 
+					 
+					 
+					 
 					<div class="form-group row">
-                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de début votre intervention <span class="required">*</span>
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de début votre intervention 
                         </label>
                         <div class="col-md-9 col-sm-9 col-xs-12" >
 	                        
 	                			<div class="input-group date" id="myDatePicker">
 		                            <input class="form-control md-input" time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date de début de l'intérvention"
-										ng-model="dateDebut" format="DD/MM/YYYY" ok-text="valider" cancel-text="Annuler" ng-change="changeDebut()" required>
+										ng-model="dateDebut" format="DD/MM/YYYY" ok-text="valider" cancel-text="Annuler" ng-change="changeDebut()" required disabled>
 										<span class="input-group-addon">
 			                               <span class="glyphicon glyphicon-calendar"></span>
 			                            </span>
@@ -45,7 +133,7 @@
                     </div>
                     
                     <div class="form-group row">
-                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTimePicker">Heure de début d'intervention <span class="required">*</span>
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTimePicker">Heure de début d'intervention 
                         </label>
                         <div class="col-md-9 col-sm-9 col-xs-12" >
                         	
@@ -65,13 +153,13 @@
                     </div>
                     
                     <div class="form-group row">
-                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de Fin d'intervention <span class="required">*</span>
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myDatePicker">Date de Fin d'intervention </span>
                         </label>
                         <div class="col-md-9 col-sm-9 col-xs-12" >
 	                        
 	                			<div class="input-group date" id="myDatePicker">
 		                            <input class="form-control md-input" time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date de Fin de l'intérvention"
-										ng-model="dateFinale" format="DD/MM/YYYY" min-date="minDate" ok-text="valider" cancel-text="Annuler" ng-change="changeFin()" required>
+										ng-model="dateFinale" format="DD/MM/YYYY" min-date="minDate" ok-text="valider" cancel-text="Annuler" ng-change="changeFin()"  disabled>
 										<span class="input-group-addon">
 			                               <span class="glyphicon glyphicon-calendar"></span>
 			                            </span>
@@ -81,7 +169,7 @@
                     </div>
                     
                      <div class="form-group row">
-                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTimePicker1">Heure de fin de l'intervention <span class="required">*</span>
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="myTimePicker1">Heure de fin de l'intervention 
                         </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
 	                        
@@ -112,7 +200,7 @@
                     <div class="form-group row">
                     
                   
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectClient">Client <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectClient">Client </label>
 	                    <div class="col-md-9 col-sm-9 col-xs-12">
 		                   <!--  - <select  class="form-control" id="selectClient" ng-model="client" ng-options="item.id as item.client for item in clients" required>
 		                            <option value="">Selectionner un client</option>
@@ -131,7 +219,7 @@
 	                </div>
 	                
 	                <div class="form-group row">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectClient">Nature de l'intervention <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectClient">Nature de l'intervention </label>
 	                    <div class="col-md-9 col-sm-9 col-xs-12">
 		                    <select  class="form-control" id="selectClient" ng-model="nature" ng-options="item.id as item.nature for item in natures" disabled>
 		                            <option value="">Selectionner la nature de l'intervention</option>
@@ -141,10 +229,10 @@
 		                </div>
 	                </div>
 	                
-	                <div class="form-group row">
-                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectProjet">Projet <span class="required">*</span></label>
+	                <div class="form-group row" ng-show="typeActivite.type=='Projet'">
+                    	<label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectProjet">Projet </label>
 	                    <div class="col-md-9 col-sm-9 col-xs-12">
-		                    <select  class="form-control" id="selectLieu" ng-model="projet" ng-options="item.id as item.projet for item in projets">
+		                    <select  class="form-control" id="selectLieu" ng-model="projet" ng-options="item.id as item.projet for item in projets" disabled>
 		                            <option value="">Sélectionner le Projet</option>
 		                   </select>
 		                  
@@ -154,7 +242,7 @@
                     
 
                       <div class="form-group row">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descProjet">Desc Projet /Comm.Action <span class="required">*</span>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descProjet">Desc Projet /Comm.Action 
                         </label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                           <input type="text" id="descProjet" required class="form-control col-md-7 col-xs-12 " ng-model="descProjet"  placeholder="Description du projet où Commenter l'action" disabled>
@@ -163,7 +251,7 @@
                       
                       
                       <div class="form-group row">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectLieu">Lieu de l'intervention <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectLieu">Lieu de l'intervention </label>
 	                    <div class="col-md-9 col-sm-9 col-xs-12">
 		                    <select  class="form-control" id="selectLieu"  ng-model="lieu" ng-options="item.id as item.lieu for item in lieux" disabled>
 		                            <option value="">Sélectionner le lieu</option>
@@ -174,7 +262,7 @@
 	                </div>
 	                
 	                <div class="form-group row">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectVille">Ville d'intervention <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectVille">Ville d'intervention </label>
 	                    <div class="col-md-9 col-sm-9 col-xs-12">
 		                    <select  class="form-control" id="selectVille" ng-model="ville" ng-options="item.id as item.ville for item in villes" disabled>
 		                            <option value="">Sélectionner une ville</option>
@@ -185,7 +273,7 @@
 	                </div>
 	                
 	                <div class="form-group row">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectStatut"> Statut de l'intérvention   <span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectStatut"> Statut de l'intérvention   </label>
 	                    <div class="col-md-9 col-sm-9 col-xs-12">
 		                    <select  class="form-control" id="selectStatut" ng-model="type" ng-options="item.id as item.type for item in types" disabled>
 		                            <option value="">Sélectionner le statut de cette intérvention </option>

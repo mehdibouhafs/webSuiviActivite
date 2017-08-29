@@ -7,25 +7,25 @@
             
 
             <div class="row">
-            	 <label class="col-md-2 col-sm-2 col-xs-12">
+            	
             	 
             	 </label>
-	              <div class="col-md-8 col-sm-4 col-xs-12">
+	              <div class="col-md-6 col-sm-8 col-xs-12">
 	                <div class="x_panel">
 	                  <div class="x_title">
 	                    <h2> Productivité des collaborateurs </h2>
+	                     <div class="clearfix"></div>
 	                    
-	                    <div class="clearfix"></div>
 	                  </div>
 	
 	                  <div class="x_content">
 	                  
 	                  	  <form>
 						 <div class="row" style="margin: 10px;"> 
-						 <label class="control-label col-md-1 col-sm-1 col-xs-12"></label>
+						
 						  <div class="form-group">
 						  
-		                    	<label class="control-label col-md-1 col-sm-1 col-xs-12" for="myDatePicker">Date début </label>
+		                    	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="myDatePicker" style="font-size: 12px; margin-top: 10px;">Date début: </label>
 			                        <div class="col-md-4 col-sm-4 col-xs-12">
 				                        
 				                			<div class="input-group date" id="myDatePicker">
@@ -40,7 +40,7 @@
 	                      
 	                    	
 	                      
-	                    	<label class="control-label col-md-1 col-sm-1 col-xs-12" for="myDatePicker">Date Fin </label>
+	                    	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="myDatePicker" style="font-size: 12px; margin-top: 10px;">Date Fin: </label>
 	                        <div class="col-md-4 col-sm-4 col-xs-12" >
 		                        
 		                			<div class="input-group date" id="myDatePicker">
@@ -60,11 +60,11 @@
 						  </form> 	  
 						  
 						  
-						  <form style="margin:15px;">
-						    <div class="form-group">
+						  <form>
+						    <div class="form-group ">
 						      <div class="input-group">
 						        <div class="input-group-addon"><i class="fa fa-search"></i></div>
-						        <input type="text" class="form-control" placeholder="Filtre" ng-model="query3" ng-change="updateFilteredList()"/>
+						        <input type="text" class="form-control" placeholder="Filtre" ng-model="query3" ng-change="updateFilteredList()"  style="width: 45%;"/>
 						      </div>      
 						    </div>
 						  </form>
@@ -80,7 +80,7 @@
 	                        <tbody>
 	                        <tr class="even pointer">
 	                        			
-				  						<td class=" "  at-implicit at-attribute="userName"></td>
+				  						<td class=" "  at-implicit at-attribute="userName" at-title="Collaborateur"></td>
 				  						<td class=" " at-implicit at-sortable at-attribute="taux"  ></td>
 
 				  					</tr>

@@ -60,7 +60,6 @@ public class UserBusinessImpl implements UserBusiness {
 		// TODO Auto-generated method stub
 		User user = userRepository.findOne(username);
 		Role roles = roleRepository.findOne(role);
-		System.out.println(roles.getRole());
 		user.getRoles().add(roles);
 		userRepository.save(user);
 		return user;
@@ -111,7 +110,6 @@ public class UserBusinessImpl implements UserBusiness {
 		
 		
 		User user = getUser(username);
-		System.out.println("User " + user.toString());
 		Map<String,Object> params = new HashMap<>();
 		params.put("username", username);
 		params.put("nom", user.getNom());

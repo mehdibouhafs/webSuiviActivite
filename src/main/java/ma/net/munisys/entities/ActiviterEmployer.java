@@ -3,17 +3,31 @@ package ma.net.munisys.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="typeActivite",discriminatorType = DiscriminatorType.STRING,length=2)
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,include = JsonTypeInfo.As.PROPERTY,property ="typeActivite")
+@JsonSubTypes({
+	@Type(name = "AP", value = ActiviterEmployerProjet.class),
+	@Type(name = "AS", value = ActiviterEmployerSupport.class)
+})
 public class ActiviterEmployer implements Serializable {
 	
 	@Id @GeneratedValue
@@ -30,9 +44,7 @@ public class ActiviterEmployer implements Serializable {
     private Nature nature;
     private String descProjet;
     
-    @OneToOne
-    private Projet projet;
-    
+   
     @OneToOne
     private Lieu lieu;
     @OneToOne
@@ -40,7 +52,7 @@ public class ActiviterEmployer implements Serializable {
     private String duree;
     private String dureeFormated;
     @OneToOne
-    private Type type;
+    private ma.net.munisys.entities.Type type;
     
     private int tag;
     
@@ -51,6 +63,31 @@ public class ActiviterEmployer implements Serializable {
 		
 	}
 	
+	
+	
+
+	public ActiviterEmployer(Date dateDebut, Date dateFin, String heureDebut, String heureFin, Client client,
+			Nature nature, String descProjet, Lieu lieu, Ville ville, String duree, String dureeFormated, ma.net.munisys.entities.Type type,
+			 User user) {
+		super();
+		this.id = id;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.heureDebut = heureDebut;
+		this.heureFin = heureFin;
+		this.client = client;
+		this.nature = nature;
+		this.descProjet = descProjet;
+		this.lieu = lieu;
+		this.ville = ville;
+		this.duree = duree;
+		this.dureeFormated = dureeFormated;
+		this.type = type;
+		this.user = user;
+	}
+
+
+
 
 	public Client getClient() {
 		return client;
@@ -87,12 +124,12 @@ public class ActiviterEmployer implements Serializable {
 	}
 	
 
-	public Type getType() {
+	public ma.net.munisys.entities.Type getType() {
 		return type;
 	}
 
 
-	public void setType(Type type) {
+	public void setType(ma.net.munisys.entities.Type type) {
 		this.type = type;
 	}
 
@@ -190,15 +227,6 @@ public class ActiviterEmployer implements Serializable {
 	
 	
 
-	public Projet getProjet() {
-		return projet;
-	}
-
-
-	public void setProjet(Projet projet) {
-		this.projet = projet;
-	}
-	
 	
 
 
@@ -216,7 +244,7 @@ public class ActiviterEmployer implements Serializable {
 	public String toString() {
 		return "ActiviterEmployer [id=" + id + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", heureDebut="
 				+ heureDebut + ", heureFin=" + heureFin + ", client=" + client + ", nature=" + nature + ", descProjet="
-				+ descProjet + ", projet=" + projet + ", lieu=" + lieu + ", ville=" + ville + ", duree=" + duree
+				+ descProjet + ", lieu=" + lieu + ", ville=" + ville + ", duree=" + duree
 				+ ", dureeFormated=" + dureeFormated + ", type=" + type + ", tag=" + tag + ", user=" + user + "]";
 	}
 

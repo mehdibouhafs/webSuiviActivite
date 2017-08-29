@@ -10,14 +10,8 @@
 	                <div class="x_panel">
 	                  <div class="x_title">
 	                    <h2> Intervention du groupe </h2>
-	                    <ul class="nav navbar-right panel_toolbox">
-	                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-	                      </li>
-	                      
-	                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-	                      </li>
-	                    </ul>
-	                    <div class="clearfix"></div>
+	                   
+	                     <div class="clearfix"></div>
 	                  </div>
 	
 	                  <div class="x_content">
@@ -39,19 +33,18 @@
 	                        </thead>
 	
 	                        <tbody>
-	                        <tr class="even pointer">
+	                                <tr class="even pointer">
 	                        			<td class=" "  at-implicit at-title="Collaborateur" at-attribute="user.nom"></td>
-				  						<td class=" "  at-implicit at-sortable at-attribute="dateDebut"  at-initial-sorting="desc"></td>
-				  						<td class=" " at-implicit at-sortable at-attribute="dateFin"  ></td>
+	                        			<td class=" "  at-implicit  at-attribute="typeActivite" at-title="Type"></td>
+				  						<td class=" "  at-implicit  at-attribute="dateDebut"  at-initial-sorting="desc"></td>
+				  						<td class=" " at-implicit  at-attribute="dateFin"  ></td>
 				  						<td class=" " at-implicit  at-attribute="heureDebut"></td>
 				  						<td class=" " at-implicit  at-attribute="heureFin"></td>
-				  						<td class=" " at-implicit  at-attribute="duree"></td>
-				  						<td class=" " at-implicit  at-attribute="client.client" at-title="client"></td>
+				  						<td class=" " at-implicit  at-attribute="duree" at-title="Durée"></td>
+				  						<td class=" " at-implicit  at-attribute="client.client" at-title="Client"></td>
 				  						<td class=" "  at-implicit  at-attribute="nature.nature" at-title="Nature"></td>
-				  						<td class=" "  at-implicit  at-attribute="projet.projet" at-title="Projet"></td>
-				  						<td class=" "  at-implicit  at-attribute="descProjet" at-title="DescProjet"></td>
-				  						<td class=" " at-implicit  at-attribute="lieu.lieu" at-title="Lieu"></td>
-				  						<td class=" " at-implicit  at-attribute="ville.ville" at-title="Ville"></td>
+				  						<td class=" "  at-implicit  at-attribute="projet.projet" at-title="Projet/Objet"></td>
+				  						
 				  						
 				  						<td class=""  at-title="Statut"> <span ng-class='whatClassIsIt(item.type.type)'>{{item.type.type}}</span></td>
 				  						<td class=""  at-title="Options">
@@ -62,9 +55,7 @@
 	                        </tbody>
 	                      </table>  
 	                      <at-pagination at-list="filteredList" at-config="config"></at-pagination>  
-	                    
-	                    
-	                    
+
 	                                 
 	                    </div>
 							

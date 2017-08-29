@@ -52,7 +52,7 @@ var app=angular.module("MyApp");
 		  		   var heureFin1 = moment(heureFin,"DD/MM/YYYY HH:mm:ss").format("HH:mm:ss");
 		  		   
 		  		   
-		  		 if(dateFinale1 === "Invalid date"){
+		  		 if(dateFinale1 === "Invalid date"){ 
 		  			   console.log("Invalid Date a mehdi");
 		  			   dateFinale1 = moment(dateFinale).format("DD/MM/YYYY");
 		  		   }
@@ -104,6 +104,89 @@ var app=angular.module("MyApp");
 		  	 }; 
 		  	 
 		  	 $scope.calculerDuree();
+		  	 
+		  	 
+		  	 
+		  	 $scope.typeActivite = {type:"Projet"};
+		  	  
+		  	  $scope.support = {numDemande:"",objet:"",identifiant:"",dateDemande:"",contrat:""};
+		  	  
+		  	  $scope.support1 = {numDemande:"",objet:"",identifiant:"",dateDemande:"",contrat:""};
+		  	 
+		  	  $scope.updateProjets = function(){
+		  		  if($scope.typeActivite.type === "Projet" && $scope.selectedItem.codeClient != null){
+		  			  $http({
+		  	 	  	      method: 'GET',
+		  	 	  	      url: "/projetByClient?codeClient="+$scope.selectedItem.codeClient
+		  	 	  	   }).then(function (success){
+		  	 	  		   console.log("projetByClient?codeClient="+$scope.selectedItem.codeClient);
+		  	 	  		   $scope.projets = success.data;
+		  	 	  	   },function (error){
+		  	 	  		   $scope.errorMessage = error.message;	
+		  	 	  	   });
+		  	 		  
+		  		  }// add select client
+		  	  }
+		  	  
+		  	$scope.loadInformationsSupport = function(){
+		  		
+		  	  if($scope.support.numDemande.length === 0){
+		  		 
+		  		  $scope.informationError = false;
+		  	  }else{
+		  		  $http({
+		  		      method: 'GET',
+		  		      url: "/getSupport?numDemande="+$scope.support.numDemande
+		  		   }).then(function (success){
+		  			   $scope.support1 = success.data;
+		  			   
+		  			   if( $scope.support1.numDemande !=null){
+		  			   $scope.informationError=false;
+		  			   $scope.informations = true;
+		  			   
+		  			   $scope.selectedItem= $scope.support1.client;
+		  			   
+		  			   }else{
+		  				   $scope.informations = false;
+		  				   $scope.informationError=true;
+		  			   }
+		  		   },function (error){
+		  			   $scope.errorMessage = error.message;	
+		  		   });
+		  	  }
+		  	  
+		    }
+		  	  
+		  	  $scope.initSupport = function(){
+		  		  $scope.informationError=false;
+		  		  $scope.typeActivite.type="Support";
+		  		  $http({
+		  			      method: 'GET',
+		  			      url: "/natures2"
+		  			   }).then(function (success){
+		  				   $scope.natures = success.data;
+		  				   console.log("natures " + $scope.natures);
+		  			   },function (error){
+		  				   $scope.errorMessage = error.message;	
+		  			   });
+		  		  
+		  	  }
+		  	  
+		  	  $scope.initProjet = function(){
+		  		  $scope.informationError=false;
+		  		   $scope.informations = false;
+		  		  $scope.typeActivite.type="Projet";
+		  		  $scope.support.numDemande = null;
+		  			$http({
+		  			      method: 'GET',
+		  			      url: "/natures3"
+		  			   }).then(function (success){
+		  				   $scope.natures = success.data;
+		  				   console.log("natures " + $scope.natures);
+		  			   },function (error){
+		  				   $scope.errorMessage = error.message;	
+		  			   });
+		  	  }
 			  
 			 
 			  
@@ -236,8 +319,7 @@ var app=angular.module("MyApp");
 				
 			  
 				  $scope.saveIntervention = function(){ // modified POST
-						 
-					  
+				
 					  var client ={"id":$scope.selectedItem.id}
 					  var nature = {"id":$scope.nature};
 					  
@@ -267,29 +349,58 @@ var app=angular.module("MyApp");
 					   
 					   var heureFin6 =$scope.heureFin6;
 					   console.log("HeureFin6 "+heureFin6);
-					  var dataObj = {
-								"dateDebut": dateDebut6,
-								"dateFin": dateFin6,
-								"heureDebut": heureDebut6,
-								"heureFin": heureFin6,
-								"client":client,
-								"nature":nature,
-								"descProjet":$scope.descProjet,
-								"dureeFormated":$scope.duree1,
-								"lieu":lieu,
-								"type":type,
-								"ville":ville,
-								"projet":projet,
-								"duree":$scope.duree,
-								"user":user
-						};	
+					   
+					   var support = {
+								  "numDemande":$scope.support.numDemande
+						  }
+					   
+					
+					   
+					   if($scope.typeActivite.type == "Projet"){
+							  var dataObj = {
+									    "typeActivite": "AP",
+										"dateDebut": dateDebut6,
+										"dateFin": dateFin6,
+										"heureDebut": heureDebut6,
+										"heureFin": heureFin6,
+										"client":client,
+										"nature":nature,
+										"descProjet":$scope.descProjet,
+										"dureeFormated":$scope.duree1,
+										"lieu":lieu,
+										"type":type,
+										"ville":ville,
+										"projet":projet,
+										"duree":$scope.duree,
+										"user":user
+								};	
+						   }else{
+							   var dataObj = {
+									    "typeActivite": "AS",
+										"dateDebut": dateDebut6,
+										"dateFin": dateFin6,
+										"heureDebut": heureDebut6,
+										"heureFin": heureFin6,
+										"client":client,
+										"nature":nature,
+										"descProjet":$scope.descProjet,
+										"dureeFormated":$scope.duree1,
+										"lieu":lieu,
+										"type":type,
+										"ville":ville,
+										"support":support,
+										"duree":$scope.duree,
+										"user":user
+								};	
+						   }
+					   
+					   
 					  
 					  $scope.message={
 							  "error" : "erreur",
 							  "success":"success"
 						  };
 					  
-					  console.log("dataObj"+ JSON.stringify(dataObj));
 					  
 					  $http({
 						    method: 'POST',
@@ -305,7 +416,7 @@ var app=angular.module("MyApp");
 								$scope.success=true;
 							    $scope.message.success="Votre intervention a été ajouté avec succès";
 								//$mdDialog.hide();
-								$route.reload();
+								 $route.reload();
 							}else{
 								console.log("between");
 								$scope.success=false;
@@ -325,7 +436,9 @@ var app=angular.module("MyApp");
 			  };
 			  
 			  $scope.reset = function(){
+				    $scope.initProjet();
 				  	$scope.dateDebut = null;
+				  	$scope.type=null;
 				  	$scope.dateFinale = null;
 				  	$scope.heureDebut=null;
 				    $scope.heureFin = null;
@@ -358,7 +471,7 @@ var app=angular.module("MyApp");
 		 			
 		 			$http({
 		 		      method: 'GET',
-		 		      url: "/natures1"
+		 		      url: "/natures3"
 		 		   }).then(function (success){
 		 			   $scope.natures = success.data;
 		 			   console.log("natures " + $scope.natures);
