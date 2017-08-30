@@ -1,5 +1,5 @@
 var app=angular.module("MyApp");
-app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarConfig, moment,alert,$http,User,$mdDialog,$mdMedia){
+app.controller("calendarGroupe",function($scope, $window, $ocLazyLoad, calendarConfig, moment,alert,$http,User,$mdDialog,$mdMedia){
 	
 	 var vm = this;
 	$scope.nomUser = null;
@@ -156,13 +156,6 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 	        
 	      });
 	    };
-	    
-	    
-	    
-	    
-		  
-		  
-	    
 		  
 		  $scope.showEventAdmin = function(activiteEmploye) {
 			  console.log("activi "+activiteEmploye);
@@ -253,7 +246,7 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 
 			$scope.chargerAllUsers = function(){
 				
-				  var url1 = "/allUsers";
+				  var url1 = "/allUserGroupe?idGroupe="+User.getGroupe()+"&email="+User.getEmail();
 				  $http({
 				      method: 'GET',
 				      url: url1
@@ -278,7 +271,7 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				  $scope.chargerAllInterventions = function(){
 				      console.log("chargerAllInterventionsByEmail");
 				      console.log("User "+User.getEmail());
-				      var url1 = "/ActivitesEmployers";
+				      var url1 = "/ActivitesEmployeGroupe?codeGroupe="+User.getGroupe()+"&email="+User.getEmail();
 				      $http({
 				          method: 'GET',
 				          url: url1
@@ -321,6 +314,7 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				    }
 
 				    $scope.chargerEvent = function(){
+				    	
 				    	vm.events = [];
 				    	console.log("ActiviteEmployer ",$scope.activitesEmployer);
 				    	console.log("color "+getRandomColor());
@@ -332,7 +326,8 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				    		
 				    		var title =' <p hidden>,' +$scope.activitesEmployer[i].id+',</p><i class="fa fa-user"></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].user.nom+'     </span><i class="fa fa-building" style="margin-left: 5px;></i> <span style="margin-left: 5px;"> '+$scope.activitesEmployer[i].client.client+'</span><i class="fa fa-suitcase"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">Nature :  '+$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> Action:  '+$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;"> durée :  '+ $scope.activitesEmployer[i].dureeFormated;
 					    	var color1;
-				    		if($scope.activitesEmployer[i].typeActivite == "AP"){
+				    		
+					     if($scope.activitesEmployer[i].typeActivite == "AP"){
 				    			
 				    			if($scope.activitesEmployer[i].type.type == "Réalisée"){
 				    				color1 = '#70FFE7';
@@ -348,6 +343,7 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 				    			}
 					    	}
 				    		
+					     
 				    		vm.events.push({
 					            title:  title,
 					            startsAt: moment($scope.activitesEmployer[i].dateDebut ,"DD/MM/YYYY hh:mm:ss"),
@@ -442,8 +438,6 @@ app.controller("adminCalendar",function($scope, $window, $ocLazyLoad, calendarCo
 					         console.log("succ ",JSON.stringify(success));
 					          $scope.activitesEmployer = success.data;
 					          //$scope.currentPage = $scope.pageCourante;
-					          
-					          vm.events = [];
 					          $scope.chargerEvent();
 					          //$scope.pageSize = 1;
 					          //$scope.totale = success.data.totalActiviterEmployer;

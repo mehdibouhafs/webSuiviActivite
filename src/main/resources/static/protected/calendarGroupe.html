@@ -1,18 +1,14 @@
 	        <!-- page content -->
         
-        <div class="right_col" role="main" ng-controller='calendar'>
+        <div class="right_col" role="main" ng-controller='calendarGroupe' style="min-height: 700px;">
           <div class="">
-           
-
-            <div class="clearfix"></div>
 
             <div class="row">
             
-
               <div class="col-md-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Mon calendrier </h2>
+                    <h2>Calendrier du groupe </h2>
                      <div class="pull-right"   style="margin: 7px;" ng-controller="switchController2">
                     <button type="button" class="btn btn-default btn-circle" style="background-color: #70FFE7;"></button>
                     <labe>AP Réalisée</labe>
@@ -22,14 +18,33 @@
 					<labe>AS Réalisée</labe>
                     <button type="button" class="btn btn-success btn-circle" style="background-color: #FFD7FA;"></button>
                     <labe>AS Planifiée</labe>
-                     <button type="button" class="btn btn-success"  ng-show="admin"  ng-click="switche2()" style="margin-left: 200px;">{{information1}}  <i class="fa fa-calendar" aria-hidden="true"></i> </button>
+                     <button type="button" class="btn btn-success" ng-show="admin || chefGroupe"  ng-click="switche2()" style="margin-left: 200px;"> {{information1}}  <i class="fa fa-calendar" aria-hidden="true"></i> </button>
+                     <button type="button" class="btn btn-info pull-right"  ng-controller="switchController3" ng-show="chefGroupe"  ng-click="switche4()" style="margin-left: 200px;"> Itv du groupe  <i class="fa fa-reply" aria-hidden="true"></i> </button>
                     </div>
-                    
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
 
-				    <div ng-controller="calendar as vm">
+				    <div ng-controller="calendarGroupe as vm">
+			   
+						   <div class="form-group row">
+						    <h2 class="text-center">Filtrer par collaborateur du groupe</h2>
+					        <label class="col-md-3 col-sm-12 control-label"></label>
+					        <div class="col-md-6 col-sm-12 " >
+					
+					          <ui-select ng-model="vm.userSelected" multiple theme="selectize" title="Choisir un collaborateur"  ng-change="chargerAllInterventionsFiltred()">
+					            <ui-select-match placeholder="Selectionnez un collaborateur dans la liste où cherchez par nom où l'email">{{$item.nom}}</ui-select-match>
+					            <ui-select-choices repeat="item in vm.users | filter: $select.search">
+					              <div ng-bind-html="item.nom | highlight: $select.search"></div>
+					              <small ng-bind-html="item.username | highlight: $select.search"></small>
+					            </ui-select-choices>
+					          </ui-select>
+					
+					        </div>
+					        <label class="col-md-3 col-sm-12 "></label>
+					        
+					      </div>	
+					      			    	 
 						  <h2 class="text-center" ng-cloak style="margin-bottom:-10px">{{ vm.calendarTitle }}</h2>
 						  <div class="row" style="margin-bottom:-30px">
 						   <div class="col-md-12 col-xs-12">
@@ -74,17 +89,6 @@
 						    </div>
 						
 						  </div>
-						  
-						   <div class="row" style="margin-bottom:30px;margin-top:30px" ng-if="rangeSelected" ng-cloack>
-						  			 <div class="col-md-3 col-xs-12">
-						   			 
-						   			 </div>
-						   			 <div class="col-md-9 col-xs-12 alert alert-info">
-						   			 	Vous avez sélectionné la date à partir du {{vm.firstDateClicked | date:'yyyy-MM-dd HH:mm:ss'}}  au  {{vm.lastDateClicked | date:'yyyy-MM-dd HH:mm:ss'}}
-						   			 </div>
-						   			 
-						   			 
-						   </div>
 						</div>
 						
 					  <div class="row" style="padding:30px">
@@ -98,16 +102,14 @@
 						    events="vm.events"
 						    view="vm.calendarView"
 						    view-title="vm.calendarTitle"
-						    day-view-event-width="1000"
 						    view-date="vm.viewDate"
 						    on-event-click="vm.eventClicked(calendarEvent)"
 						    on-event-times-changed="vm.eventTimesChanged(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
 						    cell-is-open="vm.cellIsOpen"
 						    cell-modifier="vm.modifyCell(calendarCell)"
-						    on-timespan-click="vm.timespanClicked(calendarDate,calendarCell)"
-						    on-date-range-select="vm.rangeSelected(calendarRangeStartDate, calendarRangeEndDate)"
 						    cell-auto-open-disabled="true"
-						    >
+						    day-view-event-width="150"
+						    on-timespan-click="vm.timespanClicked(calendarDate, calendarCell)">
 						  </mwl-calendar>
 						  
 						  </div>

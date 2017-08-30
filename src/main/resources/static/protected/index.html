@@ -34,6 +34,19 @@
     <link href="../vendors/angularjs/angular-bootstrap-calendar.min.css" rel="stylesheet">
     <link href="../vendors/angularjs/select2.css" rel="stylesheet">
     <link href="../vendors/angularjs/selectize.default.css" rel="stylesheet">
+    
+    <style type="text/css">
+    
+    	.btn-circle {
+			  width: 15px;
+			  height: 15px;
+			  text-align: center;
+			  padding: 6px 0;
+			  font-size: 12px;
+			  line-height: 1.428571429;
+			  border-radius: 15px;
+					}
+    </style>
 	
   </head>
 
@@ -68,23 +81,19 @@
                 <h3>Menu</h3>
                 <ul class="nav side-menu">
                   <li  ng-show="directeur"><a href="/directeurHome"><i class="fa fa-line-chart"></i> Tableau de bord </a></li>
-                  
-                  
-                  
-
-                  
                   <li ng-hide="directeur"><a href="/index"><i class="fa fa-home"></i> Home </a></li>
                   <li ng-show="directeur || admin"><a href="/adminCalendar" ng-cloak><i class="fa fa-calendar-check-o"></i> Admin calendrier </a></li>
-                   <li ng-show="admin || directeur" ng-cloak><a><i class="fa fa-laptop"></i> Rapports <span class="fa fa-chevron-down"></span></a>
+                   <li ng-show="admin || directeur" ng-cloak><a><i class="fa fa-line-chart"></i> Rapports <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/productivite"><i class="fa fa-gavel"></i> Productivité </a></li>
+                      <li><a href="/productivite"><i class="fa fa-pie-chart"></i> Productivité </a></li>
                     </ul>
                   </li>
                   <li ng-hide="directeur"><a href="/moncalendrier"><i class="fa fa-calendar"></i> Mon calendrier </a></li>
                   <li ng-hide="directeur"><a href="/nouvelleIntervention"><i class="fa fa-suitcase"></i> Nouvelle Intervention </a></li>
-                  <li ng-show="admin || directeur" ng-cloak><a href="/Allinterventions"><i class="fa fa-calendar-check-o"></i> Tout les interventions</a></li>
+                  <li ng-show="admin || directeur" ng-cloak><a href="/Allinterventions"><i class="fa fa-th"></i> Toutes les interventions</a></li>
                   <li ng-hide="directeur"><a href="/mesinterventions" ><i class="fa fa-calendar-plus-o"></i> Mes interventions</a></li>
                   <li ng-cloak ng-show="chefGroupe"><a href="/interventionGroupe"><i class="fa fa-users"></i> Interventions du groupe</a></li>
+                  <li ng-cloak ng-show="admin || directeur ||chefGroupe"><a href="/projets"><i class="fa fa-folder-open-o"></i> Projets</a></li>
                   <li ng-show="admin" ng-cloak><a><i class="fa fa-database"></i> Référentiel <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/nouveauUtilisateur"><i class="fa fa-user"></i>Utilisateur</a></li>
@@ -200,7 +209,9 @@
      <script src="../vendors/angularjs/munitime/dialog/updateEventCalendar.js"></script>
     <script src="../vendors/angularjs/munitime/dialog/rangeEventCalendar.js"></script>
     <script src="../vendors/angularjs/munitime/interventionGroupe.js"></script>
+    <script src="../vendors/angularjs/munitime/calendarGroupe.js"></script>
     <script src="../vendors/angularjs/munitime/projet.js"></script>
+      <script src="../vendors/angularjs/munitime/projets.js"></script>
     <script src="../vendors/angularjs/munitime/jourFerie.js"></script>
      <script src="../vendors/angularjs/angular-route.min.js"></script>
      <script type="text/javascript" src="../vendors/angularjs/angular-aria.min.js"></script>

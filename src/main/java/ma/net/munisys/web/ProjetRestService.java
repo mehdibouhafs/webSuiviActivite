@@ -28,6 +28,18 @@ public class ProjetRestService {
 	@Autowired
 	private ProjetBusiness projetBusiness;
 	
+	
+	@RequestMapping(value="/projetByClient",method = RequestMethod.GET)
+	public List<Projet> findProjetByClient(@RequestParam(name="codeClient")String codeClient,@RequestParam(name="statutProjet")int statutProjet) {
+		return projetBusiness.findProjetByClient(codeClient, statutProjet);
+	}
+	
+	@RequestMapping(value="/projetByStatut",method = RequestMethod.GET)
+	public List<Projet> findProjetByClient(@RequestParam(name="statutProjet")int statutProjet) {
+		return projetBusiness.findProjetByClient(statutProjet);
+	}
+
+
 	@RequestMapping(value="/projet",method = RequestMethod.POST)
 	public Projet saveProjet(@RequestBody Projet projet) {
 		return projetBusiness.saveProjet(projet);
@@ -47,11 +59,13 @@ public class ProjetRestService {
 
 		
 	
-	@RequestMapping(value="/projete",method = RequestMethod.GET)
-	public Projet updateLieu2(@RequestParam(name="id")String id,@RequestParam(name="projet")String projet){
+	@RequestMapping(value="/projete/{id}",method = RequestMethod.PUT)
+	public Projet updateLieu2(@PathVariable(name="id")String id,@RequestBody Projet projet){
 		
 		return projetBusiness.updateProjet(id,projet);
 	}
+	
+	
 	
 	
 	

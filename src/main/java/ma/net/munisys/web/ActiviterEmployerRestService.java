@@ -520,8 +520,8 @@ public class ActiviterEmployerRestService{
 	}
 	
 	@RequestMapping(value="/ActivitesEmployeGroupe",method = RequestMethod.GET)
-	public List<ActiviterEmployer> findActiviterByGroupe(@RequestParam(name="codeGroupe")Long codeGroupe) {
-		return activiterEmployerBusiness.findActiviterByGroupe(codeGroupe);
+	public List<ActiviterEmployer> findActiviterByGroupe(@RequestParam(name="codeGroupe")Long codeGroupe,@RequestParam(name="email")String email) {
+		return activiterEmployerBusiness.findActiviterByGroupe(codeGroupe,email);
 	}
 
 	@RequestMapping(value="/ActivitesEmployer",method = RequestMethod.POST)

@@ -74,15 +74,14 @@
                         <tr>
                           
                           <th>Statut de l'intervention</th>
-                          <th>Actions</th>
+                         
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="even pointer" ng-repeat="o in types.types">
+                        <tr class="even pointer" ng-repeat="o in types.types track">
 	                        	
 	                        	<td class=" ">{{o.type}}</td>
-				  				<td width="20%"><button type="button" class="btn btn-default"  ng-click="modifier(o,$event)"><i class="glyphicon glyphicon-pencil">
-								 </i></button></td>
+				  				
 				  		   </tr>
                       </tbody>
                     </table>

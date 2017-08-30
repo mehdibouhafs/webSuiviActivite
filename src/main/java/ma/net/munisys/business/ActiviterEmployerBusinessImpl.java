@@ -311,9 +311,9 @@ public class ActiviterEmployerBusinessImpl implements ActiviterEmployerBusiness 
 
 
 	@Override
-	public List<ActiviterEmployer> findActiviterByGroupe(Long codeGroupe) {
+	public List<ActiviterEmployer> findActiviterByGroupe(Long codeGroupe,String email) {
 		// TODO Auto-generated method stub
-		return activiterEmployerRepository.findActiviterByGroupe(codeGroupe);
+		return activiterEmployerRepository.findActiviterByGroupe(codeGroupe,email);
 	}
 
 

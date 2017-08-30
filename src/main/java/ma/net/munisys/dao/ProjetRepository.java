@@ -21,5 +21,10 @@ public interface ProjetRepository extends JpaRepository<Projet,String> {
 	
 	
 	
+	@Query("select o from Projet o inner join o.client c where c.codeClient = :x and o.statutProjet = :y")
+	public List<Projet> findProjetByClient(@Param("x")String codeClient,@Param("y") int tag);
+	
+	@Query("select o from Projet o where o.statutProjet = :y")
+	public List<Projet> findProjetByClient(@Param("y") int tag);
 	
 }

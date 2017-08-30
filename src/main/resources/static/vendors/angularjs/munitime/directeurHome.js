@@ -53,9 +53,6 @@ app.controller("countController2",function($scope,$http,User){
 		 });
 	};
 	$scope.chargerUser();
-	
-	 
-	
 });
 
 

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.repository.query.Param;
+
 import ma.net.munisys.entities.PageActiviterEmployer;
 import ma.net.munisys.entities.PageUsers;
 import ma.net.munisys.entities.Role;
@@ -25,6 +27,6 @@ public interface UserBusiness {
     public User addRoleToUser(String username,String role);
     public Map<String, Object> getLoggedUser(HttpServletRequest httpServletRequest);
     public List<User> listUsers();
-	
+    public List<User> userGroupe(Long idGroupe,String username);
 
 }

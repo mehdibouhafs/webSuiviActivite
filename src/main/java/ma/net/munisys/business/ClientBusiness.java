@@ -16,6 +16,6 @@ public interface ClientBusiness {
 	public Client updateClient(Long id, Client client);
 	public PageClients listClients(int page, int size);
 	public  List<Client> getClients(String client);
-	public List<Projet> findByclientProjet(String codeClient);
+	public List<Projet> findByclientProjet(String codeClient,int tag);
 
 }

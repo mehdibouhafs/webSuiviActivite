@@ -52,6 +52,12 @@ public class UserRestService {
 	public List<User> listClients() {
 		return userBusiness.listUsers();
 	}
+	
+	@RequestMapping(value="/allUserGroupe",method = RequestMethod.GET)
+	public List<User> listClients(@RequestParam(name="idGroupe") Long idGroupe,@RequestParam(name="email")String username) {
+		return userBusiness.userGroupe(idGroupe, username);
+	}
+	
 
 	@RequestMapping(value="/roleToUser",method = RequestMethod.POST)
 	public User addRoleToUser(String username, String role) {

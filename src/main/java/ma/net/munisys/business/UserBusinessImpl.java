@@ -133,4 +133,11 @@ public class UserBusinessImpl implements UserBusiness {
 		return userRepository.findAll();
 	}
 
+
+	@Override
+	public List<User> userGroupe(Long idGroupe, String username) {
+		// TODO Auto-generated method stub
+		return userRepository.userGroupe(idGroupe, username);
+	}
+
 }

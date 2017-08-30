@@ -47,7 +47,7 @@ public interface ActiviterEmployerBusiness {
 	
 	public int countActiviterEmployerByClientEtDate(String email,String client,Date DateDebut,Date DateFin);
 
-	public List<ActiviterEmployer> findActiviterByGroupe(Long codeGroupe);
+	public List<ActiviterEmployer> findActiviterByGroupe(Long codeGroupe,String email);
 	
 	
 	/** User Tableau de bord**/

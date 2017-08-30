@@ -37,12 +37,11 @@ public class ProjetBusinessImpl implements ProjetBusiness {
 	}
 
 	@Override
-	public Projet updateProjet(String id,String projet) {
+	public Projet updateProjet(String id,Projet projet1) {
 		System.out.println("lieu id "+ id);
-		Projet projet1 = new Projet();
-		projet1.setId(id);
-		projet1.setProjet(projet);
-		//lieu.setId(id);
+		 projet1.setId(id);
+		
+		
 		return projetRepository.save(projet1);
 	}
 
@@ -56,6 +55,17 @@ public class ProjetBusinessImpl implements ProjetBusiness {
 		pageProjet.setTotalPages(pageProjets.getTotalPages());
 		pageProjet.setTotalProjet(pageProjets.getTotalElements());
 		return pageProjet;
+	}
+
+	@Override
+	public List<Projet> findProjetByClient(String codeClient, int tag) {
+		return projetRepository.findProjetByClient(codeClient, tag);
+	}
+
+	@Override
+	public List<Projet> findProjetByClient(int tag) {
+		// TODO Auto-generated method stub
+		return projetRepository.findProjetByClient(tag);
 	}
 
 	

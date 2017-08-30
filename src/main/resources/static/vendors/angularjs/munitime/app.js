@@ -45,7 +45,7 @@ app.controller("interventionController",function($scope,$http,$window,User,$mdDi
 	  if($scope.typeActivite.type === "Projet" && $scope.selectedItem.codeClient != null){
 		  $http({
  	  	      method: 'GET',
- 	  	      url: "/projetByClient?codeClient="+$scope.selectedItem.codeClient
+ 	  	      url: "/projetByClient?codeClient="+$scope.selectedItem.codeClient+"&statutProjet=1"
  	  	   }).then(function (success){
  	  		   console.log("projetByClient?codeClient="+$scope.selectedItem.codeClient);
  	  		   $scope.projets = success.data;

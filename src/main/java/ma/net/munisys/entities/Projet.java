@@ -39,7 +39,7 @@ public class Projet implements Serializable {
 	public void setStatutProjet(int statutProjet) {
 		this.statutProjet = statutProjet;
 	}
-	@JsonIgnore
+	
 	public Client getClient() {
 		return client;
 	}

@@ -58,9 +58,9 @@ public class ClientBusinessImpl implements ClientBusiness {
 	}
 
 	@Override
-	public List<Projet> findByclientProjet(String codeClient) {
+	public List<Projet> findByclientProjet(String codeClient,int tag) {
 		// TODO Auto-generated method stub
-		return clientRepository.findByclientProjet(codeClient);
+		return clientRepository.findByclientProjet(codeClient,tag);
 	}
 
 }

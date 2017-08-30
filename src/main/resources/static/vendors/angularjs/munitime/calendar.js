@@ -25,6 +25,8 @@ app.config(['$routeProvider','$locationProvider',function($routeProvider,$locati
 	$routeProvider.when('/nouveauJour',{templateUrl:'/protected/nouveauJour.html'});
 	$routeProvider.when('/directeurHome',{templateUrl:'/protected/directeurHome.html'});
 	$routeProvider.when('/productivite',{templateUrl:'/protected/productivite.html'});
+	$routeProvider.when('/calendarGroupe',{templateUrl:'/protected/calendarGroupe.html'});
+	$routeProvider.when('/projets',{templateUrl:'/protected/projets.html'});
 	$routeProvider.otherwise('/index');
 	$locationProvider.html5Mode({enabled:true,requireBase:false});
 	$locationProvider.hashPrefix('');
@@ -169,7 +171,8 @@ app.factory('switched', function(){
 	
 	var switched = {
 	        informations: false,
-	        
+	        calendriers:false,
+	        calendriers1:false
 	    };
     
     return {
@@ -178,6 +181,18 @@ app.factory('switched', function(){
         },
         setInformations: function (informations) {
         	switched.informations = informations;
+        },
+        getCalendriers: function () {
+            return switched.calendriers;
+        },
+        setCalendriers: function (calendriers) {
+        	switched.calendriers = calendriers;
+        },
+        getCalendriers1: function () {
+            return switched.calendriers1;
+        },
+        setCalendriers1: function (calendriers1) {
+        	switched.calendriers1 = calendriers1;
         }
         
     };
@@ -187,34 +202,65 @@ app.factory('switched', function(){
 
 
 app.controller("switchController",function($scope,$location,switched){
-	
-	
-	 	console.log("info.getInformation() "+ switched.getInformations());
-		if(switched.getInformations() == false){
-			$scope.informations = false;
-			$scope.information = "Mon tableau de bord";
-		}else{
-			$scope.informations = true;
-			$scope.information = "Tableau de bord administrateur";
+			
+		$scope.switche = function(){			
+		   $location.path('/directeurHome');
+
 		}
 		
-		$scope.switche = function(){
-			if($scope.informations == false){
-				console.log("Clicked");
-				$scope.informations = true;
+		$scope.switche2 = function(){
+			$location.path('/index');
+		}
+		
+		
+});
+
+
+
+app.controller("switchController2",function($scope,$location,switched){
+	
+	
+	 	console.log("info.getCalendriers() "+ switched.getCalendriers());
+		if(switched.getCalendriers() == false){
+			$scope.calendriers = false;
+			$scope.information1 = "Calendrier du groupe";
+		}else{
+			$scope.calendriers = true;
+			$scope.information1 = "Mon calendrier";
+		}
+		
+		$scope.switche2 = function(){
+			if($scope.calendriers == false){
+				console.log("Clicked 2");
+				$scope.calendriers = true;
 			
-				$location.path('/directeurHome');
-				switched.setInformations(true);
-				$scope.information = "Tableau de bord administrateur";
+				$location.path('/calendarGroupe');
+				switched.setCalendriers(true);
+				$scope.information1 = "Mon calendrier";
 			}else{
-				$scope.informations = false;
-				switched.setInformations(false);
-				$location.path('/index');
-				$scope.information = "Mon tableau de bord";
+				$scope.calendriers = false;
+				switched.setCalendriers(false);
+				$location.path('/moncalendrier');
+				$scope.information1 = "Calendrier du groupe ";
 			}
 		}
 		
 		
+});
+
+
+app.controller("switchController3",function($scope,$location,switched){
+	
+	$scope.switche3 = function(){
+			$location.path('/calendarGroupe');
+	}
+	
+	$scope.switche4 = function(){
+		console.log("test");
+		$location.path('/interventionGroupe');
+	}
+	
+	
 });
 
 
@@ -596,10 +642,21 @@ app.controller("calendar",function($scope, $window, $ocLazyLoad, calendarConfig,
 	    		$scope.activitesEmployer[i].nature.nature +'</span><i class="fa fa-tasks"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">DescProjet:  '+
 	    		$scope.activitesEmployer[i].descProjet+'</span><i class="fa fa-clock-o"  style="margin-left: 5px;"></i><span  style="margin-left: 5px;">durée :  '+ $scope.activitesEmployer[i].dureeFormated;
 	    		var color1;
-	    		if($scope.activitesEmployer[i].type.type == "Réalisée"){
-		    		color1 = '#70FFE7';
+	    		
+	    		if($scope.activitesEmployer[i].typeActivite == "AP"){
+	    			
+	    			if($scope.activitesEmployer[i].type.type == "Réalisée"){
+	    				color1 = '#70FFE7';
+	    			}else{
+	    				color1 = '#C6F9FF';
+	    			}
+		    		
 		    	}else{
-		    		color1 = '#C8EEFF';
+	    			if($scope.activitesEmployer[i].type.type == "Réalisée"){
+	    				color1 = '#FFF8BC';
+	    			}else{
+	    				color1 = '#FFD7FA';
+	    			}
 		    	}
 	    		
 	    		var id = i;

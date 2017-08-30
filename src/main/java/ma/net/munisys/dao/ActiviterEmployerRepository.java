@@ -129,7 +129,7 @@ public interface ActiviterEmployerRepository extends JpaRepository<ActiviterEmpl
 	@Query("select o from ActiviterEmployer o where o.user.username = :x and o.type.type = :y  and (o.dateDebut > :a  and o.dateFin < :b)")
 	public List<ActiviterEmployer> findActiviterByUserAfterBefore(@Param("x")String email,@Param("y") String statut,@Param("a")Date DateDebut,@Param("b") Date DateFin);
 
-	@Query("select o from ActiviterEmployer o where o.user.groupe.codeGroupe = :x ORDER BY o.dateDebut DESC")
-	public List<ActiviterEmployer> findActiviterByGroupe(@Param("x")Long codeGroupe);
+	@Query("select o from ActiviterEmployer o where o.user.groupe.codeGroupe = :x and o.user.username != :y ORDER BY o.dateDebut DESC")
+	public List<ActiviterEmployer> findActiviterByGroupe(@Param("x")Long codeGroupe,@Param("y") String email);
 
 }

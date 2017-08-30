@@ -51,14 +51,6 @@ public class ClientRestService {
 	}
 	
 	
-	@RequestMapping(value="/projetByClient",method = RequestMethod.GET)
-	public List<Projet> findByclientProjet(@RequestParam(name="codeClient")String codeClient){
-		return  clientBusiness.findByclientProjet( codeClient);
-	}
-
-	
-	
-	
 	/*
 	@RequestMapping(value="/getLoggedUser")
 	public Map<String, Object> getLoggedUser(HttpServletRequest httpServletRequest){

@@ -2,6 +2,8 @@ package ma.net.munisys.dao;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +21,9 @@ public interface UserRepository  extends JpaRepository<User,String> {
 	
 	@Query("select o from User o ORDER BY o.id DESC")
 	public Page<User> findUsers(Pageable page);
+	
+	
+	@Query("select o from User o where o.groupe.codeGroupe = :x and o.username!=:y")
+	public List<User> userGroupe(@Param("x") Long idGroupe,@Param("y")String username);
 
 }

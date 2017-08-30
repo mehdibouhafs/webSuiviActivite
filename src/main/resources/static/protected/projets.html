@@ -1,61 +1,15 @@
 
+	
         <!-- page content -->
         
-        <div class="right_col" role="main" ng-controller="projetController" style="min-height: 750px;">
+        <div class="right_col" role="main" ng-controller="projetsController" style="min-height: 750px;">
           <div class="">
             
-            <div class="clearfix"></div>
+
             <div class="row">
-              <div class="col-md-6 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2> Projet </h2>
-                     <div class="clearfix"></div>
-                    
-                  </div>
-                  <div class="x_content">
-                    <br />
-                    
-                    <div class="form-group" ng-if="error==true" ng-cloak>
-				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
-					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-danger">
-	  						<strong>Erreur au formulaire !</strong> <br/>Veuillez remplir les champs obligatoire !
-	  						* Sinon l'utilisateur est déja créer
-						 </div>
-					 </div>
-				     
-				     
-				     <div class="form-group" ng-if="success==true" ng-cloak>
-				     	<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>
-					     <div class="col-md-12 col-sm-12 col-xs-12 alert alert-success" ng-cloak>
-	  						<strong>Success!</strong><br/> {{message.success}} 
-						 </div>
-					 </div>
-                    <form id="demo-form" name="myForm" ng-submit="submitForm(myForm.$valid)" novalidate>
-
-                      <label for="fullname">Projet identifiant* :</label>
-                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="projetId" required placeholder="projet ID" />
-                      <label for="fullname">Projet * :</label>
-                      <input type="text" id="fullname" class="form-control" name="fullname" ng-model="projet" required placeholder="Nouveau projet" />
-
-                      <div class="ln_solid"></div>
-                      <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-						  
-                          <button type="submit" class="btn btn-success" >Créer un projet</button>
-                        </div>
-                      </div>
-
-                    </form>
-                 
-                  </div>
-                </div>
-              </div>
-              
-              
-              <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="x_panel" ng-controller="projetsController">
-                  <div class="x_title">
+	              <div class="col-md-12 col-sm-12 col-xs-12">
+	                <div class="x_panel">
+	                  <div class="x_title">
 	                    <h2>Projets</h2>
 	                    
 	                     <div class="clearfix"></div>
@@ -74,14 +28,17 @@
 		  						<div class="col-md-4 col-sm-4 col-xs-12" style="margin-top:7px;" >
 			  						<label>Projets disponibles </label>
 			  						<input  type="radio" ng-model="statut.type"  value="valider" ng-change="chargerValideProjets()"/>
-			  				   </div>
-			  				   <div class="col-md-4 col-sm-4 col-xs-12" style="margin-top:7px;" >
-			  						<label>Projets clôturés: </label>
+			  						<label style="margin-left: 30px;" >Projets clôturés: </label>
 								  	<input type="radio" ng-model="statut.type" value="cloturer" ng-change="chargerClotureProjets()"/>
 							  	</div>
-
+							  	
+							  	
 		  				</div>
 
+						  
+	                  
+	                  
+	                  
 	                    <div class="table-responsive">
 	                      <table class="table table-striped jambo_table bulk_action" ng-cloak  at-table at-paginated at-list="filteredList" at-config="config">
 	                        <thead>
@@ -107,16 +64,47 @@
 	                    </div>
 							
 	                  </div>
-                </div>
-              </div>
-              
-              
-              
-            </div>
-         </div>
-       </div>
+	                </div>
+	              </div>
+	              
+	            </div>
+	            
+	          </div>
+	       </div>
+	              
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
        
         
         <!-- /page content -->
 
+   
 
+
+
+
+	
+        
+
+   

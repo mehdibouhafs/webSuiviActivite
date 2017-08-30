@@ -75,7 +75,7 @@ app.controller("interventionGroupe",function($scope,$http,$route,User,$window,$m
 	
 	  $scope.chargerAllInterventions = function(){
 		  console.log("chargerAllInterventions");
-		  var url1 = "/ActivitesEmployeGroupe?codeGroupe="+User.getGroupe();
+		  var url1 = "/ActivitesEmployeGroupe?codeGroupe="+User.getGroupe()+"&email="+User.getEmail();
 		  $http({
 		      method: 'GET',
 		      url: url1

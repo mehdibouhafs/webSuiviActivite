@@ -15,8 +15,12 @@ public interface ProjetBusiness {
 	
 	public Projet saveProjet(Projet projet);
 	public List<Projet> listProjet();
-	public Projet updateProjet(String id,String projet1);
+	public Projet updateProjet(String id,Projet projet1);
 	public PageProjet listProjet(int page, int size);
+	
+	public List<Projet> findProjetByClient(String codeClient,int tag);
+	
+	public List<Projet> findProjetByClient(int tag);
 
 
 }
