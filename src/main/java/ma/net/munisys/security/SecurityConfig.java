@@ -46,9 +46,9 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	   
 	  /* auth
        .ldapAuthentication().contextSource()
-       .url("ldap://130.24.31.215:3268/DC=MUNISYS,DC=INTRANET")
-       .managerDn("CN=stage01,ou=Munisys-Casa,DC=MUNISYS,DC=INTRANET")
-       .managerPassword("123456") 
+       .url("ldap://xxxxxxxx/xxxx)
+       .managerDn("xxxxxxx)
+       .managerPassword("xxxx") 
        
        .and().userSearchFilter("(mailNickname={0})")
        .userSearchBase("");*/
